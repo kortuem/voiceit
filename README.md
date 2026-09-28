@@ -11,6 +11,7 @@ A lamp, a bedside unit, a car: any object can now be given an ear and a voice. H
 ## What you need
 
 - A laptop with **Codex** or **Claude Code**.
+- **Git**, to get VoiceIt and its updates (`git --version` tells you). On a Mac the first `git` command offers to install it; on Windows install [Git for Windows](https://git-scm.com/download/win) or [GitHub Desktop](https://desktop.github.com). You do not need a GitHub account.
 - **Node.js 18 or newer**, for VoiceIt and the check (`node --version` tells you). Without Node you can still play: open `system/voiceit.html` in your browser and use **Open folder** to choose this folder.
 - ChatGPT or Gemini for rendering forms (see `system/FORM.md`).
 
@@ -18,7 +19,7 @@ A lamp, a bedside unit, a car: any object can now be given an ear and a voice. H
 
 Do this once, on the laptop you bring, so that anything that does not work shows up now and not in class. The same steps are in VoiceIt's **Setup** tab, which also checks your laptop and plays its voices.
 
-1. Download this folder, or ask your agent to clone the repository.
+1. Get VoiceIt (see *Getting VoiceIt* below).
 2. Install **Node.js** (18 or newer) from [nodejs.org](https://nodejs.org): the LTS installer. Check with `node --version`.
 3. Open a terminal in this folder and start VoiceIt:
 
@@ -32,6 +33,24 @@ Do this once, on the laptop you bring, so that anything that does not work shows
 
 If one of these steps fails, ask for help before the session.
 
+## Getting VoiceIt
+
+VoiceIt lives in a Git repository: <https://github.com/kortuem/voiceit>. Getting it with Git means you can later pull updates with one command. Choose one way:
+
+- **Ask your agent.** Open Codex or Claude Code in the folder where you keep course work and say: *"Clone https://github.com/kortuem/voiceit.git here."*
+- **GitHub Desktop.** File → Clone repository → URL → `https://github.com/kortuem/voiceit.git`.
+- **Terminal.** `git clone https://github.com/kortuem/voiceit.git`
+- **Without Git.** On the GitHub page, Code → Download ZIP, and unzip it. Everything works, but you cannot pull updates; you replace the `system/` folder by hand instead.
+
+## Git while you work
+
+Git keeps versions of your folder. You do not need a GitHub account for this; it all happens on your laptop. Your agent can do each step for you when you ask.
+
+- **Save a version:** *"Commit our work: first version of Juno in visiting hour."* The first time, Git asks for your name and e-mail; your agent can set them.
+- **See what changed:** *"What changed since our last commit?"*
+- **Get course updates:** *"Pull the latest VoiceIt."* This brings in changes to `system/` and the brief. It works smoothly as long as you have not changed `system/` or the example behaviours; to change an example, copy it first.
+- **Share with your group (needs a GitHub account):** fork the repository on GitHub, clone your fork, and push your commits there; teammates clone the same fork. Ask for help the first time.
+
 ## In class
 
 1. Start VoiceIt (`node system/bin/preview`) and open the folder in your agent.
@@ -41,7 +60,7 @@ If one of these steps fails, ask for help before the session.
 ## Folders
 
 - `system/` is the tool: notation, vocabulary, procedures, VoiceIt itself and the scripts. Do not edit it. When it is updated during the course, replace this folder only.
-- `design/` is yours: forms, behaviours and your notes. To keep a version, copy a file.
+- `design/` is yours: forms, behaviours and your notes. Git keeps your versions (see above); you can also copy a file to keep a variant side by side.
 
 ## Checking a behaviour
 
@@ -50,3 +69,7 @@ node system/bin/check
 ```
 
 lists every error and warning with its file and line number. Your agent runs it after every behaviour it writes.
+
+## Licence
+
+MIT (see `LICENSE`). Visual style after Vlak (vlak.dev) by Renn, Noord.

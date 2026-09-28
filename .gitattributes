@@ -1,0 +1,7 @@
+# Keep line endings sane on Windows; the scripts must stay LF.
+* text=auto
+system/bin/* text eol=lf
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary

@@ -23,6 +23,14 @@ You are helping a group of design students prototype a thing that listens and re
 - `design/behaviours/`: the behaviours, one script each. The Host and the Night light are the worked example; leave them as they are unless asked.
 - `design/notes.md`: the group's observations.
 
+## Git
+
+The folder is a Git repository. The group may be new to Git; explain briefly what you do.
+
+- Commit only when the group asks, with a short message that says what changed in their design. If Git asks for a name and e-mail, ask the group for them.
+- Pull updates only when asked. If a pull runs into a conflict, stop, explain it in plain words, and ask before resolving anything.
+- Never push, force, reset, rebase or delete branches unless the group explicitly asks for that exact step.
+
 ## Playing
 
 `node system/bin/preview` starts VoiceIt on this laptop and opens it in the browser. If it is already running, VoiceIt picks up changed files when the group switches back to it.
