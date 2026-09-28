@@ -86,11 +86,16 @@ select{border:1px solid var(--rule);background:var(--sheet);border-radius:6px;pa
 .clock{font-size:13.5px;color:var(--ink-2);font-variant-numeric:tabular-nums}
 .timeline{margin-top:12px;background:var(--sheet);border:1px solid var(--rule);border-radius:10px;padding:10px 12px 12px}
 .tl-grid{display:grid;grid-template-columns:70px minmax(0,1fr);gap:0 10px}
-.tl-name{font-size:11.5px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);height:26px;display:flex;align-items:center}
+.tl-name{font-size:11.5px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);height:26px;line-height:26px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.tl-name.who{color:var(--ink-2)}
+.tl-name.dev{color:var(--ink)}
+.tl-empty{position:absolute;left:0;right:0;top:20px;bottom:0;display:grid;place-items:center;margin:0;font-size:13.5px;color:var(--ink-3);text-align:center;pointer-events:none}
+.tl-empty[hidden]{display:none}
 .tl-name.ruler{height:20px}
 .tl-track{position:relative;cursor:pointer;touch-action:none}
 .lane{position:relative;height:26px;border-bottom:1px solid var(--rule-2)}
 .lane:last-child{border-bottom:0}
+.lane.split{border-top:1px solid var(--rule)}
 .ruler-lane{position:relative;height:20px}
 .tick{position:absolute;top:0;font-size:11px;color:var(--ink-3);transform:translateX(-50%);font-variant-numeric:tabular-nums}
 .tick::after{content:"";position:absolute;left:50%;top:15px;height:5px;border-left:1px solid var(--rule)}
@@ -137,7 +142,7 @@ textarea:focus{outline:none;border-color:var(--ink)}
       <label><span class="label">Situation</span><select id="selSit"></select></label>
       <label><span class="label">Conduct</span><select id="selDev"></select></label>
       <label><span class="label">Form</span><select id="selForm"></select></label>
-      <label class="btn file" title="Choose a design folder or one device folder">Open folder<input type="file" id="folder" webkitdirectory directory multiple></label>
+      <label class="btn file" title="Play a different folder from your disk: a project folder, a design folder or one device folder. Not needed while bin/preview is running.">Open folder…<input type="file" id="folder" webkitdirectory directory multiple></label>
     </div>
   </header>
 
@@ -170,22 +175,12 @@ textarea:focus{outline:none;border-color:var(--ink)}
 
     <section class="timeline" aria-label="Timeline">
       <div class="tl-grid">
-        <div>
-          <div class="tl-name ruler"></div>
-          <div class="tl-name">People</div>
-          <div class="tl-name">Device</div>
-          <div class="tl-name">Screen</div>
-          <div class="tl-name">Light</div>
-          <div class="tl-name">Sound</div>
-        </div>
+        <div id="tlNames"></div>
         <div class="tl-track" id="track">
           <div class="ruler-lane" id="ruler"></div>
-          <div class="lane" id="lnPeople"></div>
-          <div class="lane" id="lnDevice"></div>
-          <div class="lane" id="lnScreen"></div>
-          <div class="lane" id="lnLight"></div>
-          <div class="lane" id="lnSound"></div>
+          <div id="lanes"></div>
           <div class="head" id="head"></div>
+          <p class="tl-empty" id="tlEmpty" hidden></p>
         </div>
       </div>
     </section>
@@ -289,7 +284,7 @@ function touch(target){
 }
 const cap=$('#caption');
 function caption(l){
-  if(!l){ cap.innerHTML='<span class="txt act">Press Play, or drag along the timeline.</span>'; return; }
+  if(!l){ cap.innerHTML=`<span class="txt act">${sched.ev.length?'Press Play, or drag along the timeline.':'Nothing to play yet: this conduct has no performance in this situation.'}</span>`; return; }
   if(l==='end'){ cap.innerHTML='<span class="txt act">End of the performance.</span>'; return; }
   if(l.kind==='speech') cap.innerHTML=`<span class="who${l.device?' dev':''}">${esc(l.who)}${l.manner?` (${esc(l.manner)})`:''}</span><span class="txt">${esc(l.text)}</span>`;
   else if(l.kind==='action') cap.innerHTML=`<span class="txt act">${esc(l.text)}</span>`;
@@ -306,19 +301,31 @@ function drawTimeline(){
   const step = total>120?20: total>60?10:5;
   let r=''; for(let t=0;t<=total;t+=step) r+=`<span class="tick" style="left:${pct(t)}">${fmt(t)}</span>`;
   $('#ruler').innerHTML=r;
-  let ppl='',dev='',scr='',lig='',snd='';
+  // one lane per person: the situation's people in their order (same lanes for every device), then anyone else who speaks.
+  // Stage directions, pauses and taps share one lane.
+  const st=data.situations[cur.sit];
+  const who=(st&&st.meta.people||'').split(',').map(x=>x.trim().toUpperCase()).filter(Boolean);
+  ev.forEach(e=>{ if(e.l.kind==='speech' && !e.l.device && !who.includes(e.l.who)) who.push(e.l.who); });
+  const per=Object.fromEntries(who.map(n=>[n,'']));
+  let act='',dev='',scr='',lig='',snd='';
   ev.forEach(e=>{
     const l=e.l, w=`left:${pct(e.start)};width:calc(${pct(e.end-e.start)} - 1px)`;
-    if(l.kind==='speech'){ const lbl=esc(l.device?l.text:`${l.who}: ${l.text}`); if(l.device) dev+=`<div class="seg device" style="${w}" title="${lbl}">${lbl}</div>`; else ppl+=`<div class="seg person" style="${w}" title="${lbl}">${lbl}</div>`; }
-    else if(l.kind==='action'||l.kind==='pause') ppl+=`<div class="seg action" style="${w}" title="${esc(l.text)}"></div>`;
-    else if(l.kind==='touch') ppl+=`<div class="seg touch" style="${w}" title="taps ${esc(l.target)}">tap</div>`;
+    if(l.kind==='speech'){ const lbl=esc(l.text), tip=esc(`${l.who}${l.manner?` (${l.manner})`:''}: ${l.text}`); if(l.device) dev+=`<div class="seg device" style="${w}" title="${tip}">${lbl}</div>`; else per[l.who]+=`<div class="seg person" style="${w}" title="${tip}">${lbl}</div>`; }
+    else if(l.kind==='action'||l.kind==='pause') act+=`<div class="seg action" style="${w}" title="${esc(l.text)}"></div>`;
+    else if(l.kind==='touch') act+=`<div class="seg touch" style="${w}" title="taps ${esc(l.target)}">tap</div>`;
     else if(l.kind==='sound') snd+=`<div class="mark" style="left:${pct(e.start)}" title="${l.sound}"></div>`;
   });
   // screen and light spans run from one cue to the next
   const spans=(kind)=>{ const out=[]; let prev=null; ev.forEach(e=>{ if(e.l.kind===kind){ if(prev) prev.end=e.start; prev={start:e.start,end:total,l:e.l}; out.push(prev);} }); return out; };
   spans('screen').forEach(s=>{ const w=`left:${pct(s.start)};width:calc(${pct(s.end-s.start)} - 1px)`; const blank=s.l.comp==='blank'; const txt=blank?'blank':`${s.l.comp}: ${s.l.parts.filter(Boolean).join(' | ')}`; if(s.end>s.start) scr+=`<div class="seg screen${blank?' blank':''}" style="${w}" title="${esc(txt)}">${esc(txt)}</div>`; });
   spans('light').forEach(s=>{ if(s.l.off||s.end<=s.start) return; const w=`left:${pct(s.start)};width:calc(${pct(s.end-s.start)} - 1px)`; const c=lightColour(s.l.colour); const bg=s.l.pulse?`repeating-linear-gradient(90deg,${c} 0 10px,transparent 10px 16px)`:c; lig+=`<div class="seg light" style="${w};background:${bg};opacity:${s.l.dim?.45:1}" title="${[s.l.colour,s.l.pulse&&'pulse',s.l.dim&&'dim'].filter(Boolean).join(' ')}"></div>`; });
-  $('#lnPeople').innerHTML=ppl; $('#lnDevice').innerHTML=dev; $('#lnScreen').innerHTML=scr; $('#lnLight').innerHTML=lig; $('#lnSound').innerHTML=snd;
+  const dv=data.devices[cur.dev];
+  const lanes=[{name:'Action',html:act}, ...who.map(n=>({name:n,html:per[n],cls:'who'})), {name:(dv&&dv.meta.name)||'Device',html:dev,cls:'dev'},
+    {name:'Screen',html:scr,split:true}, {name:'Light',html:lig}, {name:'Sound',html:snd}];
+  $('#tlNames').innerHTML='<div class="tl-name ruler"></div>'+lanes.map(l=>`<div class="tl-name ${l.cls||''}" title="${esc(l.name)}">${esc(l.name)}</div>`).join('');
+  $('#lanes').innerHTML=lanes.map(l=>`<div class="lane${l.split?' split':''}">${l.html}</div>`).join('');
+  const empty=!ev.length; $('#tlEmpty').hidden=!empty;
+  if(empty) $('#tlEmpty').textContent=`No performance of ${(dv&&dv.meta.name)||'this device'} in this situation yet. Ask your agent to write one.`;
   setHead(0);
 }
 let headT=0;
@@ -366,7 +373,7 @@ async function run(single){
 }
 function stop(){ token++; playing=false; cancelAnimationFrame(raf); try{ if(hasSpeech) speechSynthesis.cancel(); }catch(e){} setPlayBtn(); }
 function stateAt(i){ renderScreen(null); renderLight(null); for(let k=0;k<i;k++){ const l=sched.ev[k].l; if(l.kind==='screen') renderScreen(l); else if(l.kind==='light') renderLight(l); } }
-function seekIndex(i,t){ stop(); idx=Math.max(0,Math.min(i,sched.ev.length)); stateAt(idx); setHead(t!=null?t:(sched.ev[idx]?sched.ev[idx].start:sched.total)); caption(null); }
+function seekIndex(i,t){ stop(); idx=Math.max(0,Math.min(i,sched.ev.length)); stateAt(idx); setHead(t!=null?t:(sched.ev[idx]?sched.ev[idx].start:(sched.ev.length?sched.total:0))); caption(null); }
 function seekTime(t){
   const ev=sched.ev; let i=ev.findIndex(e=>(e.l.kind==='speech'||e.l.kind==='action'||e.l.kind==='pause'||e.l.kind==='touch') && e.end>t);
   if(i<0){ seekIndex(ev.length,sched.total); return; }
@@ -408,6 +415,7 @@ function loadData(d, keep){
 }
 function refresh(){
   const dv=data.devices[cur.dev], fm=data.devices[cur.form], st=data.situations[cur.sit];
+  [...$('#selSit').options].forEach(o=>{ const s=data.situations[o.value]; if(!s) return; o.textContent=(s.meta.title||o.value)+(dv&&dv.performances[o.value]==null?' (no performance yet)':''); });
   if(fm && fm.form){ $('#formImg').src=fm.form; $('#formImg').hidden=false; } else { $('#formImg').hidden=true; }
   $('#formName').textContent = fm ? (cur.form===cur.dev ? (fm.meta.name||cur.form) : `${fm.meta.name||cur.form} (swapped)`) : '';
   $('#cdName').textContent = dv ? (dv.meta.name||cur.dev) : '—';
