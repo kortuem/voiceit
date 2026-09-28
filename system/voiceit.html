@@ -55,11 +55,14 @@ select{min-height:44px;border:1px solid var(--hairline);background:var(--paper);
 .panel{border-top:1px solid var(--ink);padding-top:var(--s3);display:flex;flex-direction:column;gap:var(--s3);min-width:0}
 .panel-head{display:flex;justify-content:space-between;gap:var(--s2);align-items:baseline}
 .panel-head .sub{font-size:13px;color:var(--faint);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.form-img{flex:1;display:grid;place-items:center;background:var(--tint);min-height:200px;overflow:hidden}
-.form-img img{display:block;width:100%;max-width:100%;height:auto;max-height:300px;object-fit:contain}
+/* Form, screen and light share one frame: the same height, a thin ink border, a paper surface */
+:root{--box-h:clamp(180px,16vw,300px)}
+.form-img,.screen,.lamp-wrap{flex:none;height:var(--box-h);border:1.5px solid var(--ink);background:var(--paper)}
+.form-img{display:grid;place-items:center;overflow:hidden;padding:var(--s2)}
+.form-img img{display:block;width:100%;height:100%;object-fit:contain}
 
 /* The device's own screen: paper and ink only */
-.screen{position:relative;flex:1;aspect-ratio:16/10;max-width:100%;border:1.5px solid var(--ink);background:var(--paper);overflow:hidden;container-type:inline-size}
+.screen{position:relative;max-width:100%;overflow:hidden;container-type:inline-size}
 .sc{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:7cqi 8cqi;animation:fade .3s ease both}
 @keyframes fade{from{opacity:0}to{opacity:1}}
 .sc-word{font-weight:600;font-size:10cqi;line-height:1.05;letter-spacing:-.035em;text-align:center;margin:0;text-wrap:balance}
@@ -78,15 +81,17 @@ select{min-height:44px;border:1px solid var(--hairline);background:var(--paper);
 @keyframes tap{from{transform:scale(.3);opacity:1}to{transform:scale(1.5);opacity:0}}
 
 /* The light: shown on dark, as it would be seen in a room */
-.lamp-wrap{flex:1;display:grid;place-items:center;min-height:140px;background:#141414}
-.lamp{width:76px;height:76px;border-radius:50%;border:1.5px solid #3A3A3A;background:transparent;transition:background .3s,box-shadow .3s,opacity .3s}
-.lamp.on{border-color:transparent;background:var(--lc);box-shadow:0 0 28px 6px var(--lc)}
-.lamp.dim{opacity:.42}
-.lamp.pulse{animation:pulse 2.4s ease-in-out infinite}
-.lamp.dim.pulse{animation-name:pulsedim}
+.lamp-wrap{display:grid;place-items:center;container-type:size}
+/* the light, drawn like the rest: an ink circle on paper that fills with its colour and glows */
+.lamp{position:relative;width:min(64cqw,40cqh);aspect-ratio:1;border-radius:50%;border:1.5px solid var(--ink)}
+/* the outline stays; only the colour and its glow dim and pulse */
+.lamp::before{content:"";position:absolute;inset:0;border-radius:50%;transition:background .3s,box-shadow .3s,opacity .3s}
+.lamp.on::before{background:var(--lc);box-shadow:0 0 18px 6px var(--glow)}
+.lamp.dim::before{opacity:.5}
+.lamp.pulse::before{animation:pulse 2.4s ease-in-out infinite}
+.lamp.dim.pulse::before{animation-name:pulsedim}
 @keyframes pulse{0%,100%{opacity:.25}50%{opacity:1}}
-@keyframes pulsedim{0%,100%{opacity:.12}50%{opacity:.45}}
-.lamp-label{font-size:13px;color:var(--gray);text-align:center;margin:0}
+@keyframes pulsedim{0%,100%{opacity:.2}50%{opacity:.6}}
 
 /* Caption: who speaks now */
 .caption{grid-column:1 / -1;border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline);padding:var(--s3) 0;min-height:84px;font-size:17px;line-height:1.45}
@@ -136,7 +141,7 @@ textarea:focus{outline:none;border-color:var(--ink)}
 .note{font-size:13px;color:var(--faint);margin:var(--s2) 0 0}
 .sr{position:absolute;left:-9999px}
 
-@media (prefers-reduced-motion: reduce){.lamp.pulse,.sc,.tap{animation:none!important}}
+@media (prefers-reduced-motion: reduce){.lamp.pulse::before,.sc,.tap{animation:none!important}}
 
 /* VoiceIt: header, tabs and the four views */
 .top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:var(--s4) var(--s5);padding-block:var(--s5) var(--s3);border-bottom:1px solid var(--ink);margin-bottom:var(--s4)}
@@ -158,19 +163,16 @@ textarea:focus{outline:none;border-color:var(--ink)}
 @media (max-width:760px){.col-list{position:static;max-height:320px}}
 .col-stage .stage{grid-template-columns:minmax(0,1fr) minmax(0,1.35fr) minmax(0,.55fr)}
 .col-stage .tl-grid{grid-template-columns:132px minmax(0,1fr)}
+.col-stage .transport .btn{padding:0 var(--s3)}
 
 /* Watch: form, screen and light fill the window as one composition; the work around them steps back */
 .wprog{display:none}
 body.watching .top,body.watching .col-list,body.watching .col-script,body.watching .timeline,body.watching .fstrip,body.watching #step,body.watching .spacer{display:none!important}
 body.watching{overflow:hidden}
 body.watching .col-stage{position:fixed;inset:0;z-index:10;background:var(--paper);padding:var(--s5) var(--s6) var(--s4);display:flex;flex-direction:column;gap:var(--s3)}
-body.watching .col-stage .stage{flex:1;min-height:0;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr) minmax(0,.42fr);grid-template-rows:minmax(0,1fr) auto}
+body.watching .col-stage .stage{flex:1;min-height:0;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr) minmax(0,.5fr);align-content:start}
 body.watching .panel{min-height:0}
-body.watching .form-img{min-height:0}
-body.watching .form-img img{max-height:100%;height:100%}
-body.watching .screen{flex:none;width:min(100%,calc((100vh - 330px) * 1.6));margin-inline:auto}
-body.watching .lamp-wrap{min-height:0}
-body.watching .lamp{width:112px;height:112px}
+body.watching{--box-h:max(220px,calc(100vh - 330px))}
 body.watching .caption{font-size:24px;line-height:1.4;min-height:112px;padding:var(--s4) 0}
 body.watching .caption .who{font-size:15px}
 body.watching .transport{margin-top:0;flex-wrap:nowrap}
@@ -285,9 +287,8 @@ body.watching .wprog:focus-visible{outline:2px solid var(--ink);outline-offset:2
           <div class="screen" id="screen"></div>
         </div>
         <div class="panel light">
-          <div class="panel-head"><p class="label">Light</p></div>
+          <div class="panel-head"><p class="label">Light</p><span class="sub" id="lampLabel">off</span></div>
           <div class="lamp-wrap"><div class="lamp" id="lamp"></div></div>
-          <p class="lamp-label" id="lampLabel">off</p>
         </div>
         <div class="caption" id="caption" aria-live="polite"></div>
       </div>
@@ -524,10 +525,11 @@ function renderScreen(s){
 }
 function renderLight(l){
   lamp.className='lamp';
-  if(!l || l.off){ $('#lampLabel').textContent='off'; return; }
+  if(!l || l.off){ $('#lampLabel').textContent=$('#lampLabel').title='off'; return; }
   lamp.style.setProperty('--lc', lightColour(l.colour));
+  lamp.style.setProperty('--glow', l.colour==='white' ? 'rgba(0,0,0,.14)' : lightColour(l.colour));
   lamp.classList.add('on'); if(l.dim) lamp.classList.add('dim'); if(l.pulse) lamp.classList.add('pulse');
-  $('#lampLabel').textContent=[l.colour, l.pulse&&'pulse', l.dim&&'dim'].filter(Boolean).join(' · ');
+  $('#lampLabel').textContent=$('#lampLabel').title=[l.colour, l.pulse&&'pulse', l.dim&&'dim'].filter(Boolean).join(' · ');
 }
 function touch(target){
   let el=null;
@@ -634,6 +636,7 @@ async function exec(e){
   await sleep((e.end-e.start)*1000);
 }
 async function run(single){
+  try{ if(hasSpeech) speechSynthesis.cancel(); }catch(e){}   // speech is shared by all tabs: start clean
   const my=++token; playing=!single; setPlayBtn(); ac();
   const ev=sched.ev;
   while(idx<ev.length && my===token){
@@ -928,6 +931,8 @@ if(served){
 } else {
   say('VoiceIt was opened without the preview. See the Setup tab: start it with node system/bin/preview, or open the project folder.');
 }
+// a tab you leave pauses, so two VoiceIt tabs never talk over each other
+document.addEventListener('visibilitychange',()=>{ if(document.hidden && playing) stop(); });
 function bindFolderInputs(){ document.querySelectorAll('input[data-folder]:not([data-bound])').forEach(inp=>{ inp.dataset.bound='1'; inp.addEventListener('change',onFolder); }); }
 async function onFolder(e){
   const files=[...e.target.files].filter(f=>!(f.webkitRelativePath||f.name).split('/').some(s=>s.startsWith('.')||s==='node_modules'));
