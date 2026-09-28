@@ -28,8 +28,16 @@ button,select,input{font:inherit;color:inherit}
 
 header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px 28px;padding-block:32px 20px}
 h1{font-weight:700;font-size:clamp(28px,4vw,38px);letter-spacing:-.02em;line-height:1.05;margin:4px 0 0}
-.pick{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:flex-end}
+.pick{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:flex-start}
+.pick-item{display:flex;flex-direction:column;gap:4px;min-width:0}
 .pick label{display:flex;flex-direction:column;gap:4px}
+.pick .file{margin-top:21px}
+.sum{all:unset;box-sizing:border-box;max-width:220px;font-size:12.5px;line-height:1.35;color:var(--ink-2);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+button.sum{cursor:pointer;text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px}
+button.sum:hover{color:var(--ink);text-decoration-color:var(--ink-3)}
+button.sum:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.card.flash{animation:flash 1.2s ease}
+@keyframes flash{0%,40%{border-color:var(--ink);box-shadow:0 0 0 2px var(--ink)}100%{border-color:var(--rule);box-shadow:none}}
 select{border:1px solid var(--rule);background:var(--sheet);border-radius:6px;padding:7px 10px;min-width:150px;max-width:100%}
 .btn{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--rule);background:var(--sheet);border-radius:6px;padding:7px 13px;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap}
 .btn:hover{border-color:var(--ink-3)}
@@ -139,9 +147,9 @@ textarea:focus{outline:none;border-color:var(--ink)}
       <h1>Conduct Player</h1>
     </div>
     <div class="pick">
-      <label><span class="label">Situation</span><select id="selSit"></select></label>
-      <label><span class="label">Conduct</span><select id="selDev"></select></label>
-      <label><span class="label">Form</span><select id="selForm"></select></label>
+      <div class="pick-item"><label><span class="label">Situation</span><select id="selSit"></select></label><button type="button" class="sum" id="sumSit" data-card="cardSit" title="Show the beats"></button></div>
+      <div class="pick-item"><label><span class="label">Conduct</span><select id="selDev"></select></label><button type="button" class="sum" id="sumDev" data-card="cardDev" title="Show the rules"></button></div>
+      <div class="pick-item"><label><span class="label">Form</span><select id="selForm"></select></label><span class="sum" id="sumForm"></span></div>
       <label class="btn file" title="Play a different folder from your disk: a project folder, a design folder or one device folder. Not needed while bin/preview is running.">Open folder…<input type="file" id="folder" webkitdirectory directory multiple></label>
     </div>
   </header>
@@ -187,13 +195,13 @@ textarea:focus{outline:none;border-color:var(--ink)}
 
     <section class="lower">
       <div>
-        <div class="card">
+        <div class="card" id="cardDev">
           <p class="label">Conduct</p>
           <h2 id="cdName"></h2>
           <p class="meta" id="cdMeta"></p>
           <ul id="cdRules"></ul>
         </div>
-        <div class="card">
+        <div class="card" id="cardSit">
           <p class="label">Situation</p>
           <h2 id="stName"></h2>
           <p class="meta" id="stMeta"></p>
@@ -424,6 +432,10 @@ function refresh(){
   $('#stName').textContent = st ? (st.meta.title||cur.sit) : '—';
   $('#stMeta').textContent = st ? `${cur.sit}${st.meta.people?` · ${st.meta.people}`:''}${st.missing?' · no situation file':''}` : '';
   $('#stBeats').innerHTML = st ? st.beats.map(b=>`<li>${esc(b)}</li>`).join('') : '';
+  const n=(k,w)=>`${k} ${w}${k===1?'':'s'}`;
+  $('#sumSit').textContent = st ? (st.missing ? 'no situation file' : `${n(st.beats.length,'beat')} · ${(st.meta.people||'').split(',').map(x=>x.trim()).filter(Boolean).join(', ')}`) : '';
+  $('#sumDev').textContent = dv ? `voice ${dv.meta.voice||Conduct.DEFAULT_VOICE} · ${n(dv.rules.length,'rule')}` : '';
+  $('#sumForm').textContent = fm ? (cur.form===cur.dev ? 'its own form' : `swapped: form of ${fm.meta.name||cur.form}`) : '';
   const txt = dv && dv.performances[cur.sit];
   src.value = txt || '';
   $('#edFile').textContent = dv ? ((dv.performancePaths&&dv.performancePaths[cur.sit]) || `devices/${cur.dev}/performances/${cur.sit||'?'}.md`) : '';
@@ -452,6 +464,11 @@ $('#selDev').addEventListener('change',e=>{
   refresh();
 });
 $('#selForm').addEventListener('change',e=>{ cur.form=e.target.value; refresh(); });
+document.querySelectorAll('button.sum').forEach(b=>b.addEventListener('click',()=>{
+  const c=document.getElementById(b.dataset.card); if(!c) return;
+  c.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth', block:'start'});
+  c.classList.remove('flash'); void c.offsetWidth; c.classList.add('flash');
+}));
 
 /* ---------- Loading: from bin/preview, or from a folder ---------- */
 const served = /^https?:$/.test(location.protocol);
