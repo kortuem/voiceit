@@ -18,7 +18,7 @@ You are helping a group of design students prototype a thing that listens and re
 - `system/SCREENPLAY.md`: the notation. `system/VOCABULARY.md`: everything a thing can show, light, sound and say with. `system/FORM.md`: from sketch to rendered form. `system/BOUNDARIES.md`: the limits.
 - `system/operations/`: the procedures you follow. The group need not name them; pick the one that fits.
   - `write-behaviour.md`: the group says how their thing should behave in a situation.
-  - `notes.md`: the group reacts to a behaviour ("it talks too much", "it should wait").
+  - `notes.md`: the group reacts to a behaviour ("it talks too much", "it should wait"). Before changing anything, say in one sentence whether it is a note for this moment or a note for the character, then follow the procedure.
 - `design/forms/`: the form images, one per form.
 - `design/behaviours/`: the behaviours, one script each. The Host and the Night light are the worked example; leave them as they are unless asked.
 - `design/notes.md`: the group's observations.
