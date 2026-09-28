@@ -155,6 +155,7 @@ textarea:focus{outline:none;border-color:var(--ink)}
 /* The working screen: list | stage | script */
 .work{display:grid;grid-template-columns:248px minmax(0,1fr) 300px;gap:var(--s5);align-items:start}
 @media (max-width:1180px){.work{grid-template-columns:232px minmax(0,1fr)}.col-script{grid-column:1 / -1}}
+@media (min-width:1181px){body:not(.watching) .work .caption:not(.msg){display:none}}
 @media (max-width:760px){.work{grid-template-columns:minmax(0,1fr)}}
 .col-head{display:flex;justify-content:space-between;align-items:baseline;gap:var(--s2);border-top:1px solid var(--ink);padding-top:var(--s3);margin-bottom:var(--s2)}
 .col-head .sub{font-size:13px;color:var(--faint);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
@@ -542,10 +543,13 @@ const cap=$('#caption');
 const thingName = () => (current() && current().character) || 'The thing';
 function caption(l){
   markLine(l && typeof l==='object' ? l.ln : null);
+  cap.classList.remove('msg');
   if(!l){
-    const msg = !Object.keys(data.behaviours).length ? 'No behaviours yet. Tell your agent how your thing should behave in a situation; it writes the script into design/behaviours/.'
-      : sched.ev.length ? 'Press Play, or drag along the timeline.' : 'This script has no lines yet.';
-    cap.innerHTML=`<span class="txt act">${esc(msg)}</span>`; return;
+    // idle: nothing to say, unless there is nothing to play
+    if(!Object.keys(data.behaviours).length) say('No behaviours yet. Tell your agent how your thing should behave in a situation; it writes the script into design/behaviours/.');
+    else if(!sched.ev.length) say('This script has no lines yet.');
+    else cap.innerHTML='';
+    return;
   }
   if(l==='end'){ cap.innerHTML='<span class="txt act">End.</span>'; return; }
   if(l.kind==='speech'){
@@ -709,7 +713,7 @@ let data={forms:{}, behaviours:{}};
 const cur={tab:'play', b:null, f:null};
 const current=()=>data.behaviours[cur.b];
 const check=$('#check');
-function say(msg){ cap.innerHTML=`<span class="txt act">${esc(msg)}</span>`; }
+function say(msg){ cap.innerHTML=`<span class="txt act">${esc(msg)}</span>`; cap.classList.add('msg'); }   // a message shows even where the caption is hidden
 
 function readHash(){
   const h=location.hash.replace(/^#/,''); const [tab,q]=h.split('?');
