@@ -20,7 +20,8 @@ You are helping a group of design students prototype a thing that listens and re
   - `write-behaviour.md`: the group says how their thing should behave in a situation.
   - `notes.md`: the group reacts to a behaviour ("it talks too much", "it should wait"). Before changing anything, say in one sentence whether it is a note for this moment or a note for the character, then follow the procedure.
 - `design/forms/`: the form images, one per form.
-- `design/behaviours/`: the behaviours, one script each. The Host and the Night light are the worked example; leave them as they are unless asked.
+- `design/behaviours/`: the group's behaviours, one script each.
+- `examples/`: the worked example (the Host and the Night light, two forms). Never change these files. To start from an example, copy it into `design/behaviours/` (or `design/forms/`) and change the copy.
 - `design/notes.md`: the group's observations.
 
 ## Git

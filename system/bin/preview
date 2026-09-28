@@ -34,7 +34,7 @@ function readTree(dir, out = []){
   }
   return out;
 }
-const design = () => VoiceIt.buildDesign(readTree(path.join(root, 'design')));
+const design = () => VoiceIt.buildDesign([...readTree(path.join(root, 'design')), ...readTree(path.join(root, 'examples'))]);
 
 function send(res, code, type, body){
   res.writeHead(code, {'Content-Type':type, 'Cache-Control':'no-store'});

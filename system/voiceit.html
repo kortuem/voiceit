@@ -173,6 +173,8 @@ textarea:focus{outline:none;border-color:var(--ink)}
 .rhythm{display:block;position:relative;height:10px;margin-top:6px;background:var(--hairline-2)}
 .rhythm i{position:absolute;top:0;bottom:0;background:var(--gray);opacity:.55}
 .rhythm i.d{background:var(--accent);opacity:1}
+.bgroup{font-size:13px;font-weight:600;color:var(--gray);margin:var(--s3) 0 var(--s1)}
+.bgroup:first-child{margin-top:0}
 .blist-empty{font-size:13px;color:var(--gray);padding:var(--s2) 0}
 .blist-empty .btn{margin-top:var(--s2)}
 
@@ -305,7 +307,7 @@ textarea:focus{outline:none;border-color:var(--ink)}
       <h2>What this is</h2>
       <p>VoiceIt is a tool for prototyping things that listen and respond: a lamp, a bedside unit, a car, any object that could hear people and speak. A thing's behaviour is hard to judge on paper. It has to be seen and heard, in time, among people. VoiceIt stages it before the thing exists.</p>
       <p>You work with two kinds of material. A <b>form</b> is what the thing looks like: one image. A <b>behaviour</b> is how it acts in one situation: a script with speech, screen, light and sound. Any behaviour can be played with any form.</p>
-      <p>The <b>character</b> is not written down anywhere. It is what comes across when a form and a behaviour are played together, and it is what you judge.</p>
+      <p>The <b>character</b> is what comes across when a form and a behaviour are played together, and it is what you judge. A script names the character it explores (<code>character: Night light</code>), but it does not describe it: the description is in what the thing does.</p>
       <h3>How to work</h3>
       <ol>
         <li><b>Behaviour.</b> Tell your agent, in your own words, who the thing is and how it should behave in a situation. It writes the script into <code>design/behaviours/</code>. Play it, and give notes: less, later, softer, not in front of her.</li>
@@ -319,7 +321,7 @@ textarea:focus{outline:none;border-color:var(--ink)}
         <li><b>The details that make a character.</b> When does it speak first, and when does it wait? How much does it say? Whom does it address when several people are there? What does it keep to itself, or show instead of saying? How does it handle doubt and mistakes? Is it a servant, a companion, a guardian, a colleague?</li>
       </ul>
       <h3>What it cannot do</h3>
-      <p>Everything is scripted. Nothing listens; listening is shown, not done. People's reactions are written, so they will not surprise you the way real people do. Voices come from your browser and only approximate the voice named in the script. VoiceIt is for exploring many versions quickly, before building one that works.</p>
+      <p>Everything is scripted. Nothing listens; listening is shown, not done. People's reactions are written, so they will not surprise you the way real people do. Voices come from your browser and only approximate the voice named in the script. Durations (≈) are estimates; real browser speech may take a little longer. VoiceIt is for exploring many versions quickly, before building one that works.</p>
     </section>
     <section>
       <h2>Vocabulary</h2>
@@ -573,7 +575,7 @@ function drawTimeline(){
   setHead(0);
 }
 let headT=0;
-function setHead(t){ headT=Math.max(0,Math.min(t,sched.total)); head.style.left=`calc(${pct(headT)} - 1px)`; $('#clock').textContent=`${fmt(headT)} / ${sched.ev.length?fmt(sched.total):'0:00'}`; }
+function setHead(t){ headT=Math.max(0,Math.min(t,sched.total)); head.style.left=`calc(${pct(headT)} - 1px)`; $('#clock').textContent=`${fmt(headT)} / ${sched.ev.length?'≈ '+fmt(sched.total):'0:00'}`; }
 let raf=null;
 function animateHead(from,to,dur){ cancelAnimationFrame(raf); const t0=performance.now(); const tick=now=>{ const k=Math.min(1,(now-t0)/(dur*1000)); setHead(from+(to-from)*k); if(k<1) raf=requestAnimationFrame(tick); }; raf=requestAnimationFrame(tick); }
 
@@ -630,6 +632,15 @@ $('#restart').addEventListener('click',()=>{ if(vocab) seekIndex(0); });
 $('#audio').addEventListener('click',e=>{ audioOn=!audioOn; e.currentTarget.setAttribute('aria-pressed',audioOn); e.currentTarget.textContent=audioOn?'Sound on':'Sound off'; if(!audioOn){ try{ speechSynthesis.cancel(); }catch(err){} } });
 let dragging=false;
 function tFromEvent(ev){ const r=track.getBoundingClientRect(); return Math.max(0,Math.min(1,(ev.clientX-r.left)/r.width))*sched.total; }
+track.tabIndex=0; track.setAttribute('role','slider'); track.setAttribute('aria-label','Timeline: left and right arrows step through the lines');
+track.addEventListener('keydown',ev=>{
+  if(!vocab||!sched.ev.length) return;
+  const lines=sched.ev.map((e,i)=>i).filter(i=>!['screen','light','sound'].includes(sched.ev[i].l.kind));
+  let now=-1; lines.forEach((i,k)=>{ if(sched.ev[i].start<=headT+0.01) now=k; });   // the line the playhead is on
+  let k={ArrowRight:now+1, ArrowLeft:now-1, Home:0, End:lines.length-1}[ev.key];
+  if(k==null) return; ev.preventDefault(); k=Math.max(0,Math.min(lines.length-1,k));
+  const i=lines[k]; seekIndex(i, sched.ev[i].start); caption(sched.ev[i].l);
+});
 track.addEventListener('pointerdown',ev=>{ if(!vocab||!sched.ev.length) return; dragging=true; try{ track.setPointerCapture(ev.pointerId); }catch(e){} seekTime(tFromEvent(ev)); });
 track.addEventListener('pointermove',ev=>{ if(dragging) seekTime(tFromEvent(ev)); });
 track.addEventListener('pointerup',()=>{ dragging=false; });
@@ -662,12 +673,18 @@ function setTab(t){
   writeHash();
 }
 document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',()=>setTab(b.dataset.tab)));
+$('.tabs').addEventListener('keydown',e=>{
+  const tabs=[...document.querySelectorAll('.tabs button')], i=tabs.indexOf(document.activeElement); if(i<0) return;
+  const j={ArrowRight:i+1, ArrowLeft:i-1, Home:0, End:tabs.length-1}[e.key]; if(j==null) return;
+  e.preventDefault(); const t=tabs[(j+tabs.length)%tabs.length]; t.focus(); setTab(t.dataset.tab);
+});
 // a link or a typed address that changes only the part after # (writeHash uses replaceState, which does not fire this)
 window.addEventListener('hashchange',()=>{ readHash(); if(data.behaviours[cur.b]||data.forms[cur.f]) select(); setTab(cur.tab); });
 
-// newest first: the behaviour the agent just wrote comes to the top
+// yours first, newest first (the behaviour the agent just wrote comes to the top); then the examples
+const byName=(A,B)=>(A.character+A.situation).localeCompare(B.character+B.situation);
 const order=()=>Object.keys(data.behaviours).sort((a,b)=>{ const A=data.behaviours[a], B=data.behaviours[b];
-  return (B.mtime||0)-(A.mtime||0) || (A.character+A.situation).localeCompare(B.character+B.situation); });
+  return (A.example?1:0)-(B.example?1:0) || (A.example ? byName(A,B) : ((B.mtime||0)-(A.mtime||0) || byName(A,B))); });
 function ago(ms){
   if(!ms) return ''; const s=(Date.now()-ms)/1000;
   if(s<60) return 'just now'; if(s<3600) return `${Math.round(s/60)} min ago`; if(s<86400) return `${Math.round(s/3600)} h ago`;
@@ -685,20 +702,20 @@ function summarise(){
 }
 function renderList(){
   const keys=order(); const max=Math.max(1,...keys.map(k=>summary[k].s.total));
-  if(!keys.length){
-    $('#blist').innerHTML=`<div class="blist-empty">No behaviours yet. Tell your agent how your thing should behave in a situation; it writes the script into <code>design/behaviours/</code>.${served?'':'<br><label class="btn file">Open folder…<input type="file" webkitdirectory directory multiple data-folder></label>'}</div>`;
-    bindFolderInputs(); return;
-  }
-  $('#blist').innerHTML=keys.map(k=>{
+  const own=keys.filter(k=>!data.behaviours[k].example), ex=keys.filter(k=>data.behaviours[k].example);
+  const empty=`<div class="blist-empty">None of your own yet. Tell your agent how your thing should behave in a situation; it writes the script into <code>design/behaviours/</code>. Or ask it to copy an example there to start from.${served?'':'<br><label class="btn file">Open folder…<input type="file" webkitdirectory directory multiple data-folder></label>'}</div>`;
+  $('#blist').innerHTML=`<p class="bgroup">Yours</p>`+(own.length?own.map(row).join(''):empty)+(ex.length?`<p class="bgroup">Examples</p>`+ex.map(row).join(''):'');
+  bindFolderInputs();
+  function row(k){
     const b=data.behaviours[k], {r,s}=summary[k];
     const segs=s.ev.filter(e=>e.l.kind==='speech').map(e=>`<i class="${e.l.device?'d':''}" style="left:${e.start/max*100}%;width:${Math.max(.4,(e.end-e.start)/max*100)}%"></i>`).join('');
     const probs=r.errors.length?`<span class="bad">${plural(r.errors.length,'error')}</span>`:r.warnings.length?`<span class="bad">${plural(r.warnings.length,'warning')}</span>`:'';
     return `<button type="button" class="brow" role="option" data-k="${esc(k)}" aria-selected="${k===cur.b}" title="${esc(b.path)}">
-      <span class="bc"><span>${esc(b.character)}</span><span class="clock">${s.ev.length?fmt(s.total):'–'}</span></span>
+      <span class="bc"><span>${esc(b.character)}</span><span class="clock" title="estimated">${s.ev.length?'≈ '+fmt(s.total):'–'}</span></span>
       <span class="bs">${esc(b.situation||' ')}</span>
       <span class="rhythm" style="width:${s.total/max*100}%">${segs}</span>
-      <span class="bt"><span>${esc(ago(b.mtime))}</span>${probs}</span></button>`;
-  }).join('');
+      <span class="bt"><span>${esc(b.example?'example':ago(b.mtime))}</span>${probs}</span></button>`;
+  }
 }
 function renderForms(){
   const fs=Object.keys(data.forms);

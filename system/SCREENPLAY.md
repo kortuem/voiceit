@@ -20,7 +20,7 @@ LIGHT: white dim
 …
 ```
 
-- `character` (required): the name the thing appears under.
+- `character` (required): the name of the character this script explores. It names the character; it does not describe it. The character itself is what comes across when the script is played.
 - `voice` (required): one name from the voice catalogue in `VOCABULARY.md` (Ash, Theo, Sam, Noor, Mira, Wren).
 - `situation` (optional): a short title, shown next to the character in VoiceIt's list.
 - `people` (optional but recommended): everyone in the situation, each with their role in brackets. The name is the one used in the script, so `Anna` speaks as `ANNA:`. VoiceIt shows the role next to the name, and gives everyone a lane on the timeline, also those who stay silent. The check warns when someone speaks who is not listed.
@@ -37,7 +37,7 @@ Blank lines and lines starting with `#` are ignored.
 | `DEVICE (quietly, slowly): …` | A parenthetical gives the manner. The browser voices follow the words listed under Manner in `VOCABULARY.md`; the stage passes the whole direction to speech synthesis. |
 | `JOOST: I was going to--` | An em dash (`—`) or `--` at the end: the next line cuts in with no gap. |
 | `(beat)` | A pause of one second. |
-| `(pause 4)` | A pause of four seconds. |
+| `(pause 4)` | A pause of four seconds; `(pause 1.5)` works too. It plays exactly what you write: the check reports a malformed number, `(pause 0)` and pauses over 60 seconds, but never changes them. |
 | `Joost reaches for the call button.` | Any other line is an action line: shown as a stage direction, with no sound. |
 | `SCREEN: statement Paracetamol at 20:00 \| next dose from 02:00` | Screen cue. It takes effect when the next line starts and stays until the next screen cue. Components are in `VOCABULARY.md`. |
 | `LIGHT: amber pulse dim` | Light cue: a colour, optionally `pulse` and `dim`; or `LIGHT: off`. |

@@ -27,7 +27,7 @@ Do this once, on the laptop you bring, so that anything that does not work shows
    node system/bin/preview
    ```
 
-   Your browser opens the worked example: two characters, the Host and the Night light, on a hospital ward at night.
+   Your browser opens VoiceIt with the worked example: two characters, the Host and the Night light, on a hospital ward at night.
 4. Press **Play**, then open the **Setup** tab and play the six voices.
 5. Open the folder in Codex or Claude Code and ask: *"Read AGENTS.md and tell me in two sentences what this is."*
 
@@ -48,7 +48,7 @@ Git keeps versions of your folder. You do not need a GitHub account for this; it
 
 - **Save a version:** *"Commit our work: first version of Juno in visiting hour."* The first time, Git asks for your name and e-mail; your agent can set them.
 - **See what changed:** *"What changed since our last commit?"*
-- **Get course updates:** *"Pull the latest VoiceIt."* In a terminal: `git pull --no-rebase` (a plain `git pull` may stop and ask how to combine your work with the update; `--no-rebase` answers that). This brings in changes to `system/` and the brief. It works smoothly as long as you have not changed `system/` or the example behaviours; to change an example, copy it first.
+- **Get course updates:** *"Pull the latest VoiceIt."* In a terminal: `git pull --no-rebase` (a plain `git pull` may stop and ask how to combine your work with the update; `--no-rebase` answers that). This brings in changes to `system/` and the brief. It usually goes smoothly as long as you have not changed `system/` or `examples/`.
 - **Share with your group (needs a GitHub account):** fork the repository on GitHub, clone your fork, and push your commits there; teammates clone the same fork. Ask for help the first time.
 
 ## In class
@@ -60,6 +60,7 @@ Git keeps versions of your folder. You do not need a GitHub account for this; it
 ## Folders
 
 - `system/` is the tool: notation, vocabulary, procedures, VoiceIt itself and the scripts. Do not edit it. When it is updated during the course, replace this folder only.
+- `examples/` holds the worked example. Leave it as it is; to start from an example, copy it into `design/` first. That keeps course updates from colliding with your work.
 - `design/` is yours: forms, behaviours and your notes. Git keeps your versions (see above); you can also copy a file to keep a variant side by side.
 
 ## Checking a behaviour

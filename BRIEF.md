@@ -28,4 +28,4 @@ Stereotypes show in manner and behaviour, never in insults or sexual content. A 
 
 ## Start here
 
-Open the worked example first (`node system/bin/preview`): the Host and the Night light in *Night on ward 4*, and the Night light again in visiting hour. It is not a gender example; it shows what a difference in character looks like.
+Open the worked example first (`node system/bin/preview`; it is under *Examples* in the list): the Host and the Night light in *Night on ward 4*, and the Night light again in visiting hour. It is not a gender example; it shows what a difference in character looks like.

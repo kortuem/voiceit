@@ -1,7 +1,7 @@
 # Procedure: write a behaviour
 
 **Purpose:** turn what the group says about their thing into a script VoiceIt can play.
-**Reads:** what the group says; `BRIEF.md` for the situation, if they refer to it; `system/SCREENPLAY.md`; `system/VOCABULARY.md`; the example behaviours in `design/behaviours/` for tone and density.
+**Reads:** what the group says; `BRIEF.md` for the situation, if they refer to it; `system/SCREENPLAY.md`; `system/VOCABULARY.md`; the worked example in `examples/behaviours/` for tone and density.
 **Writes:** one file in `design/behaviours/`, named `<character> - <situation>.md`.
 
 The group are the script writers and directors; you are the one who writes it down. The character is not a separate document: it comes across from the scripts and the form together, and the group judges it.

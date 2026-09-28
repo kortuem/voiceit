@@ -60,7 +60,9 @@ function frontMatter(txt){
 function listItems(body){ return body.split('\n').map(l => l.trim()).filter(l => /^([-*]|\d+[.)])\s+/.test(l)).map(l => l.replace(/^([-*]|\d+[.)])\s+/, '')); }
 
 /* ---------- Screenplay parser ---------- */
-const PAUSE_RE = /^\(\s*(beat|pause\s*([\d.]+)\s*s?)\s*\)$/i;
+const PAUSE_RE = /^\(\s*(beat|pause)\b([^)]*)\)$/i;   // (beat), (pause 3); the number is checked below
+const SECONDS_RE = /^\d+(\.\d+)?\s*s?$/;
+const LONG_PAUSE = 60;
 const CUE_RE = /^(SCREEN|LIGHT|SOUND|TOUCH)\s*:\s*(.*)$/i;
 const SPEECH_RE = /^([A-Z][A-Z0-9 .'’-]*?)\s*(?:\(([^)]*)\))?\s*:\s*(.+)$/;
 const LOOKS_NAME_RE = /^([A-Za-z][\w .'’-]{0,30}?)\s*(?:\([^)]*\))?\s*:\s*\S/;
@@ -74,8 +76,17 @@ function parseScript(txt, vocab){
     if (!s || s.startsWith('#')) return;
     let m;
     if ((m = s.match(PAUSE_RE))) {
-      const secs = m[2] ? Math.min(parseFloat(m[2]) || 1, 60) : 1;
-      lines.push({kind:'pause', secs, ln, text:m[2] ? `${secs} seconds` : 'beat'}); return;
+      // a pause plays exactly what is written; anything doubtful is reported, never changed
+      const kind = m[1].toLowerCase(), arg = m[2].trim();
+      if (kind === 'beat') {
+        if (arg) warnings.push({ln, msg:`(beat) is always one second; for “${arg}” write (pause n).`});
+        lines.push({kind:'pause', secs:1, ln, text:'beat'}); return;
+      }
+      if (!SECONDS_RE.test(arg)) { errors.push({ln, msg:`“(pause${arg ? ' ' + arg : ''})” needs a number of seconds, like (pause 3). Not played.`}); return; }
+      const secs = parseFloat(arg);
+      if (secs === 0) warnings.push({ln, msg:'(pause 0) adds no silence.'});
+      if (secs > LONG_PAUSE) warnings.push({ln, msg:`A pause of ${secs} seconds is very long. Is that intended?`});
+      lines.push({kind:'pause', secs, ln, text:`${secs} seconds`}); return;
     }
     if ((m = s.match(CUE_RE))) {
       const key = m[1].toUpperCase(), rest = m[2].trim();
@@ -224,7 +235,8 @@ function validateBehaviour(text, vocab){
 
 /* ---------- The design folder as data ---------- */
 // files: [{path:'design/behaviours/x.md', text:'…'}, {path:'design/forms/y.png', url:'…'}]
-// Returns {forms, behaviours, vocabulary}: two pools that can be combined freely.
+// Returns {forms, behaviours, vocabulary}: two pools that can be combined freely. Files under examples/
+// are marked example: students copy them into design/ before changing them.
 const FORM_RE = /\.(png|jpe?g|webp|svg)$/i;
 const label = stem => stem.replace(/[-_]+/g, ' ').trim();
 function buildDesign(files){
@@ -235,10 +247,11 @@ function buildDesign(files){
     const n = f.p.length, name = f.p[n - 1], dir = f.p[n - 2];
     const stem = name.replace(/\.[^.]+$/, '');
     if (dir === 'system' && name === 'VOCABULARY.md') vocabulary = f.text;
-    if (dir === 'forms' && FORM_RE.test(name)) forms[stem] = {name:label(stem), url:f.url, path:f.path};
+    const example = f.p.includes('examples'), key = (example ? 'example: ' : '') + stem;
+    if (dir === 'forms' && FORM_RE.test(name)) forms[key] = {name:label(stem), url:f.url, path:f.path, example};
     if (dir === 'behaviours' && /\.md$/i.test(name)) {
       const {meta} = frontMatter(f.text);
-      behaviours[stem] = {meta, text:f.text, path:f.path, notes:situationNotes(f.text), mtime:f.mtime || 0,
+      behaviours[key] = {meta, text:f.text, path:f.path, notes:situationNotes(f.text), mtime:f.mtime || 0, example,
         character:meta.character || label(stem), situation:meta.situation || ''};
     }
   });

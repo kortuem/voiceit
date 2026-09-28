@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-// Checks the behaviours in design/behaviours/ against system/VOCABULARY.md and the notation.
+// Checks the behaviours in design/behaviours/ and examples/behaviours/ against system/VOCABULARY.md
+// and the notation.
 // Usage: node system/bin/check                      every behaviour
 //        node system/bin/check <file or folder> …   only those
 // Exits with 1 when there is an error. Uses the same code as the page (system/voiceit.js).
@@ -32,8 +33,11 @@ if (vocab.problems.length) {
   process.exit(2);
 }
 
-const design = VoiceIt.buildDesign(readTree(path.join(root, 'design')));
-const targets = process.argv.slice(2).map(a => rel(path.resolve(process.cwd(), a)).replace(/\/$/, ''));
+const design = VoiceIt.buildDesign([...readTree(path.join(root, 'design')), ...readTree(path.join(root, 'examples'))]);
+const args = process.argv.slice(2);
+const missing = args.filter(a => !fs.existsSync(path.resolve(process.cwd(), a)));
+if (missing.length) { missing.forEach(a => console.log(`${a}  error    No such file or folder.`)); process.exit(1); }
+const targets = args.map(a => rel(path.resolve(process.cwd(), a)).replace(/\/$/, ''));
 const wanted = file => !targets.length || targets.some(t => t === '' || file === t || file.startsWith(t + '/'));
 
 const problems = []; let checked = 0;
@@ -48,7 +52,7 @@ for (const b of Object.values(design.behaviours)) {
     console.log(`${b.path}  plays for about ${VoiceIt.formatTime(sched.total)} (${r.parsed.lines.length} lines)`);
   }
 }
-if (!targets.length && !Object.keys(design.forms).length) problems.push({file:'design/forms/', ln:0, level:'warning', msg:'No forms yet: save an image of your thing in design/forms/.'});
+if (!targets.length && !Object.values(design.forms).some(f => !f.example)) problems.push({file:'design/forms/', ln:0, level:'warning', msg:'No forms of your own yet: save an image of your thing in design/forms/.'});
 
 problems.sort((a, b) => a.file.localeCompare(b.file) || a.ln - b.ln);
 problems.forEach(p => console.log(`${p.file}${p.ln ? ':' + p.ln : ''}  ${p.level.padEnd(7)}  ${p.msg}`));
