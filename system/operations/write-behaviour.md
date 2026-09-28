@@ -11,7 +11,7 @@ The group are the script writers and directors; you are the one who writes it do
 1. **Listen for three things**: who the thing is (its character, in their words), which situation it is in, and how it should behave there. Use the situation from `BRIEF.md` if they name it; otherwise ask them to describe it in a sentence or two.
 2. **Read back before writing.** In a few lines: the character's name, the situation, the voice you propose from the catalogue (described by its sound), and the key moments as you understood them ("when Daan asks about the results, it shows them on the screen instead of saying them"). Ask one short question about anything that is unclear. Do not write the file yet.
 3. **Write the script** when the group agrees (or says "fine", "go"):
-   - front matter `character`, `situation`, `voice`; then `#` lines describing the situation;
+   - front matter `character`, `situation`, `voice`, and `people` with each person's role (`Anna (patient), Daan (her son)`); then `#` lines describing the situation;
    - only the components, light colours, modifiers, sounds and voices in `VOCABULARY.md`;
    - cues before the line they belong to; silence written as `(beat)` and `(pause n)`;
    - every TOUCH picks an option that is on the screen at that moment;

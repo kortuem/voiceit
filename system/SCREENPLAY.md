@@ -11,6 +11,7 @@ A behaviour lives in `design/behaviours/`, one file each, named `<character> - <
 character: Night light
 situation: Visiting hour on ward 4
 voice: Ash
+people: Anna (patient), Daan (her son), Lotte (her granddaughter, 8), De Wit (roommate), Okafor (doctor)
 ---
 # Visiting hour on ward 4. 15:00. Anna, 74, is recovering from pneumonia in a two-bed room.
 # Her son Daan and granddaughter Lotte visit. Dr Okafor comes by on her round.
@@ -22,9 +23,8 @@ LIGHT: white dim
 - `character`: the name of the thing's character. Behaviours with the same character are compared in Compare → Same character.
 - `situation`: a short title. Behaviours with the same situation are compared in Compare → Same situation.
 - `voice`: one name from the voice catalogue in `VOCABULARY.md` (Ash, Theo, Sam, Noor, Mira, Wren).
+- `people` (optional but recommended): everyone in the situation, each with their role in brackets. The name is the one used in the script, so `Anna` speaks as `ANNA:`. VoiceIt shows the role next to the name, and gives everyone a lane on the timeline, also those who stay silent. The check warns when someone speaks who is not listed.
 - `#` lines right after the front matter describe the situation. VoiceIt shows them above the stage; they are not played.
-
-The people in the script are whoever speaks in it. Everyone gets their own lane on the timeline.
 
 ## Lines
 
@@ -82,6 +82,6 @@ Same situation, same vocabulary: every difference is behaviour, and it adds up t
 `node system/bin/check` reports, with line numbers:
 
 - **errors**: missing front matter, character, situation or voice; a voice that is not in the catalogue; a screen component, light colour or sound that is not in the vocabulary;
-- **warnings**: a line that looks like a speaker but is not in capitals; a TOUCH on an option that is not on the screen at that moment; words after LIGHT that VoiceIt ignores; a script with no lines.
+- **warnings**: someone who speaks but is not in the `people` line; a line that looks like a speaker but is not in capitals; a TOUCH on an option that is not on the screen at that moment; words after LIGHT that VoiceIt ignores; a script with no lines.
 
 Errors must be fixed. Warnings are worth reading: they usually mean the behaviour will not play as intended.

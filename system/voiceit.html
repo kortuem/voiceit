@@ -99,7 +99,9 @@ select{min-height:44px;border:1px solid var(--hairline);background:var(--paper);
 .spacer{flex:1}
 .clock{font-size:13px;color:var(--gray);font-variant-numeric:tabular-nums}
 .timeline{margin-top:var(--s3);border-top:1px solid var(--ink);border-bottom:1px solid var(--hairline);padding:var(--s2) 0 var(--s3)}
-.tl-grid{display:grid;grid-template-columns:84px minmax(0,1fr);gap:0 var(--s3)}
+.tl-grid{display:grid;grid-template-columns:164px minmax(0,1fr);gap:0 var(--s3)}
+.tl-name .role,.caption .role{font-weight:500;color:var(--gray)}
+@media (max-width:640px){.tl-grid{grid-template-columns:96px minmax(0,1fr)}.tl-name .role{display:none}}
 .tl-name{font-size:13px;font-weight:600;color:var(--gray);height:28px;line-height:28px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 .tl-name.who{color:var(--ink)}
 .tl-name.dev{color:var(--accent)}
@@ -417,7 +419,10 @@ function caption(l){
     cap.innerHTML=`<span class="txt act">${esc(msg)}</span>`; return;
   }
   if(l==='end'){ cap.innerHTML='<span class="txt act">End.</span>'; return; }
-  if(l.kind==='speech'){ const who=l.device?thingName():l.who; cap.innerHTML=`<span class="who${l.device?' dev':''}">${esc(who)}${l.manner?` (${esc(l.manner)})`:''}</span><span class="txt">${esc(l.text)}</span>`; }
+  if(l.kind==='speech'){
+    const p=!l.device && people.find(x=>x.key===l.who);
+    const who=l.device?thingName():(p?p.name:l.who);
+    cap.innerHTML=`<span class="who${l.device?' dev':''}">${esc(who)}${p&&p.role?`<span class="role"> · ${esc(p.role)}</span>`:''}${l.manner?` (${esc(l.manner)})`:''}</span><span class="txt">${esc(l.text)}</span>`; }
   else if(l.kind==='action') cap.innerHTML=`<span class="txt act">${esc(l.text)}</span>`;
   else if(l.kind==='pause') cap.innerHTML=`<span class="txt act">(${esc(l.text)})</span>`;
   else if(l.kind==='touch') cap.innerHTML=`<span class="txt act">${/^screen$/i.test(l.target)?'Taps the screen.':`Taps “${esc(l.target)}”.`}</span>`;
@@ -426,7 +431,8 @@ function caption(l){
 /* ---------- Lanes: one per person, the thing, screen, light, sound ---------- */
 // compact: all people share one lane (for Compare)
 function buildLanes(ev, total, pct, opts){
-  const who=[]; ev.forEach(e=>{ if(e.l.kind==='speech' && !e.l.device && !who.includes(e.l.who)) who.push(e.l.who); });
+  const decl=opts.people||[], roleOf=k=>{ const p=decl.find(x=>x.key===k); return p&&p.role; }, nameOf=k=>{ const p=decl.find(x=>x.key===k); return p?p.name:k; };
+  const who=decl.map(x=>x.key); ev.forEach(e=>{ if(e.l.kind==='speech' && !e.l.device && !who.includes(e.l.who)) who.push(e.l.who); });
   const per=Object.fromEntries(who.map(n=>[n,''])); let people='', act='', dev='', scr='', lig='', snd='';
   const w=(a,b)=>`left:${pct(a)};width:calc(${pct(b-a)} - 1px)`;
   ev.forEach(e=>{
@@ -446,9 +452,9 @@ function buildLanes(ev, total, pct, opts){
   spans('light').forEach(s=>{ if(s.l.off||s.end<=s.start) return; const c=lightColour(s.l.colour); const bg=s.l.pulse?`repeating-linear-gradient(90deg,${c} 0 10px,transparent 10px 16px)`:c; lig+=`<div class="seg light" style="${w(s.start,s.end)};background:${bg};opacity:${s.l.dim?.45:1}" title="${[s.l.colour,s.l.pulse&&'pulse',s.l.dim&&'dim'].filter(Boolean).join(' ')}"></div>`; });
   const lanes = opts.compact
     ? [{name:'People',html:act+people}, {name:opts.name,html:dev,cls:'dev'}, {name:'Screen',html:scr,split:true}, {name:'Light',html:lig}]
-    : [{name:'Action',html:act}, ...who.map(n=>({name:n,html:per[n],cls:'who'})), {name:opts.name,html:dev,cls:'dev'}, {name:'Screen',html:scr,split:true}, {name:'Light',html:lig}, {name:'Sound',html:snd}];
+    : [{name:'Action',html:act}, ...who.map(n=>({name:nameOf(n),role:roleOf(n),html:per[n],cls:'who'})), {name:opts.name,html:dev,cls:'dev'}, {name:'Screen',html:scr,split:true}, {name:'Light',html:lig}, {name:'Sound',html:snd}];
   return {
-    names:'<div class="tl-name ruler"></div>'+lanes.map(l=>`<div class="tl-name ${l.cls||''}" title="${esc(l.name)}">${esc(l.name)}</div>`).join(''),
+    names:'<div class="tl-name ruler"></div>'+lanes.map(l=>`<div class="tl-name ${l.cls||''}" title="${esc(l.name)}${l.role?' · '+esc(l.role):''}">${esc(l.name)}${l.role?`<span class="role"> ${esc(l.role)}</span>`:''}</div>`).join(''),
     lanes:lanes.map(l=>`<div class="lane${l.split?' split':''}">${l.html}</div>`).join('')
   };
 }
@@ -456,11 +462,11 @@ function ruler(total, pct){ const step = total>120?20: total>60?10:5; let r=''; 
 
 /* ---------- Play: the timeline and playback ---------- */
 const track=$('#track'), head=$('#head');
-let sched={ev:[],total:1};
+let sched={ev:[],total:1}, people=[];
 const pct=t=>(t/sched.total*100)+'%';
 function drawTimeline(){
   $('#ruler').innerHTML=ruler(sched.total,pct);
-  const L=buildLanes(sched.ev, sched.total, pct, {name:thingName()});
+  const L=buildLanes(sched.ev, sched.total, pct, {name:thingName(), people});
   $('#tlNames').innerHTML=L.names; $('#lanes').innerHTML=L.lanes;
   const empty=!sched.ev.length; $('#tlEmpty').hidden=!empty;
   if(empty) $('#tlEmpty').textContent = Object.keys(data.behaviours).length ? 'This script has no lines yet.' : 'No behaviours yet.';
@@ -595,6 +601,7 @@ function reparse(){
   castMap = VoiceIt.cast(r.parsed.lines, r.parsed.meta.voice, vocab);
   sched = VoiceIt.schedule(r.parsed.lines, castMap, vocab);
   if(!r.parsed.lines.length) sched = {ev:[], total:1};
+  people = VoiceIt.parsePeople(r.parsed.meta.people);
   const probs=[...r.errors.map(e=>({...e,err:true})),...r.warnings].sort((a,b)=>a.ln-b.ln);
   if(!current()){ check.className='check'; check.textContent='No behaviour selected.'; }
   else if(probs.length){ check.className='check bad'; check.innerHTML=`${plural(r.errors.length,'error')}, ${plural(r.warnings.length,'warning')}. The rest still plays.<ul>${probs.map(p=>`<li><b>Line ${p.ln}</b> · ${p.err?'':'warning · '}${esc(p.msg)}</li>`).join('')}</ul>`; }

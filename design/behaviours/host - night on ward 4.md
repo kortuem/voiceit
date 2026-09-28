@@ -2,6 +2,7 @@
 character: Host
 situation: Night on ward 4
 voice: Mira
+people: Joost (patient), Eva (his daughter, by voice message), Samira (night nurse), Bakker (roommate)
 ---
 # Night on ward 4. 23:10. Joost de Vries, 67, lies awake the day after hip surgery, in a two-bed room.
 # Mr Bakker in the next bed is asleep. A voice message from his daughter Eva arrives: can she visit tomorrow at ten?

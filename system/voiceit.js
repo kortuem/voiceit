@@ -181,6 +181,23 @@ function situationNotes(text){
   }
   return out.join(' ');
 }
+// people: Joost (patient), Eva (his daughter), Samira (night nurse)
+// Returns [{key:'JOOST', name:'Joost', role:'patient'}]; key is the name as written in the script.
+function parsePeople(str){
+  const out = []; let depth = 0, buf = '';
+  // split on commas that are not inside brackets, so a role may contain a comma
+  for (const ch of String(str || '') + ',') {
+    if (ch === '(') depth++;
+    if (ch === ')') depth = Math.max(0, depth - 1);
+    if (ch === ',' && !depth) { const t = buf.trim(); buf = '';
+      if (!t) continue;
+      const m = t.match(/^([^()]+?)\s*(?:\(([^)]*)\))?$/);
+      if (m) out.push({key:m[1].trim().toUpperCase(), name:m[1].trim(), role:(m[2] || '').trim()});
+      continue; }
+    buf += ch;
+  }
+  return out;
+}
 function validateBehaviour(text, vocab){
   const p = parseScript(text, vocab);
   const errors = [...p.errors], warnings = [...p.warnings];
@@ -190,6 +207,15 @@ function validateBehaviour(text, vocab){
   } else {
     REQUIRED.forEach(k => { if (!p.meta[k]) errors.push({ln:1, msg:`The front matter has no ${k}.`}); });
     if (p.meta.voice && !vocab.voice[p.meta.voice]) errors.push({ln:metaLine(text, 'voice'), msg:`“${p.meta.voice}” is not in the voice catalogue. Choose one of ${orList(voices)}.`});
+  }
+  const people = parsePeople(p.meta.people);
+  if (people.length) {
+    const known = people.map(x => x.key), seen = new Set();
+    p.lines.forEach(l => {
+      if (l.kind !== 'speech' || l.device || known.includes(l.who) || seen.has(l.who)) return;
+      seen.add(l.who);
+      warnings.push({ln:l.ln, msg:`${l.who} speaks but is not in the people line (${people.map(x => x.name).join(', ')}).`});
+    });
   }
   if (!p.lines.length) warnings.push({ln:1, msg:'The script has no lines yet.'});
   const byLine = (a, b) => a.ln - b.ln;
@@ -221,5 +247,5 @@ function buildDesign(files){
 }
 
 return {RESERVED, DEFAULT_VOICE, parseVocabulary, frontMatter, listItems, parseScript, cast, manner, speechDur, schedule,
-  situationNotes, validateBehaviour, buildDesign, formatTime, words, orList};
+  situationNotes, parsePeople, validateBehaviour, buildDesign, formatTime, words, orList};
 });
