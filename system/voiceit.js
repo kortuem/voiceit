@@ -163,7 +163,7 @@ function schedule(lines, castMap, vocab){
 }
 
 /* ---------- Validation ---------- */
-const REQUIRED = ['character', 'situation', 'voice'];
+const REQUIRED = ['character', 'voice'];   // situation and people are optional
 // line number of a front matter key, so messages point at the right line
 function metaLine(text, key){
   const lines = String(text || '').replace(/\r\n/g, '\n').split('\n');
@@ -203,7 +203,7 @@ function validateBehaviour(text, vocab){
   const errors = [...p.errors], warnings = [...p.warnings];
   const voices = Object.keys(vocab.voice);
   if (!frontMatter(text).found) {
-    errors.push({ln:1, msg:'The file has no front matter. Start with ---, then character: …, situation: …, voice: …, then ---.'});
+    errors.push({ln:1, msg:'The file has no front matter. Start with ---, then character: …, voice: …, then ---.'});
   } else {
     REQUIRED.forEach(k => { if (!p.meta[k]) errors.push({ln:1, msg:`The front matter has no ${k}.`}); });
     if (p.meta.voice && !vocab.voice[p.meta.voice]) errors.push({ln:metaLine(text, 'voice'), msg:`“${p.meta.voice}” is not in the voice catalogue. Choose one of ${orList(voices)}.`});
@@ -238,7 +238,7 @@ function buildDesign(files){
     if (dir === 'forms' && FORM_RE.test(name)) forms[stem] = {name:label(stem), url:f.url, path:f.path};
     if (dir === 'behaviours' && /\.md$/i.test(name)) {
       const {meta} = frontMatter(f.text);
-      behaviours[stem] = {meta, text:f.text, path:f.path, notes:situationNotes(f.text),
+      behaviours[stem] = {meta, text:f.text, path:f.path, notes:situationNotes(f.text), mtime:f.mtime || 0,
         character:meta.character || label(stem), situation:meta.situation || ''};
     }
   });

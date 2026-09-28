@@ -26,7 +26,7 @@ function readTree(dir, out = []){
     if (e.name.startsWith('.') || e.name === 'node_modules') continue;
     const full = path.join(dir, e.name);
     if (e.isDirectory()) readTree(full, out);
-    else if (/\.md$/i.test(e.name)) out.push({path:rel(full), text:fs.readFileSync(full, 'utf8')});
+    else if (/\.md$/i.test(e.name)) out.push({path:rel(full), text:fs.readFileSync(full, 'utf8'), mtime:Math.round(fs.statSync(full).mtimeMs)});
     else if (/\.(png|jpe?g|webp|svg)$/i.test(e.name)) {
       const url = '/' + rel(full).split('/').map(encodeURIComponent).join('/') + '?v=' + Math.round(fs.statSync(full).mtimeMs);
       out.push({path:rel(full), url});

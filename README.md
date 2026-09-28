@@ -54,7 +54,7 @@ Git keeps versions of your folder. You do not need a GitHub account for this; it
 ## In class
 
 1. Start VoiceIt (`node system/bin/preview`) and open the folder in your agent.
-2. Play the example: both characters, with both forms, and compare them in the Compare tab.
+2. Play the example: pick a behaviour in the list on the left, try it with each form (the small images under the form), and follow the script on the right. The strips in the list show each behaviour's rhythm side by side.
 3. Read `BRIEF.md` and start talking to your agent.
 
 ## Folders

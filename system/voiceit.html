@@ -147,39 +147,58 @@ textarea:focus{outline:none;border-color:var(--ink)}
 .tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--ink)}
 .tabs button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 .view[hidden]{display:none}
-.lead{font-size:17px;margin:0 0 var(--s4);max-width:62ch}
-.pick{display:flex;flex-wrap:wrap;gap:var(--s3) var(--s4);align-items:flex-end;margin-bottom:var(--s2)}
-.pick label{display:flex;flex-direction:column;gap:var(--s1);min-width:0}
-.pick select{min-width:240px}
-.sitnote{font-size:13px;color:var(--gray);margin:0 0 var(--s4);max-width:96ch;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.linkbtn{all:unset;cursor:pointer;font-size:13px;font-weight:600;color:var(--ink);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--gray)}
-.linkbtn:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
-.form-empty{font-size:13px;color:var(--gray);text-align:center;padding:var(--s4)}
+/* The working screen: list | stage | script */
+.work{display:grid;grid-template-columns:248px minmax(0,1fr) 300px;gap:var(--s5);align-items:start}
+@media (max-width:1180px){.work{grid-template-columns:232px minmax(0,1fr)}.col-script{grid-column:1 / -1}}
+@media (max-width:760px){.work{grid-template-columns:minmax(0,1fr)}}
+.col-head{display:flex;justify-content:space-between;align-items:baseline;gap:var(--s2);border-top:1px solid var(--ink);padding-top:var(--s3);margin-bottom:var(--s2)}
+.col-head .sub{font-size:13px;color:var(--faint);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.col-list,.col-script{position:sticky;top:var(--s3);max-height:calc(100vh - 2 * var(--s3));overflow:auto}
+@media (max-width:1180px){.col-script{position:static;max-height:none}}
+@media (max-width:760px){.col-list{position:static;max-height:320px}}
+.col-stage .stage{grid-template-columns:minmax(0,1fr) minmax(0,1.35fr) minmax(0,.55fr)}
+.col-stage .tl-grid{grid-template-columns:132px minmax(0,1fr)}
 
-/* Compare */
-.cmp-head{display:flex;flex-wrap:wrap;gap:var(--s3) var(--s4);align-items:flex-end;margin-bottom:var(--s3)}
-.toggle{display:inline-flex;border:1px solid var(--hairline);border-radius:4px;overflow:hidden}
-.toggle button{all:unset;box-sizing:border-box;min-height:44px;padding:0 var(--s4);font-size:15px;font-weight:600;color:var(--gray);cursor:pointer}
-.toggle button+button{border-left:1px solid var(--hairline)}
-.toggle button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
-.toggle button:focus-visible{outline:2px solid var(--ink);outline-offset:-2px}
-.cmp-pick{display:flex;flex-direction:column;gap:var(--s1)}
-.cmp-pick select{min-width:240px}
-.cmp-q{font-size:17px;margin:0 0 var(--s4)}
-.cmp-row{display:block;width:100%;text-align:left;border:0;border-top:1px solid var(--hairline);background:none;padding:var(--s3) 0;cursor:pointer}
-.cmp-row:hover{background:var(--tint)}
-.cmp-row:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
-.cmp-title{display:flex;justify-content:space-between;gap:var(--s3);font-size:15px;font-weight:600;margin-bottom:var(--s2)}
-.cmp-title .clock{font-weight:500}
-.cmp-row .lane{height:22px}
-.cmp-row .tl-name{height:22px;line-height:22px}
-.cmp-row .seg{top:3px;height:16px;line-height:16px;font-size:10.5px}
-.cmp-row .mark{top:4px}
-.cmp-empty{font-size:15px;color:var(--gray);border-top:1px solid var(--hairline);padding-top:var(--s3)}
+/* Behaviour list: one row per file, with its rhythm on a common time scale */
+.blist:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.brow{display:block;width:100%;text-align:left;font:inherit;color:inherit;background:none;border:0;border-bottom:1px solid var(--hairline-2);padding:var(--s2) var(--s2) var(--s2) var(--s3);cursor:pointer;box-shadow:inset 3px 0 0 transparent}
+.brow:hover{background:var(--tint)}
+.brow[aria-selected="true"]{background:var(--tint);box-shadow:inset 3px 0 0 var(--accent)}
+.brow:focus-visible{outline:2px solid var(--ink);outline-offset:-2px}
+.brow .bc{display:flex;justify-content:space-between;gap:var(--s2);font-weight:600}
+.brow .bc .clock{font-weight:500}
+.brow .bs{display:block;min-height:1.3em;font-size:13px;color:var(--gray);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.brow .bt{display:flex;justify-content:space-between;gap:var(--s2);font-size:11px;color:var(--faint);margin-top:2px}
+.brow .bad{color:var(--ink);font-weight:600}
+.rhythm{display:block;position:relative;height:10px;margin-top:6px;background:var(--hairline-2)}
+.rhythm i{position:absolute;top:0;bottom:0;background:var(--gray);opacity:.55}
+.rhythm i.d{background:var(--accent);opacity:1}
+.blist-empty{font-size:13px;color:var(--gray);padding:var(--s2) 0}
+.blist-empty .btn{margin-top:var(--s2)}
 
-/* Script */
-.script-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:var(--s1) var(--s3);border-top:1px solid var(--ink);padding-top:var(--s3);margin-bottom:var(--s2)}
-.script-head h2{font-size:22px;font-weight:600;letter-spacing:-.02em;line-height:1.3;margin:0}
+/* Form strip: try the behaviour in another body */
+.fstrip{display:flex;flex-wrap:wrap;gap:var(--s1)}
+.fchip{width:44px;height:44px;padding:2px;border:1px solid var(--hairline);border-radius:4px;background:var(--paper);cursor:pointer}
+.fchip img{display:block;width:100%;height:100%;object-fit:contain}
+.fchip[aria-checked="true"]{border:2px solid var(--ink);padding:1px}
+.fchip:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+
+/* Script: the file, following playback */
+.smeta{font-size:13px;color:var(--gray);margin:0 0 var(--s2)}
+.smeta b{color:var(--ink);font-weight:600}
+.smeta p{margin:0 0 var(--s1)}
+.smeta p.notes{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.transcript{list-style:none;margin:0;padding:0;font-family:var(--script);font-size:13px;line-height:1.45;letter-spacing:0}
+.transcript li{padding:3px var(--s2) 3px var(--s3);border-left:3px solid transparent;cursor:pointer}
+.transcript li:hover{background:var(--tint)}
+.transcript li.now{border-left-color:var(--accent);background:var(--tint)}
+.transcript li.cue{color:var(--gray)}
+.transcript li.act{font-style:italic;color:var(--gray)}
+.transcript li.note-line{cursor:default;color:var(--faint)}
+.transcript li.dev .who{color:var(--accent)}
+.transcript .who{font-weight:700}
+.transcript .prob{display:block;font-family:var(--font);font-size:12px;color:var(--ink);margin-top:2px}
+.transcript .prob::before{content:"▲ ";font-size:9px}
 
 /* About */
 .about{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--s5) var(--s6);align-items:start}
@@ -217,84 +236,68 @@ textarea:focus{outline:none;border-color:var(--ink)}
     </div>
     <nav class="tabs" role="tablist" aria-label="Views">
       <button type="button" role="tab" id="tab-play" aria-controls="view-play" data-tab="play">Play</button>
-      <button type="button" role="tab" id="tab-compare" aria-controls="view-compare" data-tab="compare">Compare</button>
-      <button type="button" role="tab" id="tab-script" aria-controls="view-script" data-tab="script">Script</button>
       <button type="button" role="tab" id="tab-about" aria-controls="view-about" data-tab="about">About</button>
+      <button type="button" role="tab" id="tab-literature" aria-controls="view-literature" data-tab="literature">Literature</button>
       <button type="button" role="tab" id="tab-setup" aria-controls="view-setup" data-tab="setup">Setup</button>
     </nav>
   </header>
 
-  <!-- Play: the enactment only -->
-  <main class="view" id="view-play" role="tabpanel" aria-labelledby="tab-play">
-    <p class="lead">Pair a form with a behaviour, play it, and judge the character that comes across.</p>
-    <div class="pick">
-      <label><span class="label">Behaviour</span><select id="selBeh"></select></label>
-      <label><span class="label">Form</span><select id="selForm"></select></label>
-      <label class="btn file" id="openPlay" hidden title="Choose the project folder (the one with system/ and design/ inside)">Open folder…<input type="file" webkitdirectory directory multiple data-folder></label>
-    </div>
-    <p class="sitnote" id="sitNote"></p>
+  <!-- Play: one working screen. The list selects, the stage performs, the script follows. -->
+  <main class="view work" id="view-play" role="tabpanel" aria-labelledby="tab-play">
+    <aside class="col-list" aria-label="Behaviours">
+      <div class="col-head"><p class="label">Behaviours</p><span class="sub">newest first</span></div>
+      <div class="blist" id="blist" role="listbox" aria-label="Behaviours" tabindex="0"></div>
+    </aside>
 
-    <section class="stage" aria-label="Stage">
-      <div class="panel">
-        <div class="panel-head"><p class="label">Form</p><span class="sub" id="formName"></span></div>
-        <div class="form-img"><img id="formImg" alt="The form"><p class="form-empty" id="formEmpty" hidden>No form yet. Save an image of your thing in design/forms/.</p></div>
-      </div>
-      <div class="panel">
-        <div class="panel-head"><p class="label">Screen</p><span class="sub" id="screenSub">blank</span></div>
-        <div class="screen" id="screen"></div>
-      </div>
-      <div class="panel light">
-        <div class="panel-head"><p class="label">Light</p></div>
-        <div class="lamp-wrap"><div class="lamp" id="lamp"></div></div>
-        <p class="lamp-label" id="lampLabel">off</p>
-      </div>
-      <div class="caption" id="caption" aria-live="polite"></div>
-    </section>
-
-    <div class="transport">
-      <button class="btn primary" id="play" type="button"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9-5.5z"/></svg><span>Play</span></button>
-      <button class="btn" id="step" type="button">Step</button>
-      <button class="btn" id="restart" type="button">Restart</button>
-      <button class="btn" id="audio" type="button" aria-pressed="true">Sound on</button>
-      <span class="spacer"></span>
-      <button type="button" class="linkbtn" id="status" hidden></button>
-      <span class="clock" id="clock">0:00 / 0:00</span>
-    </div>
-
-    <section class="timeline" aria-label="Timeline">
-      <div class="tl-grid">
-        <div id="tlNames"></div>
-        <div class="tl-track" id="track">
-          <div class="ruler-lane" id="ruler"></div>
-          <div id="lanes"></div>
-          <div class="head" id="head"></div>
-          <p class="tl-empty" id="tlEmpty" hidden></p>
+    <section class="col-stage" aria-label="Stage">
+      <div class="stage">
+        <div class="panel">
+          <div class="panel-head"><p class="label">Form</p><span class="sub" id="formName"></span></div>
+          <div class="form-img"><img id="formImg" alt="The form"><p class="form-empty" id="formEmpty" hidden>No form yet. Save an image of your thing in design/forms/.</p></div>
+          <div class="fstrip" id="fstrip" role="radiogroup" aria-label="Try another form"></div>
         </div>
+        <div class="panel">
+          <div class="panel-head"><p class="label">Screen</p><span class="sub" id="screenSub">blank</span></div>
+          <div class="screen" id="screen"></div>
+        </div>
+        <div class="panel light">
+          <div class="panel-head"><p class="label">Light</p></div>
+          <div class="lamp-wrap"><div class="lamp" id="lamp"></div></div>
+          <p class="lamp-label" id="lampLabel">off</p>
+        </div>
+        <div class="caption" id="caption" aria-live="polite"></div>
       </div>
+
+      <div class="transport">
+        <button class="btn primary" id="play" type="button"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9-5.5z"/></svg><span>Play</span></button>
+        <button class="btn" id="step" type="button">Step</button>
+        <button class="btn" id="restart" type="button">Restart</button>
+        <button class="btn" id="audio" type="button" aria-pressed="true">Sound on</button>
+        <span class="spacer"></span>
+        <span class="clock" id="clock">0:00 / 0:00</span>
+      </div>
+
+      <section class="timeline" aria-label="Timeline">
+        <div class="tl-grid">
+          <div id="tlNames"></div>
+          <div class="tl-track" id="track">
+            <div class="ruler-lane" id="ruler"></div>
+            <div id="lanes"></div>
+            <div class="head" id="head"></div>
+            <p class="tl-empty" id="tlEmpty" hidden></p>
+          </div>
+        </div>
+      </section>
     </section>
+
+    <aside class="col-script" aria-label="Script">
+      <div class="col-head"><p class="label">Script</p><span class="sub" id="edFile"></span></div>
+      <div id="scriptMeta" class="smeta"></div>
+      <div class="check" id="check"></div>
+      <ol class="transcript" id="transcript"></ol>
+      <p class="note">To change the script, ask your agent or edit the file. VoiceIt picks up the change when you switch back to it.</p>
+    </aside>
   </main>
-
-  <!-- Compare: timelines side by side -->
-  <section class="view" id="view-compare" role="tabpanel" aria-labelledby="tab-compare" hidden>
-    <div class="cmp-head">
-      <div class="toggle" role="group" aria-label="Compare by">
-        <button type="button" data-by="situation" aria-pressed="true">Same situation</button>
-        <button type="button" data-by="character" aria-pressed="false">Same character</button>
-      </div>
-      <label class="cmp-pick"><span class="label" id="cmpLabel">Situation</span><select id="selCmp"></select></label>
-    </div>
-    <p class="cmp-q" id="cmpQ"></p>
-    <div id="cmpRows"></div>
-  </section>
-
-  <!-- Script: the text of the current behaviour -->
-  <section class="view" id="view-script" role="tabpanel" aria-labelledby="tab-script" hidden>
-    <div class="script-head"><h2 id="scriptTitle"></h2><span class="clock" id="edFile"></span></div>
-    <div class="check" id="check"></div>
-    <label for="src" class="sr">Script</label>
-    <textarea id="src" spellcheck="false" autocomplete="off"></textarea>
-    <p class="note">Edits play at once but stay in this page. To keep them, change the file, or ask your agent to. VoiceIt reloads changed files when you switch back to it.</p>
-  </section>
 
   <!-- About: the only explanatory text -->
   <section class="view about" id="view-about" role="tabpanel" aria-labelledby="tab-about" hidden>
@@ -307,7 +310,7 @@ textarea:focus{outline:none;border-color:var(--ink)}
       <ol>
         <li><b>Behaviour.</b> Tell your agent, in your own words, who the thing is and how it should behave in a situation. It writes the script into <code>design/behaviours/</code>. Play it, and give notes: less, later, softer, not in front of her.</li>
         <li><b>Form.</b> Sketch the thing on paper, have it rendered, mark up the render and render again (<code>system/FORM.md</code>). Save the image in <code>design/forms/</code>.</li>
-        <li><b>Judge.</b> Play behaviours with different forms, and compare them side by side.</li>
+        <li><b>Judge.</b> Play a behaviour with different forms, and play the behaviours one after another. The rhythm strips in the list show them side by side.</li>
       </ol>
       <h3>What to judge</h3>
       <ul>
@@ -327,15 +330,74 @@ textarea:focus{outline:none;border-color:var(--ink)}
       <h2>Background</h2>
       <p>VoiceIt belongs to a family of methods for trying out behaviour before a system exists: Wizard-of-Oz studies, experience prototyping and enactment. It prototypes a thing's role and its look and feel over time, not its implementation, and it aims at many rough variations rather than one refined prototype.</p>
       <p>A thing's character, in design research, is a coherent quality that holds across its appearance and its behaviour. Among several people, a device also has to decide whom it addresses, who merely overhears, and when to leave people alone.</p>
-      <h3>Readings</h3>
+      <p>The sources behind these ideas, and further reading, are in the Literature tab.</p>
+    </section>
+  </section>
+
+  <!-- Literature: what designers of things that listen and respond should know about -->
+  <section class="view about lit" id="view-literature" role="tabpanel" aria-labelledby="tab-literature" hidden>
+    <section>
+      <h2>Voices, gender and stereotypes</h2>
+      <p>Why do assistants sound and behave the way they do? These readings show voice and manner as design decisions, not facts of nature.</p>
       <ul class="refs">
-        <li><b>Read before the session.</b> UN News (2019). <a href="https://news.un.org/en/story/2019/05/1038691">Are robots sexist?</a> (a summary of UNESCO's <i>I'd blush if I could</i>). Sutton, S. J. (2020). <a href="https://doi.org/10.1145/3405755.3406123">Gender ambiguous, not genderless</a>. CUI '20.</li>
-        <li><b>Prototyping.</b> Houde, S. &amp; Hill, C. (1997). What do prototypes prototype? In <i>Handbook of Human-Computer Interaction</i>. Buchenau, M. &amp; Fulton Suri, J. (2000). <a href="https://doi.org/10.1145/347642.347802">Experience prototyping</a>. DIS 2000. Buxton, B. (2007). <i>Sketching User Experiences</i>.</li>
-        <li><b>Character of things.</b> Janlert, L.-E. &amp; Stolterman, E. (1997). <a href="https://www.sciencedirect.com/science/article/abs/pii/S0142694X97000045">The character of things</a>. <i>Design Studies</i> 18(3).</li>
-        <li><b>Among several people.</b> Goffman, E. (1981). Footing. In <i>Forms of Talk</i> (first in <a href="https://doi.org/10.1515/semi.1979.25.1-2.1">Semiotica, 1979</a>). Porcheron, M. et al. (2018). <a href="https://doi.org/10.1145/3173574.3174214">Voice interfaces in everyday life</a>. CHI 2018. Luria, M. et al. (2020). <a href="https://doi.org/10.1145/3313831.3376311">Social boundaries for personal agents in the interpersonal space of the home</a>. CHI 2020.</li>
-        <li><b>When to speak up.</b> Zargham, N. et al. (2022). <a href="https://doi.org/10.1145/3543829.3543834">Understanding circumstances for desirable proactive behaviour of voice assistants: The proactivity dilemma</a>. CUI '22. Bérubé, C. et al. (2024). <a href="https://doi.org/10.1016/j.chbr.2024.100411">Proactive behavior in voice assistants: A systematic review and conceptual model</a>.</li>
-        <li><b>Enacting character.</b> Völkel, S. T., Meindl, S. &amp; Hussmann, H. (2021). <a href="https://doi.org/10.1145/3469595.3469605">Manipulating and evaluating levels of personality perceptions of voice assistants through enactment-based dialogue design</a>. CUI '21. Dertien, E., van Delden, R. &amp; Reidsma, D. (2024). <a href="https://doi.org/10.1145/3658852.3659067">Improvisation theatre as HRI simulation tool</a>. MOCO '24.</li>
-        <li><b>From Delft.</b> Nicenboim, I., Giaccardi, E. &amp; Redström, J. (2023). <a href="https://doi.org/10.30682/diid8023c">Designing more-than-human AI: Experiments on situated conversations and silences</a>. <i>diid</i> 80.</li>
+        <li><b>UN News (2019). <a href="https://news.un.org/en/story/2019/05/1038691">Are robots sexist? UN report shows gender bias in talking digital tech</a>.</b> A short summary of UNESCO's report <i>I'd blush if I could</i>: female default voices and submissive replies built into assistants, and what the report recommends.</li>
+        <li><b>Sutton, S. J. (2020). <a href="https://doi.org/10.1145/3405755.3406123">Gender ambiguous, not genderless: Designing gender in voice user interfaces with sensitivity</a>. CUI '20.</b> Listeners assign gender to a voice, and more than pitch does it; a "genderless" voice is undone by everything else in the design.</li>
+        <li><b>Strengers, Y. &amp; Kennedy, J. (2020). <a href="https://direct.mit.edu/books/book/4877/The-Smart-WifeWhy-Siri-Alexa-and-Other-Smart-Home">The Smart Wife</a>. MIT Press.</b> How smart-home assistants are modelled on the 1950s housewife, and why that needs a redesign.</li>
+        <li><b>Nass, C. &amp; Brave, S. (2005). <i>Wired for Speech</i>. MIT Press.</b> A decade of experiments: people respond to machine voices socially, including with gender stereotypes and personality judgements.</li>
+      </ul>
+    </section>
+    <section>
+      <h2>Prototyping behaviour</h2>
+      <p>What kind of prototype a VoiceIt performance is, and where the method comes from.</p>
+      <ul class="refs">
+        <li><b>Houde, S. &amp; Hill, C. (1997). What do prototypes prototype? In <i>Handbook of Human-Computer Interaction</i>.</b> Prototypes explore role, look and feel, or implementation; VoiceIt deliberately explores the first two over time.</li>
+        <li><b>Buchenau, M. &amp; Fulton Suri, J. (2000). <a href="https://doi.org/10.1145/347642.347802">Experience prototyping</a>. DIS 2000.</b> Understanding a design by experiencing it, not by looking at it: the idea behind playing a behaviour.</li>
+        <li><b>Buxton, B. (2007). <i>Sketching User Experiences</i>. Morgan Kaufmann.</b> Many quick, cheap variations to argue about, before one refined prototype.</li>
+        <li><b>Völkel, S. T., Meindl, S. &amp; Hussmann, H. (2021). <a href="https://doi.org/10.1145/3469595.3469605">Manipulating and evaluating levels of personality perceptions of voice assistants through enactment-based dialogue design</a>. CUI '21.</b> Actors wrote and performed dialogues for assistant personalities, which 156 people then rated: the closest research method to VoiceIt.</li>
+        <li><b>Dertien, E., van Delden, R. &amp; Reidsma, D. (2024). <a href="https://doi.org/10.1145/3658852.3659067">Improvisation theatre as HRI simulation tool</a>. MOCO '24.</b> Improvised theatre to design a robot's behaviour, used in a Dutch MSc course and with care professionals: the live counterpart to scripted performances.</li>
+      </ul>
+    </section>
+    <section>
+      <h2>The character of things</h2>
+      <p>Form and behaviour together make a character; people read it at a glance.</p>
+      <ul class="refs">
+        <li><b>Janlert, L.-E. &amp; Stolterman, E. (1997). <a href="https://www.sciencedirect.com/science/article/abs/pii/S0142694X97000045">The character of things</a>. <i>Design Studies</i> 18(3).</b> A thing's character is a coherent set of qualities across appearance and behaviour alike: the idea behind judging fit and coherence.</li>
+        <li><b>Govers, P. C. M., Hekkert, P. &amp; Schoormans, J. P. L. (2002). <a href="https://www.researchgate.net/publication/284500781_Happy_cute_and_tough_Can_designers_create_a_product_personality_that_consumers_understand">Happy, cute and tough: Can designers create a product personality that consumers understand?</a></b> From Delft: people read a product's personality from its appearance.</li>
+        <li><b>Mugge, R., Govers, P. C. M. &amp; Schoormans, J. P. L. (2009). <a href="https://www.sciencedirect.com/science/article/abs/pii/S0142694X08000859">The development and testing of a product personality scale</a>. <i>Design Studies</i> 30(3).</b> A way to put words to the personality people see in a form.</li>
+      </ul>
+    </section>
+    <section>
+      <h2>Among several people</h2>
+      <p>A thing that listens is rarely alone with one user. It has to decide whom it addresses, who merely overhears, and when to leave people alone.</p>
+      <ul class="refs">
+        <li><b>Goffman, E. (1981). Footing. In <i>Forms of Talk</i> (first published in <a href="https://doi.org/10.1515/semi.1979.25.1-2.1">Semiotica, 1979</a>).</b> Addressed and unaddressed hearers, bystanders and overhearers: the vocabulary for a device in a shared room.</li>
+        <li><b>Porcheron, M., Fischer, J. E., Reeves, S. &amp; Sharples, S. (2018). <a href="https://doi.org/10.1145/3173574.3174214">Voice interfaces in everyday life</a>. CHI 2018.</b> Recordings of Amazon Echo in family homes: talk to the device is woven into talk among the people around it.</li>
+        <li><b>Luria, M. et al. (2020). <a href="https://doi.org/10.1145/3313831.3376311">Social boundaries for personal agents in the interpersonal space of the home</a>. CHI 2020.</b> Families reacting to storyboards of agent behaviour: roles, ownership, privacy and when an agent should stay out.</li>
+      </ul>
+    </section>
+    <section>
+      <h2>When to speak up</h2>
+      <p>Initiative is one of the strongest signs of character: speaking first, waiting, or staying quiet.</p>
+      <ul class="refs">
+        <li><b>Ju, W. (2015). <a href="https://doi.org/10.1007/978-3-031-02210-4">The Design of Implicit Interactions</a>.</b> Interactions sorted by who takes the initiative and how much attention they ask: a grid for voice, light and silence.</li>
+        <li><b>Zargham, N. et al. (2022). <a href="https://doi.org/10.1145/3543829.3543834">Understanding circumstances for desirable proactive behaviour of voice assistants: The proactivity dilemma</a>. CUI '22.</b> People welcome proactivity when it matters, and fear it when others are talking.</li>
+        <li><b>Bérubé, C. et al. (2024). <a href="https://doi.org/10.1016/j.chbr.2024.100411">Proactive behavior in voice assistants: A systematic review and conceptual model</a>.</b> Context, initiation and action: a checklist for how a device steps in, from a signal to a spoken suggestion.</li>
+        <li><b>Oh, J. et al. (2024). <a href="https://doi.org/10.1145/3613904.3642193">Better to ask than assume: Proactive voice assistants' communication strategies that respect user agency in a smart home environment</a>. CHI 2024.</b> How a proactive assistant can leave control with the person.</li>
+      </ul>
+    </section>
+    <section>
+      <h2>Mistakes and accountability</h2>
+      <p>What a thing does when it gets something wrong often says more about its character than a smooth answer.</p>
+      <ul class="refs">
+        <li><b>Alizadeh, F. et al. (2024). <a href="https://doi.org/10.1145/3640794.3665557">Voice assistants' accountability through explanatory dialogues</a>. CUI '24.</b> Nineteen households over nineteen months: explanations that unfold in conversation, not as one-off answers.</li>
+        <li><b>Reineke, S. &amp; Helmer, H. (2024). <a href="https://doi.org/10.1177/17504813241271494">User practices in dealing with trouble in interactions with virtual assistants in German</a>. <i>Discourse &amp; Communication</i>.</b> The work people do to repair failed exchanges: repeating, altering, insisting.</li>
+      </ul>
+    </section>
+    <section>
+      <h2>From Delft</h2>
+      <ul class="refs">
+        <li><b>Nicenboim, I., Giaccardi, E. &amp; Redström, J. (2023). <a href="https://doi.org/10.30682/diid8023c">Designing more-than-human AI: Experiments on situated conversations and silences</a>. <i>diid</i> 80.</b> Prototypes of agents that listen differently, including deliberate silence.</li>
+        <li><b>Nicenboim, I. (2024). <a href="https://doi.org/10.4233/uuid:e741163d-0334-4f06-826f-3b9836b21a86">Designing-with AI: More-than-human design in/through practice</a>. PhD thesis, TU Delft.</b> Whose voices conversational agents are built to hear, and design tactics to change that.</li>
       </ul>
     </section>
   </section>
@@ -450,6 +512,7 @@ function touch(target){
 const cap=$('#caption');
 const thingName = () => (current() && current().character) || 'The thing';
 function caption(l){
+  markLine(l && typeof l==='object' ? l.ln : null);
   if(!l){
     const msg = !Object.keys(data.behaviours).length ? 'No behaviours yet. Tell your agent how your thing should behave in a situation; it writes the script into design/behaviours/.'
       : sched.ev.length ? 'Press Play, or drag along the timeline.' : 'This script has no lines yet.';
@@ -573,22 +636,21 @@ track.addEventListener('pointerup',()=>{ dragging=false; });
 track.addEventListener('pointercancel',()=>{ dragging=false; });
 
 /* ---------- Data, selection and the address bar ---------- */
+// One way to select: the behaviour list, the form strip. The script column shows the same behaviour.
 let data={forms:{}, behaviours:{}};
-const cur={tab:'play', b:null, f:null, by:'situation', v:null};
+const cur={tab:'play', b:null, f:null};
 const current=()=>data.behaviours[cur.b];
-const src=$('#src'), check=$('#check');
+const check=$('#check');
 function say(msg){ cap.innerHTML=`<span class="txt act">${esc(msg)}</span>`; }
 
 function readHash(){
   const h=location.hash.replace(/^#/,''); const [tab,q]=h.split('?');
-  if(['play','compare','script','about','setup'].includes(tab)) cur.tab=tab;
+  if(['play','about','literature','setup'].includes(tab)) cur.tab=tab; else if(tab) cur.tab='play';
   const p=new URLSearchParams(q||'');
   if(p.get('b')) cur.b=p.get('b'); if(p.get('f')) cur.f=p.get('f');
-  if(p.get('by')==='character'||p.get('by')==='situation') cur.by=p.get('by'); if(p.get('v')) cur.v=p.get('v');
 }
 function writeHash(){
   const p=new URLSearchParams(); if(cur.b) p.set('b',cur.b); if(cur.f) p.set('f',cur.f);
-  if(cur.tab==='compare'){ p.set('by',cur.by); if(cur.v) p.set('v',cur.v); }
   history.replaceState(null,'',`#${cur.tab}?${p.toString()}`);
 }
 function setTab(t){
@@ -596,98 +658,138 @@ function setTab(t){
   document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-selected', b.dataset.tab===t));
   document.querySelectorAll('.view').forEach(v=>v.hidden = v.id!=='view-'+t);
   if(t!=='play') stop();
-  if(t==='compare') drawCompare();
   if(t==='setup') drawSetup();
   writeHash();
 }
 document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',()=>setTab(b.dataset.tab)));
 // a link or a typed address that changes only the part after # (writeHash uses replaceState, which does not fire this)
-window.addEventListener('hashchange',()=>{
-  readHash();
-  if(data.behaviours[cur.b] || data.forms[cur.f]){ $('#selBeh').value=cur.b||''; $('#selForm').value=cur.f||''; refresh(); }
-  setTab(cur.tab);
-});
+window.addEventListener('hashchange',()=>{ readHash(); if(data.behaviours[cur.b]||data.forms[cur.f]) select(); setTab(cur.tab); });
 
-function loadData(d, keep){
-  data=d;
-  const bs=Object.keys(d.behaviours), fs=Object.keys(d.forms);
-  // behaviours grouped by character
-  const groups={}; bs.forEach(k=>{ (groups[d.behaviours[k].character] ||= []).push(k); });
-  $('#selBeh').innerHTML = bs.length ? Object.entries(groups).map(([c,ks])=>`<optgroup label="${esc(c)}">${ks.map(k=>`<option value="${esc(k)}">${esc(c)} · ${esc(d.behaviours[k].situation||'(no situation)')}</option>`).join('')}</optgroup>`).join('') : '<option value="">(none yet)</option>';
-  $('#selForm').innerHTML = fs.length ? fs.map(k=>`<option value="${esc(k)}">${esc(d.forms[k].name)}</option>`).join('') : '<option value="">(no forms yet)</option>';
+// newest first: the behaviour the agent just wrote comes to the top
+const order=()=>Object.keys(data.behaviours).sort((a,b)=>{ const A=data.behaviours[a], B=data.behaviours[b];
+  return (B.mtime||0)-(A.mtime||0) || (A.character+A.situation).localeCompare(B.character+B.situation); });
+function ago(ms){
+  if(!ms) return ''; const s=(Date.now()-ms)/1000;
+  if(s<60) return 'just now'; if(s<3600) return `${Math.round(s/60)} min ago`; if(s<86400) return `${Math.round(s/3600)} h ago`;
+  const d=new Date(ms); return d.toLocaleDateString(undefined,{day:'numeric',month:'short'});
+}
+// parse every behaviour once per load: duration, rhythm and problems for the list
+let summary={};
+function summarise(){
+  summary={};
+  Object.entries(data.behaviours).forEach(([k,b])=>{
+    const r=VoiceIt.validateBehaviour(b.text, vocab);
+    const s=VoiceIt.schedule(r.parsed.lines, VoiceIt.cast(r.parsed.lines, r.parsed.meta.voice, vocab), vocab);
+    summary[k]={r, s:r.parsed.lines.length?s:{ev:[],total:1}};
+  });
+}
+function renderList(){
+  const keys=order(); const max=Math.max(1,...keys.map(k=>summary[k].s.total));
+  if(!keys.length){
+    $('#blist').innerHTML=`<div class="blist-empty">No behaviours yet. Tell your agent how your thing should behave in a situation; it writes the script into <code>design/behaviours/</code>.${served?'':'<br><label class="btn file">Open folder…<input type="file" webkitdirectory directory multiple data-folder></label>'}</div>`;
+    bindFolderInputs(); return;
+  }
+  $('#blist').innerHTML=keys.map(k=>{
+    const b=data.behaviours[k], {r,s}=summary[k];
+    const segs=s.ev.filter(e=>e.l.kind==='speech').map(e=>`<i class="${e.l.device?'d':''}" style="left:${e.start/max*100}%;width:${Math.max(.4,(e.end-e.start)/max*100)}%"></i>`).join('');
+    const probs=r.errors.length?`<span class="bad">${plural(r.errors.length,'error')}</span>`:r.warnings.length?`<span class="bad">${plural(r.warnings.length,'warning')}</span>`:'';
+    return `<button type="button" class="brow" role="option" data-k="${esc(k)}" aria-selected="${k===cur.b}" title="${esc(b.path)}">
+      <span class="bc"><span>${esc(b.character)}</span><span class="clock">${s.ev.length?fmt(s.total):'–'}</span></span>
+      <span class="bs">${esc(b.situation||' ')}</span>
+      <span class="rhythm" style="width:${s.total/max*100}%">${segs}</span>
+      <span class="bt"><span>${esc(ago(b.mtime))}</span>${probs}</span></button>`;
+  }).join('');
+}
+function renderForms(){
+  const fs=Object.keys(data.forms);
+  $('#fstrip').innerHTML = fs.length>1 ? fs.map(k=>`<button type="button" class="fchip" role="radio" data-f="${esc(k)}" aria-checked="${k===cur.f}" title="${esc(data.forms[k].name)}"><img src="${esc(data.forms[k].url)}" alt="${esc(data.forms[k].name)}"></button>`).join('') : '';
+}
+
+function loadData(d){
+  data=d; summarise();
+  const bs=order(), fs=Object.keys(d.forms);
   if(!bs.includes(cur.b)) cur.b=bs[0]||null;
   if(!fs.includes(cur.f)) cur.f=fs[0]||null;
-  $('#selBeh').value=cur.b||''; $('#selForm').value=cur.f||'';
-  refresh();
-  if(cur.tab==='compare') drawCompare();
+  select();
   if(cur.tab==='setup') drawSetup();
 }
-function refresh(){
+// show the current behaviour and form everywhere
+function select(){
+  renderList(); renderForms();
   const b=current(), f=data.forms[cur.f];
   $('#formImg').hidden=!f; $('#formEmpty').hidden=!!f;
   if(f) $('#formImg').src=f.url;
   $('#formName').textContent = f ? f.name : '';
-  $('#sitNote').textContent = b ? (b.notes || b.situation) : '';
-  $('#scriptTitle').textContent = b ? `${b.character} · ${b.situation||'(no situation)'}` : 'No behaviour selected';
-  $('#edFile').textContent = b ? b.path : '';
-  src.value = b ? b.text : '';
+  $('#edFile').textContent = b ? b.path.replace(/^.*design\//,'design/') : '';
   writeHash();
   reparse();
 }
 function reparse(){
   stop();
-  const r = VoiceIt.validateBehaviour(src.value||'', vocab);
+  const b=current(), text=b?b.text:'';
+  const r = VoiceIt.validateBehaviour(text, vocab);
   castMap = VoiceIt.cast(r.parsed.lines, r.parsed.meta.voice, vocab);
   sched = VoiceIt.schedule(r.parsed.lines, castMap, vocab);
   if(!r.parsed.lines.length) sched = {ev:[], total:1};
   people = VoiceIt.parsePeople(r.parsed.meta.people);
-  const probs=[...r.errors.map(e=>({...e,err:true})),...r.warnings].sort((a,b)=>a.ln-b.ln);
-  if(!current()){ check.className='check'; check.textContent='No behaviour selected.'; }
-  else if(probs.length){ check.className='check bad'; check.innerHTML=`${plural(r.errors.length,'error')}, ${plural(r.warnings.length,'warning')}. The rest still plays.<ul>${probs.map(p=>`<li><b>Line ${p.ln}</b> · ${p.err?'':'warning · '}${esc(p.msg)}</li>`).join('')}</ul>`; }
+  if(!b){ check.className='check'; check.textContent='No behaviour selected.'; }
+  else if(r.errors.length||r.warnings.length){ check.className='check bad'; check.textContent=`${plural(r.errors.length,'error')}, ${plural(r.warnings.length,'warning')}, marked below. The rest still plays.`; }
   else { check.className='check'; check.textContent=`Reads cleanly · ${r.parsed.lines.length} lines · about ${fmt(sched.total)}`; }
-  const st=$('#status'); st.hidden=!r.errors.length && !r.warnings.length;
-  st.textContent = r.errors.length ? `${plural(r.errors.length,'error')} in the script` : `${plural(r.warnings.length,'warning')} in the script`;
+  renderTranscript(text, r);
   drawTimeline(); seekIndex(0);
 }
-$('#status').addEventListener('click',()=>setTab('script'));
-let deb=null;
-src.addEventListener('input',()=>{ clearTimeout(deb); deb=setTimeout(()=>{ const b=current(); if(b) b.text=src.value; reparse(); },400); });
-$('#selBeh').addEventListener('change',e=>{ cur.b=e.target.value; refresh(); });
-$('#selForm').addEventListener('change',e=>{ cur.f=e.target.value; refresh(); });
+$('#blist').addEventListener('click',e=>{ const row=e.target.closest('.brow'); if(!row) return; cur.b=row.dataset.k; select(); });
+$('#blist').addEventListener('keydown',e=>{
+  if(e.key!=='ArrowDown'&&e.key!=='ArrowUp') return; e.preventDefault();
+  const keys=order(); const i=keys.indexOf(cur.b); const j=Math.max(0,Math.min(keys.length-1,i+(e.key==='ArrowDown'?1:-1)));
+  if(keys[j]&&keys[j]!==cur.b){ cur.b=keys[j]; select(); const row=[...document.querySelectorAll('.brow')].find(r=>r.dataset.k===cur.b); if(row) row.focus(); }
+});
+$('#fstrip').addEventListener('click',e=>{ const c=e.target.closest('.fchip'); if(!c) return; cur.f=c.dataset.f;
+  const f=data.forms[cur.f]; $('#formImg').src=f.url; $('#formImg').hidden=false; $('#formEmpty').hidden=true; $('#formName').textContent=f.name;
+  document.querySelectorAll('.fchip').forEach(x=>x.setAttribute('aria-checked', x.dataset.f===cur.f)); writeHash(); });
 
-/* ---------- Compare: timelines side by side, on one time scale ---------- */
-const QUESTIONS = {
-  situation:'Same situation, different characters. Who speaks first, how long are the silences, whom does each one address?',
-  character:'One character in different situations. Is it still the same character?'
-};
-function drawCompare(){
-  if(!vocab) return;
-  const key = cur.by==='character' ? 'character' : 'situation';
-  const values=[...new Set(Object.values(data.behaviours).map(b=>b[key]||'(none)'))].sort();
-  if(!values.includes(cur.v)) cur.v = (current() && current()[key]) || values[0] || null;
-  $('#selCmp').innerHTML = values.map(v=>`<option>${esc(v)}</option>`).join('') || '<option value="">(none yet)</option>';
-  $('#selCmp').value = cur.v||'';
-  $('#cmpLabel').textContent = key==='character' ? 'Character' : 'Situation';
-  document.querySelectorAll('.toggle button').forEach(b=>b.setAttribute('aria-pressed', b.dataset.by===cur.by));
-  $('#cmpQ').textContent = QUESTIONS[key];
-  const ids=Object.keys(data.behaviours).filter(k=>(data.behaviours[k][key]||'(none)')===cur.v);
-  const rows=ids.map(k=>{ const b=data.behaviours[k]; const r=VoiceIt.validateBehaviour(b.text, vocab);
-    const cm=VoiceIt.cast(r.parsed.lines, r.parsed.meta.voice, vocab); return {k, b, s:VoiceIt.schedule(r.parsed.lines, cm, vocab)}; });
-  const max=Math.max(1,...rows.map(x=>x.s.total)); const p=t=>(t/max*100)+'%';
-  $('#cmpRows').innerHTML = rows.length ? rows.map(x=>{
-    const L=buildLanes(x.s.ev, x.s.total, p, {name:x.b.character, compact:true});
-    const title = key==='character' ? x.b.situation||'(no situation)' : x.b.character;
-    return `<div class="cmp-row" role="button" tabindex="0" data-k="${esc(x.k)}" title="Play this"><div class="cmp-title"><span>${esc(title)}</span><span class="clock">${fmt(x.s.total)}</span></div>
-      <div class="tl-grid"><div>${L.names}</div><div class="tl-track"><div class="ruler-lane">${ruler(max,p)}</div>${L.lanes}</div></div></div>`;
-  }).join('') : '<p class="cmp-empty">Nothing to compare yet.</p>';
-  if(rows.length===1) $('#cmpRows').insertAdjacentHTML('beforeend', `<p class="cmp-empty">Only one behaviour here so far. Ask your agent for ${key==='character'?'this character in another situation':'another character in this situation'}.</p>`);
-  writeHash();
+/* ---------- Script: the file as a transcript that follows playback ---------- */
+function renderTranscript(text, r){
+  const b=current();
+  if(!b){ $('#scriptMeta').innerHTML=''; $('#transcript').innerHTML=''; return; }
+  const m=r.parsed.meta, ppl=VoiceIt.parsePeople(m.people);
+  $('#scriptMeta').innerHTML =
+    `<p><b>${esc(m.character||b.character)}</b>${m.situation?` · ${esc(m.situation)}`:''}${m.voice?` · voice ${esc(m.voice)}`:''}</p>`+
+    (ppl.length?`<p>${ppl.map(p=>`${esc(p.name)}${p.role?` (${esc(p.role)})`:''}`).join(', ')}</p>`:'')+
+    (b.notes?`<p class="notes" title="${esc(b.notes)}">${esc(b.notes)}</p>`:'');
+  const probs={}; [...r.errors,...r.warnings].forEach(p=>{ (probs[p.ln] ||= []).push(p.msg); });
+  const byLn={}; r.parsed.lines.forEach(l=>{ byLn[l.ln]=l; });
+  const fm=VoiceIt.frontMatter(text), lines=text.replace(/\r\n/g,'\n').split('\n');
+  const out=[];
+  lines.forEach((raw,i)=>{
+    const ln=i+1, s=raw.trim();
+    if(ln<=fm.offset || !s || s.startsWith('#')) { if(probs[ln] && ln<=fm.offset) out.push(`<li class="note-line" data-ln="${ln}">${esc(s)}${probs[ln].map(p=>`<span class="prob">${esc(p)}</span>`).join('')}</li>`); return; }
+    const l=byLn[ln]; let cls='', html=esc(s);
+    if(l && l.kind==='speech'){ const who=l.device?thingName():((people.find(x=>x.key===l.who)||{}).name||l.who);
+      cls=l.device?'dev':''; html=`<span class="who">${esc(who.toUpperCase())}</span>${l.manner?` (${esc(l.manner)})`:''}: ${esc(l.text)}`; }
+    else if(l && (l.kind==='screen'||l.kind==='light'||l.kind==='sound'||l.kind==='touch')) cls='cue';
+    else if(l && (l.kind==='action'||l.kind==='pause')) cls='act';
+    out.push(`<li class="${cls}" data-ln="${ln}">${html}${(probs[ln]||[]).map(p=>`<span class="prob">${esc(p)}</span>`).join('')}</li>`);
+  });
+  $('#transcript').innerHTML=out.join('');
 }
-document.querySelectorAll('.toggle button').forEach(b=>b.addEventListener('click',()=>{ cur.by=b.dataset.by; cur.v=null; drawCompare(); }));
-$('#selCmp').addEventListener('change',e=>{ cur.v=e.target.value; drawCompare(); });
-function openRow(row){ cur.b=row.dataset.k; $('#selBeh').value=cur.b; refresh(); setTab('play'); }
-$('#cmpRows').addEventListener('click',e=>{ const row=e.target.closest('.cmp-row'); if(row) openRow(row); });
-$('#cmpRows').addEventListener('keydown',e=>{ const row=e.target.closest('.cmp-row'); if(row && (e.key==='Enter'||e.key===' ')){ e.preventDefault(); openRow(row); } });
+// highlight the line that is playing, and keep it in view inside the script column
+function markLine(ln){
+  const col=$('.col-script'); let el=null;
+  document.querySelectorAll('#transcript li.now').forEach(x=>x.classList.remove('now'));
+  if(ln!=null) el=document.querySelector(`#transcript li[data-ln="${ln}"]`);
+  if(!el) return; el.classList.add('now');
+  const top=el.offsetTop-col.offsetTop, bottom=top+el.offsetHeight;
+  if(top<col.scrollTop+40 || bottom>col.scrollTop+col.clientHeight-40) col.scrollTop=Math.max(0,top-col.clientHeight/3);
+}
+// click a line: jump there
+$('#transcript').addEventListener('click',e=>{
+  const li=e.target.closest('li[data-ln]'); if(!li) return;
+  const ln=+li.dataset.ln, i=sched.ev.findIndex(ev=>ev.l.ln===ln); if(i<0) return;
+  const cueLine=['screen','light','sound'].includes(sched.ev[i].l.kind);
+  seekIndex(cueLine?i+1:i, sched.ev[i].start); markLine(ln);
+  if(!cueLine) caption(sched.ev[i].l);
+});
 
 /* ---------- About: the vocabulary, from VOCABULARY.md ---------- */
 function renderVocab(){
@@ -728,7 +830,7 @@ $('#voiceTest').addEventListener('click',async()=>{
 
 /* ---------- Loading: from bin/preview, or from a folder ---------- */
 const served = /^https?:$/.test(location.protocol);
-let lastJSON='', lastVocab='';     // edits typed in the Script tab stay until a file changes on disk
+let lastJSON='', lastVocab='';
 let openedByHand=false;            // after Open folder, stop following the served folder
 async function fetchDesign(keep){
   if(openedByHand) return;
@@ -739,7 +841,7 @@ async function fetchDesign(keep){
     if(vt===lastVocab && dt===lastJSON) return;
     lastVocab=vt; lastJSON=dt;
     if(!setVocab(vt)) return;
-    loadData(JSON.parse(dt), keep);
+    loadData(JSON.parse(dt));
   }catch(e){
     if(!keep) say('Could not load the design folder. Start VoiceIt with: node system/bin/preview, or use Open folder.');
   }
@@ -750,23 +852,24 @@ if(served){
   window.addEventListener('focus',()=>fetchDesign(true));
   document.addEventListener('visibilitychange',()=>{ if(!document.hidden) fetchDesign(true); });
 } else {
-  $('#openPlay').hidden=false;
   say('VoiceIt was opened without the preview. See the Setup tab: start it with node system/bin/preview, or open the project folder.');
 }
-document.querySelectorAll('input[data-folder]').forEach(inp=>inp.addEventListener('change',async e=>{
+function bindFolderInputs(){ document.querySelectorAll('input[data-folder]:not([data-bound])').forEach(inp=>{ inp.dataset.bound='1'; inp.addEventListener('change',onFolder); }); }
+async function onFolder(e){
   const files=[...e.target.files].filter(f=>!(f.webkitRelativePath||f.name).split('/').some(s=>s.startsWith('.')||s==='node_modules'));
   if(!files.length) return;
   const list=[];
   for(const f of files){
     const p=f.webkitRelativePath||f.name;
-    if(/\.md$/i.test(f.name)) list.push({path:p, text:await f.text()});
+    if(/\.md$/i.test(f.name)) list.push({path:p, text:await f.text(), mtime:f.lastModified});
     else if(/\.(png|jpe?g|webp|svg)$/i.test(f.name)) list.push({path:p, url:URL.createObjectURL(f)});
   }
   const d=VoiceIt.buildDesign(list);
   if(d.vocabulary){ if(!setVocab(d.vocabulary)) return; }
   if(!vocab){ say('This folder has no system/VOCABULARY.md. Choose the whole project folder (the one with system/ and design/ inside).'); setTab('play'); return; }
   if(!Object.keys(d.behaviours).length && !Object.keys(d.forms).length){ say('No behaviours or forms found. Choose the project folder or its design folder.'); setTab('play'); return; }
-  openedByHand=true; loadData(d, false); setTab('play');
-}));
+  openedByHand=true; loadData(d); setTab('play');
+}
+bindFolderInputs();
 })();
 </script>

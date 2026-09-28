@@ -4,7 +4,7 @@ A behaviour is a script: how the thing acts in one situation, one event per line
 
 ## The file
 
-A behaviour lives in `design/behaviours/`, one file each, named `<character> - <situation>.md` (`night light - visiting hour.md`). It starts with three facts, then a few lines about the situation, then the script:
+A behaviour lives in `design/behaviours/`, one file each, named `<character> - <situation>.md` (`night light - visiting hour.md`). It starts with a few facts, then a few lines about the situation, then the script:
 
 ```
 ---
@@ -20,11 +20,11 @@ LIGHT: white dim
 …
 ```
 
-- `character`: the name of the thing's character. Behaviours with the same character are compared in Compare → Same character.
-- `situation`: a short title. Behaviours with the same situation are compared in Compare → Same situation.
-- `voice`: one name from the voice catalogue in `VOCABULARY.md` (Ash, Theo, Sam, Noor, Mira, Wren).
+- `character` (required): the name the thing appears under.
+- `voice` (required): one name from the voice catalogue in `VOCABULARY.md` (Ash, Theo, Sam, Noor, Mira, Wren).
+- `situation` (optional): a short title, shown next to the character in VoiceIt's list.
 - `people` (optional but recommended): everyone in the situation, each with their role in brackets. The name is the one used in the script, so `Anna` speaks as `ANNA:`. VoiceIt shows the role next to the name, and gives everyone a lane on the timeline, also those who stay silent. The check warns when someone speaks who is not listed.
-- `#` lines right after the front matter describe the situation. VoiceIt shows them above the stage; they are not played.
+- `#` lines right after the front matter describe the situation. VoiceIt shows them above the script; they are not played.
 
 ## Lines
 
@@ -81,7 +81,7 @@ Same situation, same vocabulary: every difference is behaviour, and it adds up t
 
 `node system/bin/check` reports, with line numbers:
 
-- **errors**: missing front matter, character, situation or voice; a voice that is not in the catalogue; a screen component, light colour or sound that is not in the vocabulary;
+- **errors**: missing front matter, character or voice; a voice that is not in the catalogue; a screen component, light colour or sound that is not in the vocabulary;
 - **warnings**: someone who speaks but is not in the `people` line; a line that looks like a speaker but is not in capitals; a TOUCH on an option that is not on the screen at that moment; words after LIGHT that VoiceIt ignores; a script with no lines.
 
 Errors must be fixed. Warnings are worth reading: they usually mean the behaviour will not play as intended.
