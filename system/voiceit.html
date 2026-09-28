@@ -200,6 +200,11 @@ textarea:focus{outline:none;border-color:var(--ink)}
 .vtable code{font-family:var(--script);font-size:12.5px;letter-spacing:0}
 .swatch{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px;box-shadow:inset 0 0 0 1px var(--hairline)}
 .about .file{margin-top:var(--s1)}
+.checks{list-style:none;padding:0!important}
+.checks li{border-bottom:1px solid var(--hairline-2);padding:var(--s2) 0;margin:0}
+.checks li.no b{color:var(--ink);box-shadow:inset 0 -2px 0 var(--ink)}
+.checks li.ok b{color:var(--gray)}
+.checks .hint{font-size:13px;color:var(--gray)}
 </style>
 
 
@@ -215,6 +220,7 @@ textarea:focus{outline:none;border-color:var(--ink)}
       <button type="button" role="tab" id="tab-compare" aria-controls="view-compare" data-tab="compare">Compare</button>
       <button type="button" role="tab" id="tab-script" aria-controls="view-script" data-tab="script">Script</button>
       <button type="button" role="tab" id="tab-about" aria-controls="view-about" data-tab="about">About</button>
+      <button type="button" role="tab" id="tab-setup" aria-controls="view-setup" data-tab="setup">Setup</button>
     </nav>
   </header>
 
@@ -311,9 +317,6 @@ textarea:focus{outline:none;border-color:var(--ink)}
       </ul>
       <h3>What it cannot do</h3>
       <p>Everything is scripted. Nothing listens; listening is shown, not done. People's reactions are written, so they will not surprise you the way real people do. Voices come from your browser and only approximate the voice named in the script. VoiceIt is for exploring many versions quickly, before building one that works.</p>
-      <h3>Open a folder</h3>
-      <p>Normally VoiceIt is started with <code>node system/bin/preview</code>. Without Node, open this page directly and choose the project folder (the one with <code>system/</code> and <code>design/</code> inside).</p>
-      <label class="btn file">Open folder…<input type="file" webkitdirectory directory multiple data-folder></label>
     </section>
     <section>
       <h2>Vocabulary</h2>
@@ -334,6 +337,39 @@ textarea:focus{outline:none;border-color:var(--ink)}
         <li><b>Enacting character.</b> Völkel, S. T., Meindl, S. &amp; Hussmann, H. (2021). <a href="https://doi.org/10.1145/3469595.3469605">Manipulating and evaluating levels of personality perceptions of voice assistants through enactment-based dialogue design</a>. CUI '21. Dertien, E., van Delden, R. &amp; Reidsma, D. (2024). <a href="https://doi.org/10.1145/3658852.3659067">Improvisation theatre as HRI simulation tool</a>. MOCO '24.</li>
         <li><b>From Delft.</b> Nicenboim, I., Giaccardi, E. &amp; Redström, J. (2023). <a href="https://doi.org/10.30682/diid8023c">Designing more-than-human AI: Experiments on situated conversations and silences</a>. <i>diid</i> 80.</li>
       </ul>
+    </section>
+  </section>
+
+  <!-- Setup: before class, at home -->
+  <section class="view about" id="view-setup" role="tabpanel" aria-labelledby="tab-setup" hidden>
+    <section>
+      <h2>Before class</h2>
+      <p>Do this at home, once, on the laptop you bring. It takes about fifteen minutes. If something does not work, you find out now and not in class.</p>
+      <ol>
+        <li><b>Install Node.js</b> (version 18 or newer) from <a href="https://nodejs.org">nodejs.org</a>: the LTS installer, with the default options. To check, open a terminal and type <code>node --version</code>.</li>
+        <li><b>Open a terminal in this folder</b> (the one with <code>system/</code> and <code>design/</code> inside).
+          <ul>
+            <li>Mac: open Terminal, type <code>cd </code> (with a space), drag the folder onto the window, press Return.</li>
+            <li>Windows: open the folder in File Explorer, click the address bar, type <code>cmd</code>, press Enter.</li>
+            <li>In Codex or Claude Code you can also simply ask your agent to run the next command.</li>
+          </ul>
+        </li>
+        <li><b>Start VoiceIt</b>: <code>node system/bin/preview</code>. Your browser opens this page. Leave the terminal open while you work; <code>Ctrl+C</code> stops it.</li>
+        <li><b>Press Play</b> in the Play tab, and play the voices below. You should see the example and hear the voices.</li>
+        <li><b>Open the folder in Codex or Claude Code</b> and ask: <i>“Read AGENTS.md and tell me in two sentences what this is.”</i> If it answers, your agent works.</li>
+      </ol>
+      <p>Chrome, Edge, Safari and Firefox all work. On Windows, Edge has the best voices.</p>
+      <h3>Without Node</h3>
+      <p>Open <code>system/voiceit.html</code> by double-clicking it, then choose the project folder here. Everything plays, but VoiceIt does not notice new files by itself (open the folder again after a change), and your agent cannot run the check. Ask for help before class.</p>
+      <label class="btn file">Open folder…<input type="file" webkitdirectory directory multiple data-folder></label>
+    </section>
+    <section>
+      <h2>This laptop</h2>
+      <ul id="setupChecks" class="checks"></ul>
+      <h3>Voices</h3>
+      <p>VoiceIt uses the voices your laptop has. The six voices of the catalogue are matched to them as well as possible, so they sound different on every laptop. Play them to hear what yours can do.</p>
+      <p><button class="btn" id="voiceTest" type="button">Play the six voices</button></p>
+      <table class="vtable" id="voiceMap"></table>
     </section>
   </section>
 </div>
@@ -544,7 +580,7 @@ function say(msg){ cap.innerHTML=`<span class="txt act">${esc(msg)}</span>`; }
 
 function readHash(){
   const h=location.hash.replace(/^#/,''); const [tab,q]=h.split('?');
-  if(['play','compare','script','about'].includes(tab)) cur.tab=tab;
+  if(['play','compare','script','about','setup'].includes(tab)) cur.tab=tab;
   const p=new URLSearchParams(q||'');
   if(p.get('b')) cur.b=p.get('b'); if(p.get('f')) cur.f=p.get('f');
   if(p.get('by')==='character'||p.get('by')==='situation') cur.by=p.get('by'); if(p.get('v')) cur.v=p.get('v');
@@ -560,6 +596,7 @@ function setTab(t){
   document.querySelectorAll('.view').forEach(v=>v.hidden = v.id!=='view-'+t);
   if(t!=='play') stop();
   if(t==='compare') drawCompare();
+  if(t==='setup') drawSetup();
   writeHash();
 }
 document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',()=>setTab(b.dataset.tab)));
@@ -582,6 +619,7 @@ function loadData(d, keep){
   $('#selBeh').value=cur.b||''; $('#selForm').value=cur.f||'';
   refresh();
   if(cur.tab==='compare') drawCompare();
+  if(cur.tab==='setup') drawSetup();
 }
 function refresh(){
   const b=current(), f=data.forms[cur.f];
@@ -662,6 +700,31 @@ function renderVocab(){
     '<h3>Manner the browser voices follow</h3>'+t(['Direction','Words'], Object.values(v.manner).map(e=>[esc(e.name), esc(e.words.join(', '))]));
 }
 
+/* ---------- Setup: what this laptop can do ---------- */
+function drawSetup(){
+  const ok=(yes,text,hint)=>`<li class="${yes?'ok':'no'}"><b>${yes?'Yes':'Not yet'}</b> · ${esc(text)}${!yes&&hint?`<br><span class="hint">${esc(hint)}</span>`:''}</li>`;
+  const nb=Object.keys(data.behaviours).length, nf=Object.keys(data.forms).length;
+  $('#setupChecks').innerHTML =
+    ok(served, 'VoiceIt was started with node system/bin/preview.', 'You opened the page directly. That works, but see step 1 to 3, or “Without Node”.')+
+    ok(!!vocab, 'The vocabulary is loaded.', 'Start VoiceIt with the preview, or open the project folder.')+
+    ok(nb>0, `${plural(nb,'behaviour')} and ${plural(nf,'form')} found.`, 'No behaviours yet: start with the preview, or open the project folder.')+
+    ok(hasSpeech && sysVoices.length>0, hasSpeech ? `${plural(sysVoices.length,'voice')} available in this browser.` : 'This browser cannot speak.', 'No voices found. Try another browser (Edge on Windows, Safari or Chrome on a Mac).');
+  if(!vocab){ $('#voiceMap').innerHTML=''; return; }
+  $('#voiceMap').innerHTML = '<thead><tr><th>Voice</th><th>Sound</th><th>Played with, on this laptop</th></tr></thead><tbody>'+
+    Object.values(vocab.voice).map(v=>{ const s=sysVoiceFor(v.name); return `<tr><td>${esc(v.name)}</td><td>${esc(v.sound||'')}</td><td>${s?esc(s.name):'(no voice)'}</td></tr>`; }).join('')+'</tbody>';
+}
+if(hasSpeech){ try{ speechSynthesis.addEventListener('voiceschanged',()=>{ if(cur.tab==='setup') drawSetup(); }); }catch(e){} }
+$('#voiceTest').addEventListener('click',async()=>{
+  if(!vocab||!hasSpeech) return;
+  stop(); const btn=$('#voiceTest'); btn.disabled=true;
+  for(const v of Object.values(vocab.voice)){
+    await new Promise(res=>{ const u=new SpeechSynthesisUtterance(`This is ${v.name}. ${v.sound}.`); const s=sysVoiceFor(v.name); if(s) u.voice=s;
+      u.pitch=Math.max(.1,Math.min(2,v.pitch)); u.rate=v.rate; let done=false; const fin=()=>{ if(!done){ done=true; res(); } };
+      u.onend=fin; u.onerror=fin; setTimeout(fin,6000); try{ speechSynthesis.speak(u); }catch(e){ fin(); } });
+  }
+  btn.disabled=false;
+});
+
 /* ---------- Loading: from bin/preview, or from a folder ---------- */
 const served = /^https?:$/.test(location.protocol);
 let lastJSON='', lastVocab='';     // edits typed in the Script tab stay until a file changes on disk
@@ -687,7 +750,7 @@ if(served){
   document.addEventListener('visibilitychange',()=>{ if(!document.hidden) fetchDesign(true); });
 } else {
   $('#openPlay').hidden=false;
-  say('Open folder: choose the project folder (the one with system/ and design/ inside). Or start VoiceIt with: node system/bin/preview');
+  say('VoiceIt was opened without the preview. See the Setup tab: start it with node system/bin/preview, or open the project folder.');
 }
 document.querySelectorAll('input[data-folder]').forEach(inp=>inp.addEventListener('change',async e=>{
   const files=[...e.target.files].filter(f=>!(f.webkitRelativePath||f.name).split('/').some(s=>s.startsWith('.')||s==='node_modules'));
