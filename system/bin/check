@@ -1,0 +1,76 @@
+#!/usr/bin/env node
+// Checks the design folder against system/VOCABULARY.md and the notation.
+// Usage: node system/bin/check                      everything in design/
+//        node system/bin/check <file or folder> …   only problems in those paths
+// Exits with 1 when there is an error. Uses the same code as the player (system/conduct.js).
+'use strict';
+const fs = require('fs');
+const path = require('path');
+const Conduct = require('../conduct.js');
+
+const root = path.resolve(__dirname, '..', '..');
+const rel = p => path.relative(root, p).split(path.sep).join('/');
+
+function readTree(dir, out = []){
+  if (!fs.existsSync(dir)) return out;
+  for (const e of fs.readdirSync(dir, {withFileTypes:true})) {
+    if (e.name.startsWith('.') || e.name === 'node_modules') continue;
+    const full = path.join(dir, e.name);
+    if (e.isDirectory()) readTree(full, out);
+    else if (/\.md$/i.test(e.name)) out.push({path:rel(full), text:fs.readFileSync(full, 'utf8')});
+    else if (/\.(png|jpe?g|webp|svg)$/i.test(e.name)) out.push({path:rel(full), url:rel(full)});
+  }
+  return out;
+}
+
+const vocabPath = path.join(root, 'system', 'VOCABULARY.md');
+if (!fs.existsSync(vocabPath)) { console.error('Cannot find system/VOCABULARY.md. Run this from the project folder.'); process.exit(2); }
+const vocab = Conduct.parseVocabulary(fs.readFileSync(vocabPath, 'utf8'));
+if (vocab.problems.length) {
+  vocab.problems.forEach(p => console.log(`system/VOCABULARY.md:${p.ln}  error    ${p.msg}`));
+  console.log('The vocabulary itself has problems; fix those first.');
+  process.exit(2);
+}
+
+const design = Conduct.buildDesign(readTree(path.join(root, 'design')));
+
+// which paths to report on
+const targets = process.argv.slice(2).map(a => rel(path.resolve(process.cwd(), a)).replace(/\/$/, ''));
+const wanted = file => !targets.length || targets.some(t => file === t || file.startsWith(t + '/') || t === '' );
+
+const problems = [];
+const add = (file, list, level) => list.forEach(p => problems.push({file:p.file || file, ln:p.ln, level, msg:p.msg}));
+const counts = {performances:0, conducts:0, situations:0};
+
+for (const [name, st] of Object.entries(design.situations)) {
+  if (st.missing || !wanted(st.path)) continue;
+  counts.situations++;
+  const r = Conduct.validateSituation(st);
+  add(st.path, r.errors, 'error'); add(st.path, r.warnings, 'warning');
+}
+for (const [dir, dev] of Object.entries(design.devices)) {
+  if (wanted(dev.conductPath) || wanted(dev.path)) {
+    counts.conducts++;
+    const r = Conduct.validateConduct(dev, vocab);
+    add(dev.conductPath, r.errors, 'error'); add(dev.conductPath, r.warnings, 'warning');
+  }
+  for (const [stem, text] of Object.entries(dev.performances)) {
+    const file = dev.performancePaths[stem];
+    if (!wanted(file)) continue;
+    counts.performances++;
+    const r = Conduct.validatePerformance(text, {vocab, design, deviceDir:dir, fileStem:stem});
+    add(file, r.errors, 'error'); add(file, r.warnings, 'warning');
+    if (!r.errors.length) {
+      const sched = Conduct.schedule(r.parsed.lines, Conduct.cast(r.parsed.lines, dev.meta.voice, vocab), vocab);
+      console.log(`${file}  plays for about ${Conduct.formatTime(sched.total)} (${r.parsed.lines.length} lines)`);
+    }
+  }
+}
+
+problems.sort((a, b) => a.file.localeCompare(b.file) || a.ln - b.ln);
+problems.forEach(p => console.log(`${p.file}${p.ln ? ':' + p.ln : ''}  ${p.level.padEnd(7)}  ${p.msg}`));
+const errors = problems.filter(p => p.level === 'error').length, warnings = problems.length - errors;
+const n = (k, w) => `${k} ${w}${k === 1 ? '' : 's'}`;
+console.log(`\nChecked ${n(counts.performances, 'performance')}, ${n(counts.conducts, 'conduct')}, ${n(counts.situations, 'situation')}: ${n(errors, 'error')}, ${n(warnings, 'warning')}.`);
+if (!counts.performances && !counts.conducts && !counts.situations) console.log('Nothing to check at that path. Performances live in design/devices/<device>/performances/.');
+process.exit(errors ? 1 : 0);

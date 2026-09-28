@@ -1,0 +1,82 @@
+#!/usr/bin/env node
+// Serves this folder on your own computer and opens the player.
+// Usage: node system/bin/preview [--port 4307] [--no-open]
+// Nothing leaves your laptop: the server listens on 127.0.0.1 only. Stop it with Ctrl+C.
+'use strict';
+const fs = require('fs');
+const http = require('http');
+const path = require('path');
+const {spawn} = require('child_process');
+const Conduct = require('../conduct.js');
+
+const root = path.resolve(__dirname, '..', '..');
+const args = process.argv.slice(2);
+const noOpen = args.includes('--no-open');
+const portArg = args.indexOf('--port');
+let port = portArg >= 0 ? parseInt(args[portArg + 1], 10) || 4307 : 4307;
+
+const TYPES = {'.html':'text/html; charset=utf-8', '.js':'text/javascript; charset=utf-8', '.md':'text/markdown; charset=utf-8',
+  '.json':'application/json; charset=utf-8', '.css':'text/css; charset=utf-8', '.svg':'image/svg+xml',
+  '.png':'image/png', '.jpg':'image/jpeg', '.jpeg':'image/jpeg', '.webp':'image/webp', '.txt':'text/plain; charset=utf-8'};
+
+const rel = p => path.relative(root, p).split(path.sep).join('/');
+function readTree(dir, out = []){
+  if (!fs.existsSync(dir)) return out;
+  for (const e of fs.readdirSync(dir, {withFileTypes:true})) {
+    if (e.name.startsWith('.') || e.name === 'node_modules') continue;
+    const full = path.join(dir, e.name);
+    if (e.isDirectory()) readTree(full, out);
+    else if (/\.md$/i.test(e.name)) out.push({path:rel(full), text:fs.readFileSync(full, 'utf8')});
+    else if (/\.(png|jpe?g|webp|svg)$/i.test(e.name)) {
+      const url = '/' + rel(full).split('/').map(encodeURIComponent).join('/') + '?v=' + Math.round(fs.statSync(full).mtimeMs);
+      out.push({path:rel(full), url});
+    }
+  }
+  return out;
+}
+const design = () => Conduct.buildDesign(readTree(path.join(root, 'design')));
+
+function send(res, code, type, body){
+  res.writeHead(code, {'Content-Type':type, 'Cache-Control':'no-store'});
+  res.end(body);
+}
+const server = http.createServer((req, res) => {
+  let pathname;
+  try { pathname = decodeURIComponent(new URL(req.url, 'http://localhost').pathname); }
+  catch (e) { return send(res, 400, 'text/plain', 'Bad request'); }
+  if (pathname === '/') { res.writeHead(302, {Location:'/system/player.html'}); return res.end(); }
+  if (pathname === '/design.json') return send(res, 200, TYPES['.json'], JSON.stringify(design()));
+  const file = path.resolve(root, '.' + pathname);
+  const inside = file === root || file.startsWith(root + path.sep);
+  if (!inside || rel(file).split('/').some(s => s.startsWith('.'))) return send(res, 404, 'text/plain', 'Not found');
+  fs.stat(file, (err, st) => {
+    if (err || !st.isFile()) return send(res, 404, 'text/plain', 'Not found');
+    send(res, 200, TYPES[path.extname(file).toLowerCase()] || 'application/octet-stream', fs.readFileSync(file));
+  });
+});
+
+function openBrowser(url){
+  const cmd = process.platform === 'darwin' ? ['open', [url]] : process.platform === 'win32' ? ['cmd', ['/c', 'start', '', url]] : ['xdg-open', [url]];
+  try { spawn(cmd[0], cmd[1], {stdio:'ignore', detached:true}).on('error', () => {}).unref(); } catch (e) { /* open it by hand */ }
+}
+
+let tries = 0;
+server.on('error', err => {
+  if (err.code === 'EADDRINUSE' && tries++ < 10) { port++; server.listen(port, '127.0.0.1'); return; }
+  console.error(`Could not start the preview: ${err.message}`); process.exit(1);
+});
+server.on('listening', () => {
+  const url = `http://127.0.0.1:${port}/`;
+  const d = design();
+  console.log(`Conduct preview: ${url}\n`);
+  console.log('Situations:');
+  Object.entries(d.situations).forEach(([k, s]) => console.log(`  ${k}${s.meta.title ? '  ' + s.meta.title : ''}${s.missing ? '  (no situation file)' : ''}`));
+  console.log('Devices:');
+  Object.entries(d.devices).forEach(([k, v]) => {
+    const perfs = Object.keys(v.performances);
+    console.log(`  ${k}  ${v.meta.name || ''}${v.meta.voice ? ' · voice ' + v.meta.voice : ''} · ${perfs.length ? 'performances: ' + perfs.join(', ') : 'no performances yet'}`);
+  });
+  console.log('\nThe player picks up changed files when you switch back to it. Stop with Ctrl+C.');
+  if (!noOpen) openBrowser(url);
+});
+server.listen(port, '127.0.0.1');
