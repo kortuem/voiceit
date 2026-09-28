@@ -13,6 +13,7 @@
    - front matter `device: <folder name>` and `situation: <situation file name>`;
    - only the components, light colours, modifiers and sounds in `VOCABULARY.md`;
    - speakers are `DEVICE` and the names in the situation's `people`;
+   - cues come before the line they belong to (a SCREEN cue after the device's line appears only during the next line);
    - silence is written: `(beat)`, `(pause n)`;
    - each TOUCH picks an option that is on the screen at that moment;
    - roughly one to two minutes when played; one event per line.

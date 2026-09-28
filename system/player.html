@@ -436,7 +436,13 @@ function reparse(){
 let deb=null;
 src.addEventListener('input',()=>{ clearTimeout(deb); deb=setTimeout(()=>{ const dv=data.devices[cur.dev]; if(dv&&cur.sit) dv.performances[cur.sit]=src.value; reparse(); },400); });
 $('#selSit').addEventListener('change',e=>{ cur.sit=e.target.value; refresh(); });
-$('#selDev').addEventListener('change',e=>{ cur.dev=e.target.value; cur.form=cur.dev; $('#selForm').value=cur.form; refresh(); });
+$('#selDev').addEventListener('change',e=>{
+  cur.dev=e.target.value; cur.form=cur.dev; $('#selForm').value=cur.form;
+  // move to a situation this device has a performance for, if the current one has none
+  const dv=data.devices[cur.dev];
+  if(dv && dv.performances[cur.sit]==null){ const s=Object.keys(data.situations).find(k=>dv.performances[k]!=null); if(s){ cur.sit=s; $('#selSit').value=s; } }
+  refresh();
+});
 $('#selForm').addEventListener('change',e=>{ cur.form=e.target.value; refresh(); });
 
 /* ---------- Loading: from bin/preview, or from a folder ---------- */

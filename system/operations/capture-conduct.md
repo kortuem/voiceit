@@ -14,7 +14,7 @@
 6. **Revise and confirm.** Adjust the rules to the answers. When the group agrees (or says "fine", "go"), write the file.
 7. **Write** `conduct.md` with front matter `name` and `voice`, and the rules as a `-` list. Create the device folder and an empty `performances/` folder if they do not exist.
 8. **Run** `node system/bin/check` and fix any error in the conduct.
-9. **Report** in one or two sentences what you wrote, and offer the next step: a form (`FORM.md`) or a performance.
+9. **Report** in one or two sentences what you wrote, and offer the next step: a form (`FORM.md`) or a performance. If `BRIEF.md` asks the group to record which device is which, add a line to `design/notes.md` or remind them to.
 
 ## Never
 

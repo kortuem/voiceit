@@ -33,7 +33,7 @@ Reserved words: `DEVICE`, `SCREEN`, `LIGHT`, `SOUND`, `TOUCH`.
 
 ## Timing
 
-The local player estimates how long each spoken line takes from its length, its voice and its manner. Cues (SCREEN, LIGHT, SOUND) take no time; they change the device at the moment the next line begins. A `TOUCH` takes about a second. Silence is written, not implied: use `(beat)` and `(pause n)`.
+The local player estimates how long each spoken line takes from its length, its voice and its manner. Cues (SCREEN, LIGHT, SOUND) take no time; they change the device at the moment the next line begins. So write a cue **before** the line it belongs to: a SCREEN cue placed after the device speaks appears only when the next person starts talking. A `TOUCH` takes about a second. Silence is written, not implied: use `(beat)` and `(pause n)`.
 
 ## An example
 
