@@ -159,6 +159,28 @@ textarea:focus{outline:none;border-color:var(--ink)}
 .col-stage .stage{grid-template-columns:minmax(0,1fr) minmax(0,1.35fr) minmax(0,.55fr)}
 .col-stage .tl-grid{grid-template-columns:132px minmax(0,1fr)}
 
+/* Watch: form, screen and light fill the window as one composition; the work around them steps back */
+.wprog{display:none}
+body.watching .top,body.watching .col-list,body.watching .col-script,body.watching .timeline,body.watching .fstrip,body.watching #step,body.watching .spacer{display:none!important}
+body.watching{overflow:hidden}
+body.watching .col-stage{position:fixed;inset:0;z-index:10;background:var(--paper);padding:var(--s5) var(--s6) var(--s4);display:flex;flex-direction:column;gap:var(--s3)}
+body.watching .col-stage .stage{flex:1;min-height:0;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr) minmax(0,.42fr);grid-template-rows:minmax(0,1fr) auto}
+body.watching .panel{min-height:0}
+body.watching .form-img{min-height:0}
+body.watching .form-img img{max-height:100%;height:100%}
+body.watching .screen{flex:none;width:min(100%,calc((100vh - 330px) * 1.6));margin-inline:auto}
+body.watching .lamp-wrap{min-height:0}
+body.watching .lamp{width:112px;height:112px}
+body.watching .caption{font-size:24px;line-height:1.4;min-height:112px;padding:var(--s4) 0}
+body.watching .caption .who{font-size:15px}
+body.watching .transport{margin-top:0;flex-wrap:nowrap}
+body.watching .wprog{display:block;position:relative;flex:1;height:28px;min-width:120px;background:var(--hairline-2);cursor:pointer;touch-action:none}
+body.watching .wprog:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.wprog-segs i{position:absolute;top:6px;bottom:6px;background:var(--gray);opacity:.55}
+.wprog-segs i.d{background:var(--accent);opacity:1}
+.wprog-head{position:absolute;top:0;bottom:0;width:2px;margin-left:-1px;background:var(--ink)}
+@media (max-width:860px){body.watching .col-stage{padding:var(--s4)}body.watching .col-stage .stage{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto}body.watching .screen{width:100%}}
+
 /* Behaviour list: one row per file, with its rhythm on a common time scale */
 .blist:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 .brow{display:block;width:100%;text-align:left;font:inherit;color:inherit;background:none;border:0;border-bottom:1px solid var(--hairline-2);padding:var(--s2) var(--s2) var(--s2) var(--s3);cursor:pointer;box-shadow:inset 3px 0 0 transparent}
@@ -276,7 +298,9 @@ textarea:focus{outline:none;border-color:var(--ink)}
         <button class="btn" id="restart" type="button">Restart</button>
         <button class="btn" id="audio" type="button" aria-pressed="true">Sound on</button>
         <span class="spacer"></span>
+        <div class="wprog" id="wprog" role="slider" tabindex="0" aria-label="Progress"><div class="wprog-segs" id="wsegs"></div><div class="wprog-head" id="whead"></div></div>
         <span class="clock" id="clock">0:00 / 0:00</span>
+        <button class="btn" id="watch" type="button" title="Watch: form, screen and light fill the window (Escape returns)"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 2h5v1.5H3.5V7H2zM9 2h5v5h-1.5V3.5H9zM2 9h1.5v3.5H7V14H2zM12.5 9H14v5H9v-1.5h3.5z"/></svg><span>Watch</span></button>
       </div>
 
       <section class="timeline" aria-label="Timeline">
@@ -313,6 +337,7 @@ textarea:focus{outline:none;border-color:var(--ink)}
         <li><b>Behaviour.</b> Tell your agent, in your own words, who the thing is and how it should behave in a situation. It writes the script into <code>design/behaviours/</code>. Play it, and give notes: less, later, softer, not in front of her.</li>
         <li><b>Form.</b> Sketch the thing on paper, have it rendered, mark up the render and render again (<code>system/FORM.md</code>). Save the image in <code>design/forms/</code>.</li>
         <li><b>Judge.</b> Play a behaviour with different forms, and play the behaviours one after another. The rhythm strips in the list show them side by side.</li>
+        <li><b>Watch.</b> Press <b>Watch</b> to let form, screen and light fill the window, as an audience would see them. Space plays and pauses, the arrow keys step through the lines, Escape brings you back to where you were.</li>
       </ol>
       <h3>What to judge</h3>
       <ul>
@@ -570,12 +595,13 @@ function drawTimeline(){
   $('#ruler').innerHTML=ruler(sched.total,pct);
   const L=buildLanes(sched.ev, sched.total, pct, {name:thingName(), people});
   $('#tlNames').innerHTML=L.names; $('#lanes').innerHTML=L.lanes;
+  $('#wsegs').innerHTML=sched.ev.filter(e=>e.l.kind==='speech').map(e=>`<i class="${e.l.device?'d':''}" style="left:${pct(e.start)};width:${pct(Math.max(.2,e.end-e.start))}"></i>`).join('');
   const empty=!sched.ev.length; $('#tlEmpty').hidden=!empty;
   if(empty) $('#tlEmpty').textContent = Object.keys(data.behaviours).length ? 'This script has no lines yet.' : 'No behaviours yet.';
   setHead(0);
 }
 let headT=0;
-function setHead(t){ headT=Math.max(0,Math.min(t,sched.total)); head.style.left=`calc(${pct(headT)} - 1px)`; $('#clock').textContent=`${fmt(headT)} / ${sched.ev.length?'≈ '+fmt(sched.total):'0:00'}`; }
+function setHead(t){ headT=Math.max(0,Math.min(t,sched.total)); head.style.left=`calc(${pct(headT)} - 1px)`; $('#whead').style.left=pct(headT); $('#clock').textContent=`${fmt(headT)} / ${sched.ev.length?'≈ '+fmt(sched.total):'0:00'}`; }
 let raf=null;
 function animateHead(from,to,dur){ cancelAnimationFrame(raf); const t0=performance.now(); const tick=now=>{ const k=Math.min(1,(now-t0)/(dur*1000)); setHead(from+(to-from)*k); if(k<1) raf=requestAnimationFrame(tick); }; raf=requestAnimationFrame(tick); }
 
@@ -633,14 +659,42 @@ $('#audio').addEventListener('click',e=>{ audioOn=!audioOn; e.currentTarget.setA
 let dragging=false;
 function tFromEvent(ev){ const r=track.getBoundingClientRect(); return Math.max(0,Math.min(1,(ev.clientX-r.left)/r.width))*sched.total; }
 track.tabIndex=0; track.setAttribute('role','slider'); track.setAttribute('aria-label','Timeline: left and right arrows step through the lines');
-track.addEventListener('keydown',ev=>{
-  if(!vocab||!sched.ev.length) return;
+// arrow keys step line by line; Home and End jump to the first and last line
+function stepKey(key){
+  if(!vocab||!sched.ev.length) return false;
   const lines=sched.ev.map((e,i)=>i).filter(i=>!['screen','light','sound'].includes(sched.ev[i].l.kind));
   let now=-1; lines.forEach((i,k)=>{ if(sched.ev[i].start<=headT+0.01) now=k; });   // the line the playhead is on
-  let k={ArrowRight:now+1, ArrowLeft:now-1, Home:0, End:lines.length-1}[ev.key];
-  if(k==null) return; ev.preventDefault(); k=Math.max(0,Math.min(lines.length-1,k));
-  const i=lines[k]; seekIndex(i, sched.ev[i].start); caption(sched.ev[i].l);
+  let k={ArrowRight:now+1, ArrowLeft:now-1, Home:0, End:lines.length-1}[key];
+  if(k==null) return false; k=Math.max(0,Math.min(lines.length-1,k));
+  const i=lines[k]; seekIndex(i, sched.ev[i].start); caption(sched.ev[i].l); return true;
+}
+track.addEventListener('keydown',ev=>{ if(stepKey(ev.key)) ev.preventDefault(); });
+
+/* ---------- Watch ---------- */
+// Switching in or out changes only the layout: playback carries on where it is.
+const watchBtn=$('#watch');
+function setWatch(on){
+  document.body.classList.toggle('watching', on);
+  watchBtn.querySelector('span').textContent = on ? 'Back' : 'Watch';
+  watchBtn.title = on ? 'Back to the working view (Escape)' : 'Watch: form, screen and light fill the window (Escape returns)';
+  if(on && cur.tab!=='play') setTab('play');
+  writeHash();
+}
+const watching=()=>document.body.classList.contains('watching');
+watchBtn.addEventListener('click',()=>setWatch(!watching()));
+document.addEventListener('keydown',e=>{
+  if(!watching() || e.altKey || e.ctrlKey || e.metaKey) return;
+  if(e.key==='Escape'){ e.preventDefault(); setWatch(false); watchBtn.focus(); return; }
+  if(e.key===' ' && !(e.target.closest&&e.target.closest('button'))){ e.preventDefault(); playBtn.click(); return; }
+  if(stepKey(e.key)) e.preventDefault();
 });
+const wprog=$('#wprog');
+function tFromProg(ev){ const r=wprog.getBoundingClientRect(); return Math.max(0,Math.min(1,(ev.clientX-r.left)/r.width))*sched.total; }
+let wdrag=false;
+wprog.addEventListener('pointerdown',ev=>{ if(!vocab||!sched.ev.length) return; wdrag=true; try{ wprog.setPointerCapture(ev.pointerId); }catch(e){} seekTime(tFromProg(ev)); });
+wprog.addEventListener('pointermove',ev=>{ if(wdrag) seekTime(tFromProg(ev)); });
+wprog.addEventListener('pointerup',()=>{ wdrag=false; });
+wprog.addEventListener('pointercancel',()=>{ wdrag=false; });
 track.addEventListener('pointerdown',ev=>{ if(!vocab||!sched.ev.length) return; dragging=true; try{ track.setPointerCapture(ev.pointerId); }catch(e){} seekTime(tFromEvent(ev)); });
 track.addEventListener('pointermove',ev=>{ if(dragging) seekTime(tFromEvent(ev)); });
 track.addEventListener('pointerup',()=>{ dragging=false; });
@@ -659,16 +713,18 @@ function readHash(){
   if(['play','about','literature','setup'].includes(tab)) cur.tab=tab; else if(tab) cur.tab='play';
   const p=new URLSearchParams(q||'');
   if(p.get('b')) cur.b=p.get('b'); if(p.get('f')) cur.f=p.get('f');
+  cur.w = p.get('w')==='1';
+  cur.t = parseFloat(p.get('t'));   // open at a moment, e.g. #play?b=…&t=22 (read once, on opening)
 }
 function writeHash(){
-  const p=new URLSearchParams(); if(cur.b) p.set('b',cur.b); if(cur.f) p.set('f',cur.f);
+  const p=new URLSearchParams(); if(cur.b) p.set('b',cur.b); if(cur.f) p.set('f',cur.f); if(document.body.classList.contains('watching')) p.set('w','1');
   history.replaceState(null,'',`#${cur.tab}?${p.toString()}`);
 }
 function setTab(t){
   cur.tab=t;
   document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-selected', b.dataset.tab===t));
   document.querySelectorAll('.view').forEach(v=>v.hidden = v.id!=='view-'+t);
-  if(t!=='play') stop();
+  if(t!=='play'){ stop(); document.body.classList.remove('watching'); }
   if(t==='setup') drawSetup();
   writeHash();
 }
@@ -729,6 +785,7 @@ function loadData(d){
   if(!fs.includes(cur.f)) cur.f=fs[0]||null;
   select();
   if(cur.tab==='setup') drawSetup();
+  if(cur.t>0 && sched.ev.length){ seekTime(cur.t); cur.t=null; }
 }
 // show the current behaviour and form everywhere
 function select(){
@@ -863,7 +920,7 @@ async function fetchDesign(keep){
     if(!keep) say('Could not load the design folder. Start VoiceIt with: node system/bin/preview, or use Open folder.');
   }
 }
-readHash(); setTab(cur.tab);
+readHash(); setTab(cur.tab); if(cur.w) setWatch(true);
 if(served){
   fetchDesign(false);
   window.addEventListener('focus',()=>fetchDesign(true));
