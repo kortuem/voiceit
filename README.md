@@ -48,7 +48,7 @@ Git keeps versions of your folder. You do not need a GitHub account for this; it
 
 - **Save a version:** *"Commit our work: first version of Juno in visiting hour."* The first time, Git asks for your name and e-mail; your agent can set them.
 - **See what changed:** *"What changed since our last commit?"*
-- **Get course updates:** *"Pull the latest VoiceIt."* This brings in changes to `system/` and the brief. It works smoothly as long as you have not changed `system/` or the example behaviours; to change an example, copy it first.
+- **Get course updates:** *"Pull the latest VoiceIt."* In a terminal: `git pull --no-rebase` (a plain `git pull` may stop and ask how to combine your work with the update; `--no-rebase` answers that). This brings in changes to `system/` and the brief. It works smoothly as long as you have not changed `system/` or the example behaviours; to change an example, copy it first.
 - **Share with your group (needs a GitHub account):** fork the repository on GitHub, clone your fork, and push your commits there; teammates clone the same fork. Ask for help the first time.
 
 ## In class

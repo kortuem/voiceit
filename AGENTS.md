@@ -28,7 +28,7 @@ You are helping a group of design students prototype a thing that listens and re
 The folder is a Git repository. The group may be new to Git; explain briefly what you do.
 
 - Commit only when the group asks, with a short message that says what changed in their design. If Git asks for a name and e-mail, ask the group for them.
-- Pull updates only when asked. If a pull runs into a conflict, stop, explain it in plain words, and ask before resolving anything.
+- Pull updates only when asked, with `git pull --no-rebase` (it merges the course update with the group's commits). If a pull runs into a conflict, stop, explain it in plain words, and ask before resolving anything.
 - Never push, force, reset, rebase or delete branches unless the group explicitly asks for that exact step.
 
 ## Playing
