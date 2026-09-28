@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Serves this folder on your own computer and opens the player.
+// Serves this folder on your own computer and opens VoiceIt.
 // Usage: node system/bin/preview [--port 4307] [--no-open]
 // Nothing leaves your laptop: the server listens on 127.0.0.1 only. Stop it with Ctrl+C.
 'use strict';
@@ -7,7 +7,7 @@ const fs = require('fs');
 const http = require('http');
 const path = require('path');
 const {spawn} = require('child_process');
-const Conduct = require('../conduct.js');
+const VoiceIt = require('../voiceit.js');
 
 const root = path.resolve(__dirname, '..', '..');
 const args = process.argv.slice(2);
@@ -34,7 +34,7 @@ function readTree(dir, out = []){
   }
   return out;
 }
-const design = () => Conduct.buildDesign(readTree(path.join(root, 'design')));
+const design = () => VoiceIt.buildDesign(readTree(path.join(root, 'design')));
 
 function send(res, code, type, body){
   res.writeHead(code, {'Content-Type':type, 'Cache-Control':'no-store'});
@@ -44,7 +44,7 @@ const server = http.createServer((req, res) => {
   let pathname;
   try { pathname = decodeURIComponent(new URL(req.url, 'http://localhost').pathname); }
   catch (e) { return send(res, 400, 'text/plain', 'Bad request'); }
-  if (pathname === '/') { res.writeHead(302, {Location:'/system/player.html'}); return res.end(); }
+  if (pathname === '/') { res.writeHead(302, {Location:'/system/voiceit.html'}); return res.end(); }
   if (pathname === '/design.json') return send(res, 200, TYPES['.json'], JSON.stringify(design()));
   const file = path.resolve(root, '.' + pathname);
   const inside = file === root || file.startsWith(root + path.sep);
@@ -68,15 +68,13 @@ server.on('error', err => {
 server.on('listening', () => {
   const url = `http://127.0.0.1:${port}/`;
   const d = design();
-  console.log(`Conduct preview: ${url}\n`);
-  console.log('Situations:');
-  Object.entries(d.situations).forEach(([k, s]) => console.log(`  ${k}${s.meta.title ? '  ' + s.meta.title : ''}${s.missing ? '  (no situation file)' : ''}`));
-  console.log('Devices:');
-  Object.entries(d.devices).forEach(([k, v]) => {
-    const perfs = Object.keys(v.performances);
-    console.log(`  ${k}  ${v.meta.name || ''}${v.meta.voice ? ' · voice ' + v.meta.voice : ''} · ${perfs.length ? 'performances: ' + perfs.join(', ') : 'no performances yet'}`);
-  });
-  console.log('\nThe player picks up changed files when you switch back to it. Stop with Ctrl+C.');
+  console.log(`VoiceIt: ${url}\n`);
+  const forms = Object.values(d.forms), behaviours = Object.values(d.behaviours);
+  console.log(`Forms (${forms.length}):`);
+  forms.forEach(f => console.log(`  ${f.name}`));
+  console.log(`Behaviours (${behaviours.length}):`);
+  behaviours.forEach(b => console.log(`  ${b.character} · ${b.situation || '(no situation)'}${b.meta.voice ? ' · voice ' + b.meta.voice : ''}`));
+  console.log('\nVoiceIt picks up changed files when you switch back to it. Stop with Ctrl+C.');
   if (!noOpen) openBrowser(url);
 });
 server.listen(port, '127.0.0.1');

@@ -1,7 +1,12 @@
 ---
-device: device-b
-situation: night-ward
+character: Night light
+situation: Night on ward 4
+voice: Ash
 ---
+# Night on ward 4. 23:10. Joost de Vries, 67, lies awake the day after hip surgery, in a two-bed room.
+# Mr Bakker in the next bed is asleep. A voice message from his daughter Eva arrives: can she visit tomorrow at ten?
+# Joost is in pain and does not know whether he may take more pain relief. Samira, the night nurse, comes in.
+# Joost wants to answer Eva before he sleeps.
 23:10. The room is dark. Mr Bakker sleeps in the next bed. Joost lies awake.
 LIGHT: amber pulse dim
 Eva's message arrives. The device makes no sound.

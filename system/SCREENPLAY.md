@@ -1,25 +1,40 @@
 # Screenplay notation
 
-A performance is a screenplay: one event per line, read from top to bottom. The notation borrows from film and theatre scripts. Blank lines and lines starting with `#` are ignored, so `#` can be used for notes.
+A behaviour is a script: how the thing acts in one situation, one event per line, read from top to bottom. The notation borrows from film and theatre scripts.
 
-Every performance starts with front matter naming the device folder and the situation:
+## The file
+
+A behaviour lives in `design/behaviours/`, one file each, named `<character> - <situation>.md` (`night light - visiting hour.md`). It starts with three facts, then a few lines about the situation, then the script:
 
 ```
 ---
-device: device-a
-situation: night-ward
+character: Night light
+situation: Visiting hour on ward 4
+voice: Ash
 ---
+# Visiting hour on ward 4. 15:00. Anna, 74, is recovering from pneumonia in a two-bed room.
+# Her son Daan and granddaughter Lotte visit. Dr Okafor comes by on her round.
+15:00. Afternoon light. Anna sits up in bed.
+LIGHT: white dim
+…
 ```
 
-The file lives in `design/devices/<device>/performances/<situation>.md`.
+- `character`: the name of the thing's character. Behaviours with the same character are compared in Compare → Same character.
+- `situation`: a short title. Behaviours with the same situation are compared in Compare → Same situation.
+- `voice`: one name from the voice catalogue in `VOCABULARY.md` (Ash, Theo, Sam, Noor, Mira, Wren).
+- `#` lines right after the front matter describe the situation. VoiceIt shows them above the stage; they are not played.
+
+The people in the script are whoever speaks in it. Everyone gets their own lane on the timeline.
 
 ## Lines
 
+Blank lines and lines starting with `#` are ignored.
+
 | Line | Meaning |
 | --- | --- |
-| `JOOST: I can't sleep.` | A person speaks. Names are in capitals and should match the `people` of the situation. Any name except the reserved words below. |
-| `DEVICE: Good evening.` | The device speaks, in the voice named in its `conduct.md`. |
-| `DEVICE (quietly, slowly): …` | A parenthetical gives the manner. The local player understands the words listed under Manner in `VOCABULARY.md`; the stage passes the whole direction to speech synthesis. |
+| `JOOST: I can't sleep.` | A person speaks. Names in capitals; any name except the reserved words below. |
+| `DEVICE: Good evening.` | The thing speaks, in the voice named in the front matter. |
+| `DEVICE (quietly, slowly): …` | A parenthetical gives the manner. The browser voices follow the words listed under Manner in `VOCABULARY.md`; the stage passes the whole direction to speech synthesis. |
 | `JOOST: I was going to--` | An em dash (`—`) or `--` at the end: the next line cuts in with no gap. |
 | `(beat)` | A pause of one second. |
 | `(pause 4)` | A pause of four seconds. |
@@ -33,11 +48,11 @@ Reserved words: `DEVICE`, `SCREEN`, `LIGHT`, `SOUND`, `TOUCH`.
 
 ## Timing
 
-The local player estimates how long each spoken line takes from its length, its voice and its manner. Cues (SCREEN, LIGHT, SOUND) take no time; they change the device at the moment the next line begins. So write a cue **before** the line it belongs to: a SCREEN cue placed after the device speaks appears only when the next person starts talking. A `TOUCH` takes about a second. Silence is written, not implied: use `(beat)` and `(pause n)`.
+VoiceIt estimates how long each spoken line takes from its length, its voice and its manner. Cues (SCREEN, LIGHT, SOUND) take no time; they change the thing at the moment the next line begins. So write a cue **before** the line it belongs to: a SCREEN cue placed after the thing speaks appears only when the next person starts talking. A `TOUCH` takes about a second. Silence is written, not implied: use `(beat)` and `(pause n)`.
 
 ## An example
 
-From `design/devices/device-b/performances/night-ward.md`, the Night light:
+The same moment with two characters in *Night on ward 4*. The Night light:
 
 ```
 LIGHT: amber pulse dim
@@ -47,12 +62,9 @@ Joost notices the light and turns his head.
 JOOST (low): What is it?
 SCREEN: word Eva
 DEVICE (quietly): A message from Eva.
-SCREEN: choice Eva's message | Show text | Later
-TOUCH: Show text
-SCREEN: statement Hi Dad, how are you feeling? | Can I come by tomorrow at ten?
 ```
 
-The same moment with the Host (`device-a`):
+The Host:
 
 ```
 SOUND: chime
@@ -63,13 +75,13 @@ EVA (voice message, warm): Hi Dad, how are you feeling? Can I come by tomorrow a
 BAKKER (half asleep, low): Hm? Who's that?
 ```
 
-Same situation, same vocabulary; every difference is conduct.
+Same situation, same vocabulary: every difference is behaviour, and it adds up to a different character.
 
 ## What the check looks for
 
 `node system/bin/check` reports, with line numbers:
 
-- **errors**: a screen component, light colour or sound that is not in the vocabulary; missing front matter; a device or situation that does not exist; a voice that is not in the catalogue;
-- **warnings**: a line that looks like a speaker but is not in capitals; a TOUCH on an option that is not on the screen at that moment; a person who is not among the situation's people; words after LIGHT that the player ignores.
+- **errors**: missing front matter, character, situation or voice; a voice that is not in the catalogue; a screen component, light colour or sound that is not in the vocabulary;
+- **warnings**: a line that looks like a speaker but is not in capitals; a TOUCH on an option that is not on the screen at that moment; words after LIGHT that VoiceIt ignores; a script with no lines.
 
-Errors must be fixed. Warnings are worth reading: they usually mean the performance will not play as intended.
+Errors must be fixed. Warnings are worth reading: they usually mean the behaviour will not play as intended.

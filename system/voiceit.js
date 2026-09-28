@@ -1,10 +1,10 @@
-/* Conduct prototyping: the shared code.
-   The player (system/player.html) and the check script (system/bin/check) both use this
-   file, so what the check accepts is exactly what the player plays. The vocabulary is not
-   written here: it is read from system/VOCABULARY.md, the single source. */
+/* VoiceIt: the shared code.
+   The page (system/voiceit.html) and the check script (system/bin/check) both use this file,
+   so what the check accepts is exactly what the page plays. The vocabulary is not written
+   here: it is read from system/VOCABULARY.md, the single source. */
 (function (root, factory) {
   if (typeof module === 'object' && module.exports) module.exports = factory();
-  else root.Conduct = factory();
+  else root.VoiceIt = factory();
 })(typeof self !== 'undefined' ? self : this, function () {
 'use strict';
 
@@ -65,7 +65,7 @@ const CUE_RE = /^(SCREEN|LIGHT|SOUND|TOUCH)\s*:\s*(.*)$/i;
 const SPEECH_RE = /^([A-Z][A-Z0-9 .'’-]*?)\s*(?:\(([^)]*)\))?\s*:\s*(.+)$/;
 const LOOKS_NAME_RE = /^([A-Za-z][\w .'’-]{0,30}?)\s*(?:\([^)]*\))?\s*:\s*\S/;
 
-function parsePerformance(txt, vocab){
+function parseScript(txt, vocab){
   const comps = Object.keys(vocab.component), lights = vocab.light, mods = Object.keys(vocab.modifier), sounds = Object.keys(vocab.sound);
   const {meta, body, offset} = frontMatter(txt);
   const lines = [], errors = [], warnings = [];
@@ -123,7 +123,7 @@ function parsePerformance(txt, vocab){
 }
 
 /* ---------- Casting and timing ---------- */
-// DEVICE gets the conduct's voice; people get the other catalogue voices in order of appearance.
+// DEVICE gets the behaviour's voice; people get the other catalogue voices in order of appearance.
 function cast(lines, deviceVoice, vocab){
   const names = Object.keys(vocab.voice);
   const dv = vocab.voice[deviceVoice] ? deviceVoice : (vocab.voice[DEFAULT_VOICE] ? DEFAULT_VOICE : names[0]);
@@ -163,96 +163,63 @@ function schedule(lines, castMap, vocab){
 }
 
 /* ---------- Validation ---------- */
-const people = st => (st && st.meta.people || '').split(',').map(s => s.trim().toUpperCase()).filter(Boolean);
-
-// ctx: {vocab, design, deviceDir, fileStem}
-function validatePerformance(text, ctx){
-  const vocab = ctx.vocab, design = ctx.design;
-  const p = parsePerformance(text, vocab);
-  const errors = [...p.errors], warnings = [...p.warnings];
-  if (!frontMatter(text).found) {
-    errors.push({ln:1, msg:'The file has no front matter. Start with ---, then device: …, situation: …, then ---.'});
-  } else {
-    if (!p.meta.device) errors.push({ln:1, msg:'The front matter has no device.'});
-    else if (ctx.deviceDir && p.meta.device !== ctx.deviceDir) errors.push({ln:1, msg:`The front matter says device: ${p.meta.device}, but the file is in devices/${ctx.deviceDir}/.`});
-    const sit = p.meta.situation;
-    if (!sit) errors.push({ln:1, msg:'The front matter has no situation.'});
-    else {
-      if (ctx.fileStem && sit !== ctx.fileStem) warnings.push({ln:1, msg:`The front matter says situation: ${sit}, but the file is called ${ctx.fileStem}.md. Use the same name.`});
-      const st = design && design.situations[sit];
-      if (design && (!st || st.missing)) errors.push({ln:1, msg:`There is no situations/${sit}.md.`});
-      const cast = people(st);
-      if (cast.length) {
-        const seen = new Set();
-        p.lines.forEach(l => {
-          if (l.kind !== 'speech' || l.device || cast.includes(l.who) || seen.has(l.who)) return;
-          seen.add(l.who);
-          warnings.push({ln:l.ln, msg:`${l.who} speaks but is not among the people of situations/${sit}.md (${cast.join(', ')}).`});
-        });
-      }
-    }
+const REQUIRED = ['character', 'situation', 'voice'];
+// line number of a front matter key, so messages point at the right line
+function metaLine(text, key){
+  const lines = String(text || '').replace(/\r\n/g, '\n').split('\n');
+  const i = lines.findIndex((l, k) => k > 0 && new RegExp('^\\s*' + key + '\\s*:', 'i').test(l));
+  return i >= 0 ? i + 1 : 1;
+}
+// the # lines right after the front matter: what the situation is
+function situationNotes(text){
+  const {body} = frontMatter(text); const out = [];
+  for (const raw of body.split('\n')) {
+    const l = raw.trim();
+    if (!l) { if (out.length) break; continue; }
+    if (!l.startsWith('#')) break;
+    out.push(l.replace(/^#+\s*/, ''));
   }
-  if (!p.lines.length) warnings.push({ln:1, msg:'The performance has no lines yet.'});
+  return out.join(' ');
+}
+function validateBehaviour(text, vocab){
+  const p = parseScript(text, vocab);
+  const errors = [...p.errors], warnings = [...p.warnings];
+  const voices = Object.keys(vocab.voice);
+  if (!frontMatter(text).found) {
+    errors.push({ln:1, msg:'The file has no front matter. Start with ---, then character: …, situation: …, voice: …, then ---.'});
+  } else {
+    REQUIRED.forEach(k => { if (!p.meta[k]) errors.push({ln:1, msg:`The front matter has no ${k}.`}); });
+    if (p.meta.voice && !vocab.voice[p.meta.voice]) errors.push({ln:metaLine(text, 'voice'), msg:`“${p.meta.voice}” is not in the voice catalogue. Choose one of ${orList(voices)}.`});
+  }
+  if (!p.lines.length) warnings.push({ln:1, msg:'The script has no lines yet.'});
   const byLine = (a, b) => a.ln - b.ln;
   return {parsed:p, errors:errors.sort(byLine), warnings:warnings.sort(byLine)};
 }
-function validateConduct(dev, vocab){
-  const errors = [], warnings = [];
-  const voices = Object.keys(vocab.voice);
-  if (!dev.meta.name) warnings.push({ln:1, msg:'The front matter has no name for this device.'});
-  if (!dev.meta.voice) errors.push({ln:1, msg:`The front matter has no voice. Choose one of ${orList(voices)}.`});
-  else if (!vocab.voice[dev.meta.voice]) errors.push({ln:1, msg:`“${dev.meta.voice}” is not in the voice catalogue. Choose one of ${orList(voices)}.`});
-  const n = dev.rules.length;
-  if (n < 5 || n > 8) warnings.push({ln:0, msg:`The conduct has ${n} ${n === 1 ? 'rule' : 'rules'}; CONDUCT.md asks for five to eight, one per line starting with -.`});
-  if (!dev.form) warnings.push({ln:0, file:dev.path + '/', msg:'No form image yet: save it as form.png in this folder.'});
-  return {errors, warnings};
-}
-function validateSituation(st){
-  const errors = [], warnings = [];
-  if (!st.meta.title) warnings.push({ln:1, msg:'The front matter has no title.'});
-  if (!people(st).length) warnings.push({ln:1, msg:'The front matter has no people (names in capitals, separated by commas).'});
-  if (!st.beats.length) errors.push({ln:0, msg:'The situation has no beats. Write them as a numbered list: 1. …'});
-  return {errors, warnings};
-}
 
-/* ---------- A design folder as data ---------- */
-// files: [{path:'design/devices/device-a/conduct.md', text:'…'}, {path:'…/form.png', url:'…'}]
-// Returns {situations, devices, vocabulary}, the object the player plays.
+/* ---------- The design folder as data ---------- */
+// files: [{path:'design/behaviours/x.md', text:'…'}, {path:'design/forms/y.png', url:'…'}]
+// Returns {forms, behaviours, vocabulary}: two pools that can be combined freely.
+const FORM_RE = /\.(png|jpe?g|webp|svg)$/i;
+const label = stem => stem.replace(/[-_]+/g, ' ').trim();
 function buildDesign(files){
-  const d = {situations:{}, devices:{}}; let vocabulary = null;
+  const forms = {}, behaviours = {}; let vocabulary = null;
   const list = files.map(f => ({...f, p:String(f.path).split('/').filter(Boolean)}))
     .filter(f => !f.p.some(s => s.startsWith('.') || s === 'node_modules'));
-  const dirOf = f => f.p.slice(0, -1).join('/');
-  const stem = name => name.replace(/\.md$/i, '');
   list.forEach(f => {
-    const n = f.p.length, name = f.p[n - 1];
-    if (n >= 2 && f.p[n - 2] === 'system' && name === 'VOCABULARY.md') vocabulary = f.text;
-    if (n >= 2 && f.p[n - 2] === 'situations' && /\.md$/i.test(name)) {
-      const fm = frontMatter(f.text);
-      d.situations[stem(name)] = {meta:fm.meta, beats:listItems(fm.body), path:f.path};
+    const n = f.p.length, name = f.p[n - 1], dir = f.p[n - 2];
+    const stem = name.replace(/\.[^.]+$/, '');
+    if (dir === 'system' && name === 'VOCABULARY.md') vocabulary = f.text;
+    if (dir === 'forms' && FORM_RE.test(name)) forms[stem] = {name:label(stem), url:f.url, path:f.path};
+    if (dir === 'behaviours' && /\.md$/i.test(name)) {
+      const {meta} = frontMatter(f.text);
+      behaviours[stem] = {meta, text:f.text, path:f.path, notes:situationNotes(f.text),
+        character:meta.character || label(stem), situation:meta.situation || ''};
     }
   });
-  list.forEach(f => {
-    if (f.p[f.p.length - 1].toLowerCase() !== 'conduct.md') return;
-    const base = dirOf(f), dir = f.p[f.p.length - 2] || 'device';
-    const fm = frontMatter(f.text);
-    const dev = {meta:fm.meta, rules:listItems(fm.body), performances:{}, performancePaths:{}, form:null, path:base, conductPath:f.path};
-    const perfDir = base ? base + '/performances' : 'performances';
-    list.forEach(o => {
-      const name = o.p[o.p.length - 1];
-      if (dirOf(o) === perfDir && /\.md$/i.test(name)) { dev.performances[stem(name)] = o.text; dev.performancePaths[stem(name)] = o.path; }
-      if (dirOf(o) === base && /^form\.(png|jpe?g|webp|svg)$/i.test(name)) dev.form = o.url;
-    });
-    d.devices[dir] = dev;
-  });
-  // a performance may refer to a situation that is not in the folder
-  Object.values(d.devices).forEach(dv => Object.keys(dv.performances).forEach(s => {
-    if (!d.situations[s]) d.situations[s] = {meta:{title:s}, beats:[], missing:true};
-  }));
-  const sorted = o => Object.fromEntries(Object.keys(o).sort().map(k => [k, o[k]]));
-  return {situations:sorted(d.situations), devices:sorted(d.devices), vocabulary};
+  const sorted = (o, key) => Object.fromEntries(Object.keys(o).sort((a, b) => key(o[a]).localeCompare(key(o[b]))).map(k => [k, o[k]]));
+  return {forms:sorted(forms, f => f.name), behaviours:sorted(behaviours, b => b.character + ' ' + b.situation), vocabulary};
 }
 
-return {RESERVED, DEFAULT_VOICE, parseVocabulary, frontMatter, listItems, parsePerformance, cast, manner, speechDur, schedule,
-  validatePerformance, validateConduct, validateSituation, buildDesign, formatTime, words};
+return {RESERVED, DEFAULT_VOICE, parseVocabulary, frontMatter, listItems, parseScript, cast, manner, speechDur, schedule,
+  situationNotes, validateBehaviour, buildDesign, formatTime, words, orList};
 });

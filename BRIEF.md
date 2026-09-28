@@ -1,22 +1,26 @@
-# Brief: three bedside devices
+# Brief: three characters at the bedside
 
-A hospital places a small smart speaker with a screen beside every bed. It can give information, call for help, reach the nurse and keep a patient in touch with relatives. Your group designs three versions of it for the same situation: **visiting hour on ward 4** (`design/situations/visiting-hour.md`).
+A hospital places a small device with a screen and a light beside every bed. It can give information, call for help, reach the nurse and keep a patient in touch with relatives. Your group designs three characters for it, in the same situation.
 
-1. **A stereotypically male device.**
-2. **A stereotypically female device.**
-3. **Your own device**: how you think it should look, speak and behave.
+## The situation: visiting hour on ward 4
+
+15:00. Anna Visser, 74, is recovering from pneumonia in a two-bed room; Mrs de Wit in the other bed is trying to rest. Anna's son Daan and her granddaughter Lotte, 8, come to visit, and Lotte is curious about the device. Daan asks about Anna's blood test results, which Anna has not seen yet. Dr Okafor comes by on her round, and Anna wants to know when she can go home. When visiting time ends, Anna wants to be reminded of what the doctor said.
+
+## Three characters
+
+1. **A stereotypically male character.**
+2. **A stereotypically female character.**
+3. **Your own**: how you think a thing like this should look, speak and behave.
 
 The first two are constructed on purpose. Build them from what you know of how people and products are expected to behave, and pay attention to what you reach for. The third is where your own design happens.
 
-## For each device
+## For each character
 
-A folder in `design/devices/` (`device-c`, `device-d`, `device-e`) with:
+- **A form**: sketch it on paper, render it, correct it (`system/FORM.md`). Save it in `design/forms/`.
+- **A behaviour in visiting hour**: tell your agent who the thing is and how it should behave; it writes the script into `design/behaviours/`. Play it, give notes, and repeat until it is right.
+- **Judge it**: does the behaviour fit the form? Play it in the other forms too. If you have time, ask for the same character in a second situation of your own and see whether it is still the same character.
 
-- `form.png`: its form, from sketch to render (`system/FORM.md`);
-- `conduct.md`: five to eight rules for how it behaves, and its voice (`system/CONDUCT.md`);
-- `performances/visiting-hour.md`: the device in the situation, written by your agent and checked.
-
-Give each device a name that does not give away which one it is: the class will try to guess. Write down in `design/notes.md` which device is which, and what you noticed while making it.
+Give each character a name that does not give away which one it is: the class will try to guess. Write down in `design/notes.md` which is which, and what you noticed while making them.
 
 ## Boundaries
 
@@ -24,4 +28,4 @@ Stereotypes show in manner and behaviour, never in insults or sexual content. A 
 
 ## Start here
 
-Watch the worked example first (`node system/bin/preview`): the Host and the Night light in *Night on ward 4*. They are the same kind of device in the same kind of room, with different conduct. It is not a gender example; it shows what a difference in conduct looks like.
+Open the worked example first (`node system/bin/preview`): the Host and the Night light in *Night on ward 4*, and the Night light again in visiting hour. It is not a gender example; it shows what a difference in character looks like.

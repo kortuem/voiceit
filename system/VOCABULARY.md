@@ -1,6 +1,6 @@
 # Vocabulary
 
-Everything a device can show, light, sound and say with. A performance may use only what is listed here. This file is the single source: the check script and the player read the entries below, so what you read here is exactly what the player accepts.
+Everything a thing can show, light, sound and say with. A behaviour may use only what is listed here. This file is the single source: the check script and VoiceIt read the entries below, so what you read here is exactly what VoiceIt accepts.
 
 Each entry is one fenced block. Its first word (`component`, `light`, `modifier`, `sound`, `voice`, `manner`) says what kind of entry it is; the lines inside are `key: value`. Do not change entries during the session. Adding a new one is a later exercise.
 
@@ -35,7 +35,7 @@ use: handing the decision to people
 name: image
 syntax: SCREEN: image [a still lake at dusk] | caption
 parts: a description in square brackets; optionally a caption
-use: speaking in images; the player draws a wireframe placeholder with the description
+use: speaking in images; VoiceIt draws a wireframe placeholder with the description
 ```
 
 ```component
@@ -110,9 +110,9 @@ effect: one short tick; confirms a touch
 
 ## Voices
 
-The device has one voice from this catalogue, named in its `conduct.md`. People in the performance get the other voices automatically. The catalogue describes how a voice sounds, not who it belongs to.
+The thing has one voice from this catalogue, named in the front matter of each behaviour (`voice: Ash`). People in the script get the other voices automatically. The catalogue describes how a voice sounds, not who it belongs to.
 
-`range` places the voice from low to high; `pitch` and `rate` are what the player uses with browser voices (1 is the browser's normal). On the stage the same names are mapped to expressive synthesis voices.
+`range` places the voice from low to high; `pitch` and `rate` are what VoiceIt uses with browser voices (1 is the browser's normal). On the stage the same names are mapped to expressive synthesis voices.
 
 ```voice
 name: Ash
@@ -164,7 +164,7 @@ rate: 1.05
 
 ## Manner
 
-A parenthetical after a name is direction for the voice: `DEVICE (quietly, slowly): …`. Write it in plain words. On the stage the whole direction goes to speech synthesis. The local player understands only the words below (a word also matches its longer forms: `quiet` matches `quietly`). When several apply, rates and pitches multiply and the quietest volume wins. Other words are allowed; the local player simply ignores them.
+A parenthetical after a name is direction for the voice: `DEVICE (quietly, slowly): …`. Write it in plain words. On the stage the whole direction goes to speech synthesis. VoiceIt's browser voices understand only the words below (a word also matches its longer forms: `quiet` matches `quietly`). When several apply, rates and pitches multiply and the quietest volume wins. Other words are allowed; the browser voices simply ignore them.
 
 ```manner
 name: quiet
