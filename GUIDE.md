@@ -105,7 +105,7 @@ These phrases work reliably. You can phrase things differently, but starting a r
 | **New behaviour script:** *name, where. How it behaves.* | To make a new script, also for a character you already have, somewhere else (*"New behaviour script: Pip, at night. …"*). | The agent reads back what it understood and waits. |
 | **Go** | When the read-back is right. | The agent writes the script, checks it and reports. |
 | **Note on** *name:* *remark.* | After playing, when something should change (*"Note on Rex: it talks over the doctor."*). | The agent says whether the note changes this moment or the product's whole manner, revises the script, and checks it. |
-| **Check our scripts** (or **Check** *name*) | After you edited a script yourself, or when something does not play as expected. | The agent runs the check and explains every problem with its line, in plain words, and asks before fixing. |
+| **Check our scripts** (or **Check** *name*) | After you edited a script yourself, or when something does not play as expected. | The agent runs the check, explains what it finds with line numbers, in plain words, and asks before fixing. |
 | **Copy the** *name* **example** | To start from one of the examples instead of from scratch. | The agent copies it into `design/behaviours/`, where you can change it. |
 | **Compare** *name*'s **scripts** | When a character has several scripts. | The agent compares them and says where its manner differs. It changes nothing. |
 | **Commit our work:** *what changed.* | Optional: to save a version (see the README). | The agent makes a Git commit. |
@@ -126,5 +126,5 @@ Sketch the product on paper, render the sketch with ChatGPT or Gemini, mark up t
 
 - **A new script does not appear:** is VoiceIt still running in its terminal? Is the file in `design/behaviours/` (not somewhere else)? Ask the agent: *"Where did you save it?"*
 - **A script does not play as expected:** *"Check our scripts."* Problems are also marked in the script column (9).
-- **No sound:** is *Sound on* (6)? Test the voices in the Setup tab; on Windows, Edge has the best voices.
+- **No sound:** is *Sound on* (6)? Test the voices in the Setup tab; voices differ between browsers and systems.
 - **The agent does not seem to know VoiceIt:** is the session on the `voiceit` folder itself? Paste the starter message again.
