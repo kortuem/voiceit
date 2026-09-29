@@ -4,6 +4,10 @@ What changed from one version of VoiceIt to the next, newest first. Versions bel
 
 For maintainers: when releasing, set `VERSION` in `system/voiceit.js`, add an entry here with the same number, and tag the commit. The tests check that the two numbers match.
 
+## 0.2.8 (29 September 2026)
+
+- VoiceIt recognises more Mac voices as higher voices: Isha, Matilda, Joelle and Sangeeta (measured, 186–258 Hz), and Nora and Leona (female in Apple's voice catalogue). With enough Premium voices installed, all six catalogue voices now use Premium voices.
+
 ## 0.2.7 (29 September 2026)
 
 Found by testing the online version:
