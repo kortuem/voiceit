@@ -90,3 +90,9 @@ test('the check fails on a file that does not exist', () => {
   assert.strictEqual(r.status, 1);
   assert.match(r.stdout, /No such file or folder/);
 });
+
+test('the version matches the newest entry in CHANGELOG.md', () => {
+  const log = fs.readFileSync(path.join(root, 'CHANGELOG.md'), 'utf8');
+  const newest = (log.match(/^## (\d+\.\d+\.\d+)/m) || [])[1];
+  assert.strictEqual(newest, VoiceIt.VERSION);
+});

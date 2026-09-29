@@ -257,7 +257,7 @@ body.watching .wprog:focus-visible{outline:2px solid var(--ink);outline-offset:2
 <div class="wrap">
   <header class="top">
     <div>
-      <p class="eyebrow">IDEM307 · Prototyping with AI</p>
+      <p class="eyebrow">IDEM307 · Prototyping with AI · <span id="version"></span></p>
       <h1>VoiceIt</h1>
       <p class="tagline">Prototyping products that listen and speak</p>
     </div>
@@ -474,6 +474,7 @@ body.watching .wprog:focus-visible{outline:2px solid var(--ink);outline-offset:2
 
 <script src="voiceit.js"></script>
 <script>
+document.getElementById('version').textContent='version '+VoiceIt.VERSION;
 (() => {
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));

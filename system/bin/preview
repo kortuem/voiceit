@@ -68,7 +68,7 @@ server.on('error', err => {
 server.on('listening', () => {
   const url = `http://127.0.0.1:${port}/`;
   const d = design();
-  console.log(`VoiceIt: ${url}\n`);
+  console.log(`VoiceIt ${VoiceIt.VERSION}: ${url}\n`);
   const forms = Object.values(d.forms), behaviours = Object.values(d.behaviours);
   console.log(`Forms (${forms.length}):`);
   forms.forEach(f => console.log(`  ${f.name}`));

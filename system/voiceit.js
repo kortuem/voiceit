@@ -8,6 +8,8 @@
 })(typeof self !== 'undefined' ? self : this, function () {
 'use strict';
 
+// the version shown by the page and the preview; add a matching entry at the top of CHANGELOG.md
+const VERSION = '0.2.0';
 const RESERVED = ['DEVICE', 'SCREEN', 'LIGHT', 'SOUND', 'TOUCH'];
 const KINDS = ['component', 'light', 'modifier', 'sound', 'voice', 'manner'];
 const NUMERIC = ['pitch', 'rate', 'volume'];
@@ -261,6 +263,6 @@ function buildDesign(files){
   return {forms:sorted(forms, f => f.name), behaviours:sorted(behaviours, b => b.character + ' ' + b.note), vocabulary};
 }
 
-return {RESERVED, DEFAULT_VOICE, parseVocabulary, frontMatter, parseScript, cast, manner, speechDur, schedule,
+return {VERSION, RESERVED, DEFAULT_VOICE, parseVocabulary, frontMatter, parseScript, cast, manner, speechDur, schedule,
   comments, parsePeople, validateBehaviour, buildDesign, formatTime, words, orList};
 });
