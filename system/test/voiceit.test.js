@@ -184,6 +184,11 @@ test('the check fails on a file that does not exist', () => {
   assert.match(r.stdout, /No such file or folder/);
 });
 
+test('the page asks for voiceit.js by the current version (browsers may keep an old copy)', () => {
+  const html = fs.readFileSync(path.join(root, 'system', 'voiceit.html'), 'utf8');
+  assert.match(html, new RegExp(`<script src="voiceit\\.js\\?v=${VoiceIt.VERSION.replace(/\./g, '\\.')}"></script>`), 'set ?v= in voiceit.html to VERSION');
+});
+
 test('the version matches the newest entry in CHANGELOG.md', () => {
   const log = fs.readFileSync(path.join(root, 'CHANGELOG.md'), 'utf8');
   const newest = (log.match(/^## (\d+\.\d+\.\d+)/m) || [])[1];

@@ -479,7 +479,8 @@ body.watching .wprog:focus-visible{outline:2px solid var(--ink);outline-offset:2
   </section>
 </div>
 
-<script src="voiceit.js"></script>
+<!-- the version in the address: a browser that kept an older voiceit.js (the host caches scripts for hours) fetches this one -->
+<script src="voiceit.js?v=0.4.1"></script>
 <script>
 document.getElementById('version').textContent='version '+VoiceIt.VERSION;
 (() => {

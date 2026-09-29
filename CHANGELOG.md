@@ -2,7 +2,11 @@
 
 What changed from one version of VoiceIt to the next, newest first. Versions below 1.0 are early releases: things may still change between them. Each version is also a Git tag (`v0.2.0`), so any version can be looked at again on GitHub.
 
-For maintainers: when releasing, set `VERSION` in `system/voiceit.js`, add an entry here with the same number, and tag the commit. The tests check that the two numbers match.
+For maintainers: when releasing, set `VERSION` in `system/voiceit.js` and the `?v=` of `voiceit.js` in `system/voiceit.html`, add an entry here with the same number, and tag the commit. The tests check that the three numbers match.
+
+## 0.4.1 (29 September 2026)
+
+- **VoiceIt online after an update:** the web host lets browsers keep `voiceit.js` for up to four hours, but the page for only ten minutes, so a browser could combine a new page with an old script. The page now asks for the script by version (`voiceit.js?v=0.4.1`); a test keeps that number equal to the version.
 
 ## 0.4.0 (29 September 2026)
 
