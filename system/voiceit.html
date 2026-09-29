@@ -431,28 +431,33 @@ body.watching .wprog:focus-visible{outline:2px solid var(--ink);outline-offset:2
     </section>
   </section>
 
-  <!-- Setup: before class, at home -->
+  <!-- Setup: getting started, and what this laptop can do -->
   <section class="view about" id="view-setup" role="tabpanel" aria-labelledby="tab-setup" hidden>
     <section>
-      <h2>Before class</h2>
-      <p>Do this at home, once, on the laptop you bring. It takes about fifteen minutes. If something does not work, you find out now and not in class.</p>
+      <h2>Getting started</h2>
+      <p>You need the Claude desktop app (its <b>Code</b> tab) or the Codex app, <b>Git</b> and <b>Node.js</b> (18 or newer, the LTS installer from <a href="https://nodejs.org">nodejs.org</a>). The README on <a href="https://github.com/kortuem/voiceit">github.com/kortuem/voiceit</a> has the same steps.</p>
       <ol>
-        <li><b>Get VoiceIt</b> from <a href="https://github.com/kortuem/voiceit">github.com/kortuem/voiceit</a>: ask your agent to clone it, use GitHub Desktop, or type <code>git clone https://github.com/kortuem/voiceit.git</code>. Without Git: Code → Download ZIP. The README explains each way.</li>
-        <li><b>Install Node.js</b> (version 18 or newer) from <a href="https://nodejs.org">nodejs.org</a>: the LTS installer, with the default options. To check, open a terminal and type <code>node --version</code>.</li>
-        <li><b>Open a terminal in this folder</b> (the one with <code>system/</code> and <code>design/</code> inside).
+        <li><b>Make a folder for your course work</b>, for example <code>Documents/IDEM307</code>.</li>
+        <li><b>Get VoiceIt from GitHub into it.</b> Open your agent with a new session on that folder and type: <i>“Clone https://github.com/kortuem/voiceit.git into this folder.”</i> This makes a folder <code>voiceit</code>.</li>
+        <li><b>Start a new session on the <code>voiceit</code> folder itself.</b> The agent only knows how VoiceIt works when it works in this folder.</li>
+        <li><b>Paste this as your first message:</b> <i>“We are working with VoiceIt in this folder. Read AGENTS.md and follow it. Write every behaviour into design/behaviours/, and check every script after writing or changing it.”</i></li>
+        <li><b>Start VoiceIt</b> from a terminal in the <code>voiceit</code> folder: <code>node system/bin/preview</code>. Your browser opens this page. Leave the terminal open while you work; <code>Ctrl+C</code> stops it.
           <ul>
-            <li>Mac: open Terminal, type <code>cd </code> (with a space), drag the folder onto the window, press Return.</li>
-            <li>Windows: open the folder in File Explorer, click the address bar, type <code>cmd</code>, press Enter.</li>
-            <li>In Codex or Claude Code you can also simply ask your agent to run the next command.</li>
+            <li>Mac: open Terminal, type <code>cd </code> (with a space), drag the <code>voiceit</code> folder onto the window, press Return.</li>
+            <li>Windows: open the <code>voiceit</code> folder in File Explorer, click the address bar, type <code>cmd</code>, press Enter.</li>
           </ul>
         </li>
-        <li><b>Start VoiceIt</b>: <code>node system/bin/preview</code>. Your browser opens this page. Leave the terminal open while you work; <code>Ctrl+C</code> stops it.</li>
-        <li><b>Press Play</b> in the Play tab, and play the voices below. You should see the example and hear the voices.</li>
-        <li><b>Open the folder in Codex or Claude Code</b> and ask: <i>“Read AGENTS.md and tell me in two sentences what this is.”</i> If it answers, your agent works.</li>
+        <li><b>Press Play</b> in the Play tab, and play the voices below. The checks on the right should all say Yes.</li>
       </ol>
+      <h3>While you work</h3>
+      <ul>
+        <li>Tell your agent how your thing behaves; it writes the script into <code>design/behaviours/</code>. Switch back here: the new behaviour is at the top of the list.</li>
+        <li><i>“Check our scripts”</i>: the agent explains every mistake with its line, also after you edited a script yourself.</li>
+        <li><i>“Commit our work”</i> saves a version with Git; <i>“Pull the latest VoiceIt”</i> gets course updates.</li>
+      </ul>
       <p>Chrome, Edge, Safari and Firefox all work. On Windows, Edge has the best voices.</p>
       <h3>Without Node</h3>
-      <p>Open <code>system/voiceit.html</code> by double-clicking it, then choose the project folder here. Everything plays, but VoiceIt does not notice new files by itself (open the folder again after a change), and your agent cannot run the check. Ask for help before class.</p>
+      <p>Open <code>system/voiceit.html</code> by double-clicking it, then choose the project folder here. Everything plays, but VoiceIt does not notice new files by itself (open the folder again after a change), and your agent cannot run the check.</p>
       <label class="btn file">Open folder…<input type="file" webkitdirectory directory multiple data-folder></label>
     </section>
     <section>
@@ -889,7 +894,7 @@ function drawSetup(){
   const ok=(yes,text,hint)=>`<li class="${yes?'ok':'no'}"><b>${yes?'Yes':'Not yet'}</b> · ${esc(text)}${!yes&&hint?`<br><span class="hint">${esc(hint)}</span>`:''}</li>`;
   const nb=Object.keys(data.behaviours).length, nf=Object.keys(data.forms).length;
   $('#setupChecks').innerHTML =
-    ok(served, 'VoiceIt was started with node system/bin/preview.', 'You opened the page directly. That works, but see step 1 to 3, or “Without Node”.')+
+    ok(served, 'VoiceIt was started with node system/bin/preview.', 'You opened the page directly. That works, but see step 5, or “Without Node”.')+
     ok(!!vocab, 'The vocabulary is loaded.', 'Start VoiceIt with the preview, or open the project folder.')+
     ok(nb>0, `${plural(nb,'behaviour')} and ${plural(nf,'form')} found.`, 'No behaviours yet: start with the preview, or open the project folder.')+
     ok(hasSpeech && sysVoices.length>0, hasSpeech ? `${plural(sysVoices.length,'voice')} available in this browser.` : 'This browser cannot speak.', 'No voices found. Try another browser (Edge on Windows, Safari or Chrome on a Mac).');

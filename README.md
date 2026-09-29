@@ -10,66 +10,59 @@ A lamp, a bedside unit, a car: any object can now be given an ear and a voice. H
 
 ## What you need
 
-- A laptop with **Codex** or **Claude Code**.
-- **Git**, to get VoiceIt and its updates (`git --version` tells you). On a Mac the first `git` command offers to install it; on Windows install [Git for Windows](https://git-scm.com/download/win) or [GitHub Desktop](https://desktop.github.com). You do not need a GitHub account.
-- **Node.js 18 or newer**, for VoiceIt and the check (`node --version` tells you). Without Node you can still play: open `system/voiceit.html` in your browser and use **Open folder** to choose this folder.
-- ChatGPT or Gemini for rendering forms (see `system/FORM.md`).
+- The **Claude desktop app** (its **Code** tab) or the **Codex** app, signed in. Both work the same way here; this guide calls them "your agent".
+- **Git**, to get VoiceIt from GitHub. Check with `git --version` in a terminal. On a Mac the first `git` command offers to install it; on Windows install [Git for Windows](https://git-scm.com/download/win).
+- **Node.js 18 or newer**, to run VoiceIt: the LTS installer from [nodejs.org](https://nodejs.org). Check with `node --version`.
+- ChatGPT or Gemini, for rendering forms (see `system/FORM.md`).
 
-## Before class (at home, about fifteen minutes)
+## Getting started
 
-Do this once, on the laptop you bring, so that anything that does not work shows up now and not in class. The same steps are in VoiceIt's **Setup** tab, which also checks your laptop and plays its voices.
+1. **Make a folder for your course work** on your laptop, for example `Documents/IDEM307`.
+2. **Get VoiceIt from GitHub into that folder.** Open your agent with a new session on that folder (Claude: *Code* → new session → choose the folder; Codex: open the folder) and type:
 
-1. Get VoiceIt (see *Getting VoiceIt* below).
-2. Install **Node.js** (18 or newer) from [nodejs.org](https://nodejs.org): the LTS installer. Check with `node --version`.
-3. Open a terminal in this folder and start VoiceIt:
+   > Clone https://github.com/kortuem/voiceit.git into this folder.
+
+   This makes a folder `voiceit` inside it. (In a terminal instead: go to the folder and type `git clone https://github.com/kortuem/voiceit.git`.)
+3. **Start a new session on the `voiceit` folder itself.** This matters: the agent only knows how VoiceIt works when it is working in this folder. (Claude: *Code* → new session → choose `voiceit`; Codex: open `voiceit`.)
+4. **Paste this as your first message:**
+
+   > We are working with VoiceIt in this folder. Read AGENTS.md and follow it. Write every behaviour into design/behaviours/, and check every script after writing or changing it.
+
+5. **Start VoiceIt.** Open a terminal in the `voiceit` folder and type:
 
    ```
    node system/bin/preview
    ```
 
-   Your browser opens VoiceIt with the worked example: two characters, the Host and the Night light, on a hospital ward at night.
-4. Press **Play**, then open the **Setup** tab and play the six voices.
-5. Open the folder in Codex or Claude Code and ask: *"Read AGENTS.md and tell me in two sentences what this is."*
+   (Mac: open Terminal, type `cd ` with a space, drag the `voiceit` folder onto the window, press Return. Windows: open the `voiceit` folder in File Explorer, click the address bar, type `cmd`, press Enter.) Your browser opens VoiceIt. Leave the terminal open while you work; `Ctrl+C` stops it.
+6. **Play the example**, then open VoiceIt's **Setup** tab and play the six voices.
 
-If one of these steps fails, ask for help before the session.
+## Working with VoiceIt
 
-## Getting VoiceIt
-
-VoiceIt lives in a Git repository: <https://github.com/kortuem/voiceit>. Getting it with Git means you can later pull updates with one command. Choose one way:
-
-- **Ask your agent.** Open Codex or Claude Code in the folder where you keep course work and say: *"Clone https://github.com/kortuem/voiceit.git here."*
-- **GitHub Desktop.** File → Clone repository → URL → `https://github.com/kortuem/voiceit.git`.
-- **Terminal.** `git clone https://github.com/kortuem/voiceit.git`
-- **Without Git.** On the GitHub page, Code → Download ZIP, and unzip it. Everything works, but you cannot pull updates; you replace the `system/` folder by hand instead.
+- **Say how your thing behaves.** Tell your agent who the thing is and how it should behave in a situation: *"Our first character is Rex: confident, a know-it-all, speaks first, talks to Daan and the doctor rather than to Anna. Deep voice."* It reads back what it understood, and writes the script when you say go.
+- **Play it.** Switch to the browser: the new behaviour appears at the top of the list. Pick a form under the stage; press **Watch** to see it large.
+- **Give notes.** *"It talks too much when the doctor is there."* The agent says whether that changes this moment or the character, and revises.
+- **Check.** *"Check our scripts."* The agent runs the check and explains every mistake, with its line, also after you edited a script yourself. VoiceIt marks problems in the script beside the stage too.
+- **Forms.** Sketch on paper, render (see `system/FORM.md`), and save the image in `design/forms/`.
 
 ## Git while you work
 
-Git keeps versions of your folder. You do not need a GitHub account for this; it all happens on your laptop. Your agent can do each step for you when you ask.
+Git keeps versions of your folder, on your laptop; you do not need a GitHub account. Your agent can do each step for you when you ask.
 
-- **Save a version:** *"Commit our work: first version of Juno in visiting hour."* The first time, Git asks for your name and e-mail; your agent can set them.
+- **Save a version:** *"Commit our work: first version of Rex."* The first time, Git asks for your name and e-mail.
 - **See what changed:** *"What changed since our last commit?"*
-- **Get course updates:** *"Pull the latest VoiceIt."* In a terminal: `git pull --no-rebase` (a plain `git pull` may stop and ask how to combine your work with the update; `--no-rebase` answers that). This brings in changes to `system/` and the brief. It usually goes smoothly as long as you have not changed `system/` or `examples/`.
-- **Share with your group (needs a GitHub account):** fork the repository on GitHub, clone your fork, and push your commits there; teammates clone the same fork. Ask for help the first time.
-
-## In class
-
-1. Start VoiceIt (`node system/bin/preview`) and open the folder in your agent.
-2. Play the example: pick a behaviour in the list on the left, try it with each form (the small images under the form), and follow the script on the right. The strips in the list show each behaviour's rhythm side by side.
-3. Read `BRIEF.md` and start talking to your agent.
+- **Get course updates:** *"Pull the latest VoiceIt."* (In a terminal: `git pull --no-rebase`.) This brings in changes to `system/` and the brief. It usually goes smoothly as long as you have not changed `system/` or `examples/`.
+- **Share with your group (needs a GitHub account):** fork the repository on GitHub, clone your fork, and push your commits there; teammates clone the same fork.
 
 ## Folders
 
-- `system/` is the tool: notation, vocabulary, procedures, VoiceIt itself and the scripts. Do not edit it. When it is updated during the course, replace this folder only.
-- `examples/` holds the worked example. Leave it as it is; to start from an example, copy it into `design/` first. That keeps course updates from colliding with your work.
-- `design/` is yours: forms, behaviours and your notes. Git keeps your versions (see above); you can also copy a file to keep a variant side by side.
+- `system/` is the tool: notation, vocabulary, procedures, VoiceIt itself and its scripts. Do not edit it.
+- `examples/` holds the worked example. Leave it as it is; to start from an example, copy it into `design/` first.
+- `design/` is yours: forms, behaviours and your notes.
 
-## Checking a behaviour
+## Without Node
 
-```
-node system/bin/check
-```
-
-lists every error and warning with its file and line number. Your agent runs it after every behaviour it writes.
+Open `system/voiceit.html` in your browser (double-click it) and choose the `voiceit` folder with **Open folder** in the Setup tab. Everything plays, but VoiceIt does not notice new files by itself (open the folder again after a change), and your agent cannot run the check.
 
 ## Licence
 

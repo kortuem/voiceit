@@ -33,7 +33,7 @@ Blank lines and lines starting with `#` are ignored.
 | Line | Meaning |
 | --- | --- |
 | `JOOST: I can't sleep.` | A person speaks. Names in capitals; any name except the reserved words below. |
-| `DEVICE: Good evening.` | The thing speaks, in the voice named in the front matter. |
+| `DEVICE: Good evening.` | The thing speaks, in the voice named in the front matter. Its character's name works too (`REX:` in a script with `character: Rex`). |
 | `DEVICE (quietly, slowly): …` | A parenthetical gives the manner. The browser voices follow the words listed under Manner in `VOCABULARY.md`; the stage passes the whole direction to speech synthesis. |
 | `JOOST: I was going to--` | An em dash (`—`) or `--` at the end: the next line cuts in with no gap. |
 | `(beat)` | A pause of one second. |

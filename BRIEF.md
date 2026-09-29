@@ -6,6 +6,8 @@ A hospital places a small device with a screen and a light beside every bed. It 
 
 15:00. Anna Visser, 74, is recovering from pneumonia in a two-bed room; Mrs de Wit in the other bed is trying to rest. Anna's son Daan and her granddaughter Lotte, 8, come to visit, and Lotte is curious about the device. Daan asks about Anna's blood test results, which Anna has not seen yet. Dr Okafor comes by on her round, and Anna wants to know when she can go home. When visiting time ends, Anna wants to be reminded of what the doctor said.
 
+People: Anna (patient), Daan (her son), Lotte (her granddaughter, 8), De Wit (roommate), Okafor (doctor).
+
 ## Three characters
 
 1. **A stereotypically male character.**

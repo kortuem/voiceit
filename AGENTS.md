@@ -19,6 +19,7 @@ You are helping a group of design students prototype a thing that listens and re
 - `system/operations/`: the procedures you follow. The group need not name them; pick the one that fits.
   - `write-behaviour.md`: the group says how their thing should behave in a situation.
   - `notes.md`: the group reacts to a behaviour ("it talks too much", "it should wait"). Before changing anything, say in one sentence whether it is a note for this moment or a note for the character, then follow the procedure.
+  - `check.md`: the group asks whether their scripts are correct, or edited a script by hand. Run the check and explain every problem in plain words, with its line.
 - `design/forms/`: the form images, one per form.
 - `design/behaviours/`: the group's behaviours, one script each.
 - `examples/`: the worked example (the Host and the Night light, two forms). Never change these files. To start from an example, copy it into `design/behaviours/` (or `design/forms/`) and change the copy.

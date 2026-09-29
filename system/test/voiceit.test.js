@@ -57,6 +57,12 @@ test('people: roles are read, and unlisted speakers are reported', () => {
   assert.strictEqual(lines(r), 'W7');
 });
 
+test('the thing may speak under its character name', () => {
+  const r = VoiceIt.validateBehaviour('---\ncharacter: Rex\nvoice: Ash\npeople: Anna (patient)\n---\nREX (low): Hello.\nANNA: Hi.\n', vocab);
+  assert.deepStrictEqual(r.parsed.lines.map(l => l.device), [true, false]);
+  assert.strictEqual(lines(r), '');
+});
+
 test('examples and your own behaviours are kept apart', () => {
   const d = VoiceIt.buildDesign([
     {path:'design/behaviours/a.md', text:head + 'DEVICE: One.\n'},

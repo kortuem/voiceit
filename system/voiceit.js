@@ -71,6 +71,7 @@ function parseScript(txt, vocab){
   const comps = Object.keys(vocab.component), lights = vocab.light, mods = Object.keys(vocab.modifier), sounds = Object.keys(vocab.sound);
   const {meta, body, offset} = frontMatter(txt);
   const lines = [], errors = [], warnings = [];
+  const self = (meta.character || '').trim().toUpperCase();   // the thing may also speak under its character's name
   body.split('\n').forEach((raw, i) => {
     const s = raw.trim(), ln = i + 1 + offset;
     if (!s || s.startsWith('#')) return;
@@ -114,7 +115,8 @@ function parseScript(txt, vocab){
     }
     if ((m = s.match(SPEECH_RE)) && !RESERVED.slice(1).includes(m[1].trim())) {
       const who = m[1].trim(); const text = m[3].trim(); const cut = /(—|--)\s*$/.test(text);
-      lines.push({kind:'speech', who, device:who === 'DEVICE', manner:(m[2] || '').trim(), text, cut, ln}); return;
+      const device = who === 'DEVICE' || (!!self && who === self);
+      lines.push({kind:'speech', who:device ? 'DEVICE' : who, device, manner:(m[2] || '').trim(), text, cut, ln}); return;
     }
     if ((m = s.match(LOOKS_NAME_RE)) && !/^\d/.test(s)) {
       warnings.push({ln, msg:`“${m[1]}:” looks like a speaker. Names are written in capitals; this line is read as an action.`});
