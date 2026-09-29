@@ -4,6 +4,10 @@ What changed from one version of VoiceIt to the next, newest first. Versions bel
 
 For maintainers: when releasing, set `VERSION` in `system/voiceit.js`, add an entry here with the same number, and tag the commit. The tests check that the two numbers match.
 
+## 0.2.2 (29 September 2026)
+
+- VoiceIt recognises two more Mac voices by their register: Jamie (low, about 99 Hz) and Stephanie (high, about 203 Hz), measured from their speech. With Jamie (Premium) installed, the product's low voice uses it.
+
 ## 0.2.1 (29 September 2026)
 
 - **Better voices on a Mac.** VoiceIt no longer uses the Mac's novelty voices (Albert, Bubbles, Zarvox and others); before, the product's low voice could sound like a raspy robot. Premium and enhanced voices are used first when a laptop has them, the older robotic voices last. Tip: install a few premium English voices (System Settings > Accessibility > Spoken Content > System voice > Manage Voices) to hear the scripts much more naturally.
