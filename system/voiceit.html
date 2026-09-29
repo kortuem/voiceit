@@ -393,9 +393,9 @@ body.watching .wprog:focus-visible{outline:2px solid var(--ink);outline-offset:2
       <h2>The character of things</h2>
       <p>Form and behaviour together make a character; people read it at a glance.</p>
       <ul class="refs">
-        <li><b>Janlert, L.-E. &amp; Stolterman, E. (1997). <a href="https://www.sciencedirect.com/science/article/abs/pii/S0142694X97000045">The character of things</a>. <i>Design Studies</i> 18(3).</b> A thing's character is a coherent set of qualities across appearance and behaviour alike: the idea behind judging fit and coherence.</li>
+        <li><b>Janlert, L.-E. &amp; Stolterman, E. (1997). <a href="https://doi.org/10.1016/S0142-694X(97)00004-5">The character of things</a>. <i>Design Studies</i> 18(3).</b> A thing's character is a coherent set of qualities across appearance and behaviour alike: the idea behind judging fit and coherence.</li>
         <li><b>Govers, P. C. M., Hekkert, P. &amp; Schoormans, J. P. L. (2002). <a href="https://www.researchgate.net/publication/284500781_Happy_cute_and_tough_Can_designers_create_a_product_personality_that_consumers_understand">Happy, cute and tough: Can designers create a product personality that consumers understand?</a></b> From Delft: people read a product's personality from its appearance.</li>
-        <li><b>Mugge, R., Govers, P. C. M. &amp; Schoormans, J. P. L. (2009). <a href="https://www.sciencedirect.com/science/article/abs/pii/S0142694X08000859">The development and testing of a product personality scale</a>. <i>Design Studies</i> 30(3).</b> A way to put words to the personality people see in a form.</li>
+        <li><b>Mugge, R., Govers, P. C. M. &amp; Schoormans, J. P. L. (2009). <a href="https://doi.org/10.1016/j.destud.2008.10.002">The development and testing of a product personality scale</a>. <i>Design Studies</i> 30(3).</b> A way to put words to the personality people see in a form.</li>
       </ul>
     </section>
     <section>
@@ -429,7 +429,7 @@ body.watching .wprog:focus-visible{outline:2px solid var(--ink);outline-offset:2
       <h2>From Delft</h2>
       <ul class="refs">
         <li><b>Nicenboim, I., Giaccardi, E. &amp; Redström, J. (2023). <a href="https://doi.org/10.30682/diid8023c">Designing more-than-human AI: Experiments on situated conversations and silences</a>. <i>diid</i> 80.</b> Prototypes of agents that listen differently, including deliberate silence.</li>
-        <li><b>Nicenboim, I. (2024). <a href="https://doi.org/10.4233/uuid:e741163d-0334-4f06-826f-3b9836b21a86">Designing-with AI: More-than-human design in/through practice</a>. PhD thesis, TU Delft.</b> Whose voices conversational agents are built to hear, and design tactics to change that.</li>
+        <li><b>Nicenboim, I. (2024). <a href="https://repository.tudelft.nl/record/uuid:e741163d-0334-4f06-826f-3b9836b21a86">Designing-with AI: More-than-human design in/through practice</a>. PhD thesis, TU Delft.</b> Whose voices conversational agents are built to hear, and design tactics to change that.</li>
       </ul>
     </section>
   </section>
@@ -630,7 +630,7 @@ function setHead(t){ headT=Math.max(0,Math.min(t,sched.total)); head.style.left=
 let raf=null;
 function animateHead(from,to,dur){ cancelAnimationFrame(raf); const t0=performance.now(); const tick=now=>{ const k=Math.min(1,(now-t0)/(dur*1000)); setHead(from+(to-from)*k); if(k<1) raf=requestAnimationFrame(tick); }; raf=requestAnimationFrame(tick); }
 
-let idx=0, playing=false, token=0;
+let idx=0, playing=false, token=0, stepping=false;   // stepping: one line is playing (Step)
 const playBtn=$('#play');
 function setPlayBtn(){ playBtn.querySelector('span').textContent=playing?'Pause':'Play'; playBtn.querySelector('svg').innerHTML=playing?'<path d="M4 2.5h3v11H4zM9 2.5h3v11H9z"/>':'<path d="M4 2.5v11l9-5.5z"/>'; }
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
@@ -660,15 +660,15 @@ async function exec(e){
 }
 async function run(single){
   try{ if(hasSpeech) speechSynthesis.cancel(); }catch(e){}   // speech is shared by all tabs: start clean
-  const my=++token; playing=!single; setPlayBtn(); ac();
+  const my=++token; playing=!single; stepping=!!single; setPlayBtn(); ac();
   const ev=sched.ev;
   while(idx<ev.length && my===token){
     const e=ev[idx]; await exec(e); if(my!==token) return; idx++;
     if(single && e.l.kind!=='screen' && e.l.kind!=='light' && e.l.kind!=='sound') break;
   }
-  if(my===token){ playing=false; setPlayBtn(); if(idx>=ev.length){ caption('end'); setHead(sched.total); } }
+  if(my===token){ playing=false; stepping=false; setPlayBtn(); if(idx>=ev.length){ caption('end'); setHead(sched.total); } }
 }
-function stop(){ token++; playing=false; cancelAnimationFrame(raf); try{ if(hasSpeech) speechSynthesis.cancel(); }catch(e){} setPlayBtn(); }
+function stop(){ token++; playing=false; stepping=false; cancelAnimationFrame(raf); try{ if(hasSpeech) speechSynthesis.cancel(); }catch(e){} setPlayBtn(); }
 function stateAt(i){ renderScreen(null); renderLight(null); for(let k=0;k<i;k++){ const l=sched.ev[k].l; if(l.kind==='screen') renderScreen(l); else if(l.kind==='light') renderLight(l); } }
 function seekIndex(i,t){ stop(); idx=Math.max(0,Math.min(i,sched.ev.length)); stateAt(idx); setHead(t!=null?t:(sched.ev[idx]?sched.ev[idx].start:(sched.ev.length?sched.total:0))); caption(null); }
 function seekTime(t){
@@ -679,7 +679,8 @@ function seekTime(t){
   stop(); idx=i; stateAt(k); if(ev[k]) caption(ev[k].l); setHead(t);
 }
 playBtn.addEventListener('click',()=>{ if(!vocab||!sched.ev.length) return; if(playing){ stop(); return; } if(idx>=sched.ev.length) seekIndex(0); run(false); });
-$('#step').addEventListener('click',()=>{ if(!vocab||!sched.ev.length) return; stop(); if(idx>=sched.ev.length) seekIndex(0); run(true); });
+// Step while a line is still playing moves on to the next line instead of starting the same one again
+$('#step').addEventListener('click',()=>{ if(!vocab||!sched.ev.length) return; const skip=stepping; stop(); if(skip && idx<sched.ev.length) idx++; if(idx>=sched.ev.length) seekIndex(0); run(true); });
 $('#restart').addEventListener('click',()=>{ if(vocab) seekIndex(0); });
 $('#audio').addEventListener('click',e=>{ audioOn=!audioOn; e.currentTarget.setAttribute('aria-pressed',audioOn); e.currentTarget.textContent=audioOn?'Sound on':'Sound off'; if(!audioOn){ try{ speechSynthesis.cancel(); }catch(err){} } });
 let dragging=false;
@@ -704,6 +705,8 @@ function setWatch(on){
   watchBtn.querySelector('span').textContent = on ? 'Back' : 'Watch';
   watchBtn.title = on ? 'Back to the working view (Escape)' : 'Watch: form, screen and light fill the window (Escape returns)';
   if(on && cur.tab!=='play') setTab('play');
+  // off the Watch button, so Space plays and pauses instead of pressing Back
+  if(on && document.activeElement===watchBtn) watchBtn.blur();
   writeHash();
 }
 const watching=()=>document.body.classList.contains('watching');
@@ -761,7 +764,8 @@ $('.tabs').addEventListener('keydown',e=>{
   e.preventDefault(); const t=tabs[(j+tabs.length)%tabs.length]; t.focus(); setTab(t.dataset.tab);
 });
 // a link or a typed address that changes only the part after # (writeHash uses replaceState, which does not fire this)
-window.addEventListener('hashchange',()=>{ readHash(); if(data.behaviours[cur.b]||data.forms[cur.f]) select(); setTab(cur.tab); });
+// Watch is set first, so every rewrite of the address below keeps w=1
+window.addEventListener('hashchange',()=>{ readHash(); if(cur.w!==watching()) setWatch(cur.w); if(data.behaviours[cur.b]||data.forms[cur.f]) select(); setTab(cur.tab); });
 
 // yours first, newest first (the behaviour the agent just wrote comes to the top); then the examples
 const byName=(A,B)=>(A.character+A.note).localeCompare(B.character+B.note);

@@ -4,6 +4,15 @@ What changed from one version of VoiceIt to the next, newest first. Versions bel
 
 For maintainers: when releasing, set `VERSION` in `system/voiceit.js`, add an entry here with the same number, and tag the commit. The tests check that the two numbers match.
 
+## 0.2.7 (29 September 2026)
+
+Found by testing the online version:
+
+- **Watch and Space:** after clicking Watch, Space pressed the Watch button (now "Back") and left Watch. The focus now leaves the button, so Space plays and pauses as the tutorial says.
+- **Watch links:** a link with `w=1` pasted into an open VoiceIt tab now opens Watch too (it only worked in a new tab).
+- **Step twice:** pressing Step while a line was still playing started the same line again. It now moves on to the next line.
+- **Literature links:** the two ScienceDirect links are now DOIs, and the TU Delft thesis links straight to the repository (its DOI took about 45 seconds to resolve).
+
 ## 0.2.6 (29 September 2026)
 
 - **VoiceIt online** (https://kortuem.github.io/voiceit/), a backup for laptops where Node will not run: the page is served by GitHub Pages; the examples play at once, and **Open your voiceit folder** plays the group's own scripts from their laptop (nothing is uploaded). Chrome and Edge follow the folder, so new and changed scripts appear by themselves; Safari and Firefox re-open it after a change. Without Node the agent cannot run the check; VoiceIt marks problems in the script column.
