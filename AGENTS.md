@@ -51,3 +51,5 @@ The folder is a Git repository. The group may be new to Git; explain briefly wha
 ## Playing
 
 `node system/bin/preview` starts VoiceIt on this laptop and opens it in the browser. If it is already running, VoiceIt shows new and changed scripts and forms within a few seconds.
+
+If the group cannot run Node, they use VoiceIt online (https://kortuem.github.io/voiceit/) and open their folder there. Then you cannot run the check: read each script carefully against `SCREENPLAY.md` and `VOCABULARY.md`, say so, and ask the group to read you the problems VoiceIt marks in the script column.

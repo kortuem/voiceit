@@ -4,6 +4,11 @@ What changed from one version of VoiceIt to the next, newest first. Versions bel
 
 For maintainers: when releasing, set `VERSION` in `system/voiceit.js`, add an entry here with the same number, and tag the commit. The tests check that the two numbers match.
 
+## 0.2.6 (29 September 2026)
+
+- **VoiceIt online** (https://kortuem.github.io/voiceit/), a backup for laptops where Node will not run: the page is served by GitHub Pages; the examples play at once, and **Open your voiceit folder** plays the group's own scripts from their laptop (nothing is uploaded). Chrome and Edge follow the folder, so new and changed scripts appear by themselves; Safari and Firefox re-open it after a change. Without Node the agent cannot run the check; VoiceIt marks problems in the script column.
+- `examples/index.json` lists the examples for the online version; a test keeps it in step with the folders. `.nojekyll` makes GitHub Pages serve the scripts as they are.
+
 ## 0.2.5 (29 September 2026)
 
 After an outside review, and tested in a Claude Code session (write, revise, hand edit and check):

@@ -96,3 +96,10 @@ test('the version matches the newest entry in CHANGELOG.md', () => {
   const newest = (log.match(/^## (\d+\.\d+\.\d+)/m) || [])[1];
   assert.strictEqual(newest, VoiceIt.VERSION);
 });
+
+test('examples/index.json lists exactly the example files (VoiceIt online reads it)', () => {
+  const idx = JSON.parse(fs.readFileSync(path.join(root, 'examples', 'index.json'), 'utf8'));
+  const list = (dir, re) => fs.readdirSync(path.join(root, 'examples', dir)).filter(f => re.test(f)).sort();
+  assert.deepStrictEqual(idx.behaviours, list('behaviours', /\.md$/i), 'update examples/index.json after adding or removing an example');
+  assert.deepStrictEqual(idx.forms, list('forms', /\.(png|jpe?g|webp|svg)$/i), 'update examples/index.json after adding or removing an example form');
+});

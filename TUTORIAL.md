@@ -33,7 +33,7 @@ You need the **Claude desktop app** (its **Code** tab) or the **Codex** app, sig
    > Read AGENTS.md and follow it.
 
    The agent replies that it has read the instructions.
-5. **Start VoiceIt.** Open a terminal in the `voiceit` folder and type `node system/bin/preview`. Your browser opens VoiceIt. Leave the terminal open while you work; `Ctrl+C` stops it.
+5. **Start VoiceIt.** Open a terminal in the `voiceit` folder and type `node system/bin/preview`. Your browser opens VoiceIt. Leave the terminal open while you work; `Ctrl+C` stops it. (No Node? See [Troubleshooting](#troubleshooting): VoiceIt also runs online.)
 
    <details><summary>Opening a terminal in the <code>voiceit</code> folder</summary>
 
@@ -226,4 +226,5 @@ You do not need any of this to use VoiceIt. Your agent can do each step for you 
 - **A script does not play as expected:** *"Check our scripts."* Problems are also marked in the script column (9).
 - **No sound:** is *Sound on* (6)? Test the voices in the Setup tab; voices differ between browsers and systems.
 - **`node` is not found** right after installing Node.js: close the terminal and open a new one.
+- **Node will not install, or VoiceIt will not start:** use [VoiceIt online](https://kortuem.github.io/voiceit/) as a backup. Click **Open your voiceit folder** in the list and choose your `voiceit` folder; the files stay on your laptop. Chrome and Edge follow the folder, so new scripts appear by themselves; in Safari and Firefox, open the folder again after a change. Your agent cannot run the check without Node, so read the problems VoiceIt marks in the script column.
 - **The agent does not seem to know VoiceIt:** is the session on the `voiceit` folder itself? Say: *"Read AGENTS.md and follow it."*

@@ -60,7 +60,7 @@ cd voiceit
 node system/bin/preview
 ```
 
-Your browser opens VoiceIt. Select an example in the list, choose a form below the stage, and press **Play**. `Ctrl+C` in the terminal stops VoiceIt.
+Your browser opens VoiceIt. Select an example in the list, choose a form below the stage, and press **Play**. `Ctrl+C` in the terminal stops VoiceIt. Without Node, the examples also play in [VoiceIt online](https://kortuem.github.io/voiceit/).
 
 **Behaviour scripts**, in [examples/behaviours/](examples/behaviours/):
 
@@ -104,10 +104,10 @@ The [tutorial](TUTORIAL.md) takes you through one design session: setting up the
 - [media/](media/) holds the video tour.
 - [system/](system/) is the tool: notation, vocabulary, procedures for the AI coding assistant, and VoiceIt itself.
 
-Without Node, open `system/voiceit.html` in your browser and choose the `voiceit` folder with **Open folder** in the Setup tab. Scripts and forms play (tested in Chrome), but VoiceIt does not notice new files by itself, and the scripts cannot be checked.
+**No Node, or it will not start?** Use **VoiceIt online**, [kortuem.github.io/voiceit](https://kortuem.github.io/voiceit/): the examples play at once. Click **Open your voiceit folder** in the list to play your own scripts; the files stay on your laptop. In Chrome and Edge, new and changed scripts then appear by themselves; in Safari and Firefox, open the folder again after a change. Your agent cannot run the check without Node; VoiceIt marks problems in the script column instead.
 
 ## Status and licence
 
-VoiceIt is in development, for the course IDEM307 at TU Delft. This is version 0.2.5, an early release; what changed from version to version is in [CHANGELOG.md](CHANGELOG.md). Report problems in [GitHub Issues](https://github.com/kortuem/voiceit/issues) (needs a GitHub account) or tell your teacher. For maintainers: `node --test system/test/voiceit.test.js` runs the tests.
+VoiceIt is in development, for the course IDEM307 at TU Delft. This is version 0.2.6, an early release; what changed from version to version is in [CHANGELOG.md](CHANGELOG.md). Report problems in [GitHub Issues](https://github.com/kortuem/voiceit/issues) (needs a GitHub account) or tell your teacher. For maintainers: `node --test system/test/voiceit.test.js` runs the tests.
 
 The code and the example files are under the [MIT licence](LICENSE). The smart speaker photo above is not part of the repository; it is shown from Wikimedia Commons under its own licence, CC BY-SA 4.0. Visual style after Vlak (vlak.dev) by Renn, Noord.

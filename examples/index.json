@@ -1,0 +1,12 @@
+{
+ "_note": "VoiceIt online reads the examples from this list (a web host cannot list a folder). The tests check that it matches the folders.",
+ "behaviours": [
+  "host - night on ward 4.md",
+  "night light - night on ward 4.md",
+  "night light - visiting hour.md"
+ ],
+ "forms": [
+  "hourglass-rendering.jpg",
+  "hourglass-sketch.jpg"
+ ]
+}

@@ -202,6 +202,9 @@ body.watching .wprog:focus-visible{outline:2px solid var(--ink);outline-offset:2
 .bgroup:first-child{margin-top:0}
 .blist-empty{font-size:13px;color:var(--gray);padding:var(--s2) 0}
 .blist-empty .btn{margin-top:var(--s2)}
+.btn.small{min-height:36px;font-size:13px;padding:0 var(--s3)}
+.bopen{padding:0 0 var(--s3)}
+.bopen .hint{font-size:12px;color:var(--gray);margin:var(--s1) 0 0}
 
 /* Form strip: try the behaviour in another body */
 .fstrip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--s2)}   /* four per row, across the form's width */
@@ -458,7 +461,7 @@ body.watching .wprog:focus-visible{outline:2px solid var(--ink);outline-offset:2
       </ul>
       <p>Tested in Chrome on a Mac. Not yet tested: Edge, Safari, Firefox, and anything on Windows. Voices differ between browsers and systems.</p>
       <h3>Without Node</h3>
-      <p>Open <code>system/voiceit.html</code> by double-clicking it, then choose the <code>voiceit</code> folder here. Everything plays, but VoiceIt does not notice new files by itself (open the folder again after a change), and your agent cannot run the check.</p>
+      <p>Use <a href="https://kortuem.github.io/voiceit/">VoiceIt online</a>: the examples play at once, and <b>Open your voiceit folder</b> in the list plays your own scripts; the files stay on your laptop. Chrome and Edge follow the folder, so new scripts appear by themselves; in Safari and Firefox, open it again after a change. Your agent cannot run the check without Node; VoiceIt marks problems in the script column instead. You can also open <code>system/voiceit.html</code> by double-clicking it and choose the folder here.</p>
       <label class="btn file">Open folder…<input type="file" webkitdirectory directory multiple data-folder></label>
     </section>
     <section>
@@ -782,9 +785,12 @@ function summarise(){
 function renderList(){
   const keys=order(); const max=Math.max(1,...keys.map(k=>summary[k].s.total));
   const own=keys.filter(k=>!data.behaviours[k].example), ex=keys.filter(k=>data.behaviours[k].example);
-  const empty=`<div class="blist-empty">None of your own yet. Tell your agent how your product should behave; it writes the script into <code>design/behaviours/</code>. Or ask it to copy an example there to start from.${served?'':'<br><label class="btn file">Open folder…<input type="file" webkitdirectory directory multiple data-folder></label>'}</div>`;
-  $('#blist').innerHTML=`<p class="bgroup">Yours</p>`+(own.length?own.map(row).join(''):empty)+(ex.length?`<p class="bgroup">Examples</p>`+ex.map(row).join(''):'');
-  bindFolderInputs();
+  const empty = (!live && !openedByHand)
+    ? `<div class="blist-empty">Open your <code>voiceit</code> folder to play your own scripts here. The files stay on your laptop.</div>`
+    : `<div class="blist-empty">None of your own yet. Tell your agent how your product should behave; it writes the script into <code>design/behaviours/</code>. Or ask it to copy an example there to start from.</div>`;
+  const ctl = live ? '' : `<div class="bopen">${folderControl()}</div>`;
+  $('#blist').innerHTML=`<p class="bgroup">Yours</p>`+ctl+(own.length?own.map(row).join(''):empty)+(ex.length?`<p class="bgroup">Examples</p>`+ex.map(row).join(''):'');
+  bindFolderInputs(); document.querySelectorAll('[data-pick]').forEach(b=>{ b.onclick=pickFolder; });
   function row(k){
     const b=data.behaviours[k], {r,s}=summary[k];
     const segs=s.ev.filter(e=>e.l.kind==='speech').map(e=>`<i class="${e.l.device?'d':''}" style="left:${e.start/max*100}%;width:${Math.max(.4,(e.end-e.start)/max*100)}%"></i>`).join('');
@@ -908,7 +914,7 @@ function drawSetup(){
   const ok=(yes,text,hint)=>`<li class="${yes?'ok':'no'}"><b>${yes?'Yes':'Not yet'}</b> · ${esc(text)}${!yes&&hint?`<br><span class="hint">${esc(hint)}</span>`:''}</li>`;
   const nb=Object.keys(data.behaviours).length, nf=Object.keys(data.forms).length;
   $('#setupChecks').innerHTML =
-    ok(served, 'VoiceIt was started with node system/bin/preview.', 'You opened the page directly. That works, but see step 5, or “Without Node”.')+
+    ok(live, 'VoiceIt was started with node system/bin/preview.', hosted ? 'This is VoiceIt online: fine for playing. Your agent needs Node to run the check (step 5).' : 'You opened the page directly. That works, but see step 5, or “Without Node”.')+
     ok(!!vocab, 'The vocabulary is loaded.', 'Start VoiceIt with the preview, or open the voiceit folder.')+
     ok(nb>0, `${plural(nb,'behaviour')} and ${plural(nf,'form')} found.`, 'No behaviours yet: start with the preview, or open the voiceit folder.')+
     ok(hasSpeech && sysVoices.length>0, hasSpeech ? `${plural(sysVoices.length,'voice')} available in this browser.` : 'This browser cannot speak.', 'No voices found. Try another browser (Edge on Windows, Safari or Chrome on a Mac).');
@@ -928,10 +934,13 @@ $('#voiceTest').addEventListener('click',async()=>{
   btn.disabled=false;
 });
 
-/* ---------- Loading: from bin/preview, or from a folder ---------- */
-const served = /^https?:$/.test(location.protocol);
+/* ---------- Loading: from bin/preview, online, or from a folder ---------- */
+// Three ways in: the preview on this laptop (live: the design folder is followed by itself); VoiceIt online
+// (hosted: the examples come with the page, your own folder is opened in the browser); or the file opened directly.
+const httpPage = /^https?:$/.test(location.protocol);
+let live=false, hosted=false;
 let lastJSON='', lastVocab='';
-let openedByHand=false;            // after Open folder, stop following the served folder
+let openedByHand=false;            // a folder was opened in the browser
 async function fetchDesign(keep){
   if(openedByHand) return;
   try{
@@ -946,8 +955,27 @@ async function fetchDesign(keep){
     if(!keep) say('Could not load the design folder. Start VoiceIt with: node system/bin/preview, or use Open folder.');
   }
 }
-readHash(); setTab(cur.tab); if(cur.w) setWatch(true);
-if(served){
+// VoiceIt online: the examples are listed in examples/index.json, because a web host cannot list a folder
+let exampleFiles=[], folderFiles=[];
+function combine(){ loadData(VoiceIt.buildDesign([...exampleFiles, ...folderFiles])); }
+async function startHosted(){
+  hosted=true;
+  try{
+    const vr=await fetch('VOCABULARY.md',{cache:'no-store'}); if(!vr.ok) throw new Error('no vocabulary');
+    if(!setVocab(await vr.text())) return;
+    const idx=await (await fetch('../examples/index.json',{cache:'no-store'})).json();
+    const md=async n=>({path:'examples/behaviours/'+n, text:await (await fetch('../examples/behaviours/'+encodeURIComponent(n),{cache:'no-store'})).text()});
+    exampleFiles=[...await Promise.all(idx.behaviours.map(md)), ...idx.forms.map(n=>({path:'examples/forms/'+n, url:'../examples/forms/'+encodeURIComponent(n)}))];
+    combine();
+    say('This is VoiceIt online: the examples play here. To play your own scripts, open your voiceit folder in the list; the files stay on your laptop.');
+  }catch(e){ say('Could not load VoiceIt online. Check the internet connection, or start VoiceIt on this laptop with: node system/bin/preview'); }
+  // a folder opened in Chrome or Edge is followed like the preview does: new and changed files appear by themselves
+  setInterval(()=>{ if(dirHandle && !document.hidden && !playing) readPicked(true); }, 3000);
+}
+async function start(){
+  let r=null; try{ r=await fetch('../design.json',{cache:'no-store'}); }catch(e){}
+  if(!r || !r.ok){ await startHosted(); return; }
+  live=true;
   fetchDesign(false);
   window.addEventListener('focus',()=>fetchDesign(true));
   // look for new or changed files every few seconds, but never in the middle of playback
@@ -955,11 +983,52 @@ if(served){
   // keep "just now" and "3 min ago" current without redrawing the list
   setInterval(()=>{ document.querySelectorAll('.brow').forEach(r=>{ const b=data.behaviours[r.dataset.k], s=r.querySelector('.bt span'); if(b && !b.example && s) s.textContent=ago(b.mtime); }); }, 30000);
   document.addEventListener('visibilitychange',()=>{ if(!document.hidden) fetchDesign(true); });
-} else {
-  say('VoiceIt was opened without the preview. See the Setup tab: start it with node system/bin/preview, or open the voiceit folder.');
 }
-// a tab you leave pauses, so two VoiceIt tabs never talk over each other
-document.addEventListener('visibilitychange',()=>{ if(document.hidden && playing) stop(); });
+/* ---------- Your own folder, opened in the browser ---------- */
+// Chrome and Edge can keep a folder open and read it again; other browsers read it once per Open.
+const canWatch = 'showDirectoryPicker' in window;
+let dirHandle=null, folderSig='', folderURLs=[];
+function folderControl(){
+  if(canWatch) return `<button type="button" class="btn small" data-pick>${dirHandle?'Choose another folder…':'Open your voiceit folder…'}</button>`+
+    (dirHandle?`<p class="hint">Following <b>${esc(dirHandle.name)}</b>: new and changed files appear by themselves.</p>`:'');
+  return `<label class="btn small file">${openedByHand?'Open the folder again…':'Open your voiceit folder…'}<input type="file" webkitdirectory directory multiple data-folder></label>`+
+    (openedByHand?'<p class="hint">After a change, open the folder again.</p>':'');
+}
+async function pickFolder(){
+  let h; try{ h=await window.showDirectoryPicker({mode:'read'}); }catch(e){ return; }   // cancelled
+  dirHandle=h; folderSig=''; await readPicked(false); setTab('play');
+}
+async function readPicked(quiet){
+  const found=[];
+  async function walk(dir, prefix, depth){
+    for await (const [name, e] of dir.entries()){
+      if(name.startsWith('.') || name==='node_modules' || name==='media') continue;
+      if(e.kind==='directory'){ if(depth<3) await walk(e, prefix+'/'+name, depth+1); }
+      else if(/\.(md|png|jpe?g|webp|svg)$/i.test(name)) found.push({p:prefix+'/'+name, f:await e.getFile()});
+    }
+  }
+  try{ await walk(dirHandle, dirHandle.name, 0); }catch(err){ if(!quiet) say('Could not read that folder. Choose it again.'); return; }
+  const sig=found.map(x=>x.p+':'+x.f.lastModified+':'+x.f.size).join('|');
+  if(sig===folderSig) return;
+  folderSig=sig;
+  const list=[], urls=[];
+  for(const {p, f} of found){
+    if(/\.md$/i.test(p)) list.push({path:p, text:await f.text(), mtime:f.lastModified});
+    else { const u=URL.createObjectURL(f); urls.push(u); list.push({path:p, url:u}); }
+  }
+  useFolder(list, quiet);
+  folderURLs.forEach(u=>URL.revokeObjectURL(u)); folderURLs=urls;
+}
+// one place for both ways of opening a folder
+function useFolder(list, quiet){
+  const d=VoiceIt.buildDesign(list);
+  if(d.vocabulary){ if(!setVocab(d.vocabulary)) return; }
+  if(!vocab){ say('This folder has no system/VOCABULARY.md. Choose the whole voiceit folder (the one with system/ and design/ inside).'); setTab('play'); return; }
+  const own=Object.values(d.behaviours).some(b=>!b.example) || Object.values(d.forms).some(f=>!f.example);
+  if(!own && !Object.keys(d.behaviours).length && !quiet){ say('No scripts or forms found in that folder. Choose the voiceit folder (the one with design/ inside).'); setTab('play'); return; }
+  folderFiles=list; openedByHand=true;
+  if(hosted) combine(); else loadData(d);
+}
 function bindFolderInputs(){ document.querySelectorAll('input[data-folder]:not([data-bound])').forEach(inp=>{ inp.dataset.bound='1'; inp.addEventListener('change',onFolder); }); }
 async function onFolder(e){
   const files=[...e.target.files].filter(f=>!(f.webkitRelativePath||f.name).split('/').some(s=>s.startsWith('.')||s==='node_modules'));
@@ -970,12 +1039,16 @@ async function onFolder(e){
     if(/\.md$/i.test(f.name)) list.push({path:p, text:await f.text(), mtime:f.lastModified});
     else if(/\.(png|jpe?g|webp|svg)$/i.test(f.name)) list.push({path:p, url:URL.createObjectURL(f)});
   }
-  const d=VoiceIt.buildDesign(list);
-  if(d.vocabulary){ if(!setVocab(d.vocabulary)) return; }
-  if(!vocab){ say('This folder has no system/VOCABULARY.md. Choose the whole voiceit folder (the one with system/ and design/ inside).'); setTab('play'); return; }
-  if(!Object.keys(d.behaviours).length && !Object.keys(d.forms).length){ say('No behaviours or forms found. Choose the voiceit folder.'); setTab('play'); return; }
-  openedByHand=true; loadData(d); setTab('play');
+  useFolder(list, false); setTab('play');
 }
+
+/* ---------- Start ---------- */
+readHash(); setTab(cur.tab); if(cur.w) setWatch(true);
+if(httpPage) start();
+else say('VoiceIt was opened without the preview. See the Setup tab: start it with node system/bin/preview, or open the voiceit folder.');
+// a tab you leave pauses, so two VoiceIt tabs never talk over each other
+document.addEventListener('visibilitychange',()=>{ if(document.hidden && playing) stop(); });
+
 bindFolderInputs();
 })();
 </script>
