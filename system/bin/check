@@ -25,7 +25,7 @@ function readTree(dir, out = []){
 }
 
 const vocabPath = path.join(root, 'system', 'VOCABULARY.md');
-if (!fs.existsSync(vocabPath)) { console.error('Cannot find system/VOCABULARY.md. Run this from the project folder.'); process.exit(2); }
+if (!fs.existsSync(vocabPath)) { console.error('Cannot find system/VOCABULARY.md. Run this from the voiceit folder.'); process.exit(2); }
 const vocab = VoiceIt.parseVocabulary(fs.readFileSync(vocabPath, 'utf8'));
 if (vocab.problems.length) {
   vocab.problems.forEach(p => console.log(`system/VOCABULARY.md:${p.ln}  error    ${p.msg}`));

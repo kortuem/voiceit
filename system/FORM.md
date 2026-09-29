@@ -1,6 +1,6 @@
 # Form
 
-The form is the product's body: what it looks like where it stands. You design it by hand and render it with an image model, in four steps you can repeat as often as you like. VoiceIt shows the form beside the screen and the light, and any behaviour can be played with any form.
+The form is the product's body: what it looks like where it stands. You design it by hand and render it with an image-generation tool, in four steps you can repeat as often as you like. VoiceIt shows the form beside the screen and the light, and any behaviour can be played with any form.
 
 ## The loop
 
@@ -9,7 +9,7 @@ The form is the product's body: what it looks like where it stands. You design i
 3. **Mark up** the render: print it or open it in any drawing app, and draw your changes over it in a strong colour, with short labels ("rounder", "screen lower", "fabric here").
 4. **Re-render** from the marked-up image. Repeat 3 and 4 until the form is yours.
 
-Save each form as one image in `design/forms/`, named after it (`lamp.png`, `bedside-unit.png`); VoiceIt shows each form as a small image under the form panel, and clicking one plays the behaviour in that body. Keep sketches and earlier renders in `design/forms/process/`; VoiceIt only lists the images directly in `design/forms/`.
+Save each form as one image in `design/forms/`, named after it (`lamp.png`, `bedside-unit.png`); VoiceIt shows each form as a small image under the form panel, and clicking one shows it with the behaviour script being played. Keep sketches and earlier renders in `design/forms/process/`; VoiceIt only lists the images directly in `design/forms/`.
 
 ## Prompts
 
@@ -34,4 +34,4 @@ Tips:
 - Keep the screen a plain dark or light rectangle. What it shows is designed in the screenplay, not in the render.
 - The same form can carry different behaviours. Try yours in someone else's form, and theirs in yours.
 
-Tutorial note: students who already have a Vizcom account may use it for the render steps; the procedure is the same.
+If you already have a Vizcom account, you may use it for the render steps; the procedure is the same.

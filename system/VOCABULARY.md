@@ -112,7 +112,7 @@ effect: one short tick; confirms a touch
 
 The product has one voice from this catalogue, named in the front matter of each behaviour (`voice: Ash`). People in the script get the other voices automatically. The catalogue describes how a voice sounds, not who it belongs to.
 
-`range` places the voice from low to high; `pitch` and `rate` are what VoiceIt uses with browser voices (1 is the browser's normal). On the stage the same names are mapped to expressive synthesis voices.
+`range` places the voice from low to high; `pitch` and `rate` are what VoiceIt uses with browser voices (1 is the browser's normal).
 
 ```voice
 name: Ash
@@ -164,7 +164,7 @@ rate: 1.05
 
 ## Manner
 
-A parenthetical after a name is direction for the voice: `DEVICE (quietly, slowly): …`. Write it in plain words. On the stage the whole direction goes to speech synthesis. VoiceIt's browser voices understand only the words below (a word also matches its longer forms: `quiet` matches `quietly`). When several apply, rates and pitches multiply and the quietest volume wins. Other words are allowed; the browser voices simply ignore them.
+A parenthetical after a name is direction for the voice: `DEVICE (quietly, slowly): …`. Write it in plain words. VoiceIt's browser voices understand only the words below (a word also matches its longer forms: `quiet` matches `quietly`). When several apply, rates and pitches multiply and the quietest volume wins. Other words are allowed; the browser voices simply ignore them.
 
 ```manner
 name: quiet

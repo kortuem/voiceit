@@ -34,7 +34,7 @@ Blank lines and lines starting with `#` are ignored.
 | --- | --- |
 | `JOOST: I can't sleep.` | A person speaks. Names in capitals; any name except the reserved words below. |
 | `DEVICE: Good evening.` | The product speaks, in the voice named in the front matter. Its character's name works too (`REX:` in a script with `character: Rex`). |
-| `DEVICE (quietly, slowly): …` | A parenthetical gives the manner. The browser voices follow the words listed under Manner in `VOCABULARY.md`; the stage passes the whole direction to speech synthesis. |
+| `DEVICE (quietly, slowly): …` | A parenthetical gives the manner. The browser voices follow the words listed under Manner in `VOCABULARY.md` and ignore the rest. |
 | `JOOST: I was going to--` | An em dash (`—`) or `--` at the end: the next line cuts in with no gap. |
 | `(beat)` | A pause of one second. |
 | `(pause 4)` | A pause of four seconds; `(pause 1.5)` works too. It plays exactly what you write: the check reports a malformed number, `(pause 0)` and pauses over 60 seconds, but never changes them. |
@@ -81,7 +81,7 @@ Same scene, same vocabulary: every difference is behaviour, and it adds up to a 
 
 `node system/bin/check` reports, with line numbers:
 
-- **errors**: missing front matter, character or voice; a voice that is not in the catalogue; a screen component, light colour or sound that is not in the vocabulary;
-- **warnings**: someone who speaks but is not in the `people` line; a line that looks like a speaker but is not in capitals; a TOUCH on an option that is not on the screen at that moment; words after LIGHT that VoiceIt ignores; a script with no lines.
+- **errors**: missing front matter, character or voice; a voice that is not in the catalogue; a screen component, light colour or sound that is not in the vocabulary; a pause without a proper number of seconds, such as `(pause)` or `(pause 2,5)` (not played);
+- **warnings**: someone who speaks but is not in the `people` line; a line that looks like a speaker but is not in capitals; a TOUCH on an option that is not on the screen at that moment; a choice without options; words after LIGHT that VoiceIt ignores; `(pause 0)`, a pause over 60 seconds, or `(beat)` with words in it; a script with no lines.
 
 Errors must be fixed. Warnings are worth reading: they usually mean the behaviour will not play as intended.

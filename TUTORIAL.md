@@ -22,7 +22,7 @@ You need the **Claude desktop app** (its **Code** tab) or the **Codex** app, sig
 
    > Clone https://github.com/kortuem/voiceit.git into this folder.
 
-   A folder `voiceit` appears.
+   A folder `voiceit` appears. (Already cloned it in a terminal, as in the README? Skip this step and open that folder in step 3.)
 3. **Start a new session on the `voiceit` folder itself.** In this folder the agent can read VoiceIt's instructions (`AGENTS.md`) and your design files.
 4. **Paste this as your first message**, and again at the start of every new session:
 
@@ -37,7 +37,7 @@ You need the **Claude desktop app** (its **Code** tab) or the **Codex** app, sig
    - **Windows:** open the `voiceit` folder in File Explorer, click the address bar, type `cmd`, press Enter.
 
    </details>
-6. **Check the sound.** Open VoiceIt's **Setup** tab and press *Play the six voices*. You hear six different voices; the checks beside them all say *Yes*.
+6. **Check the sound.** Open VoiceIt's **Setup** tab and press *Play the six voices*. You hear up to six voices (fewer different ones if your laptop has only a few), and the checks in the same tab all say *Yes*.
 
 ## 2. Play an example
 
@@ -55,7 +55,7 @@ Two characters in one scene: that contrast is what VoiceIt is for.
 
 1. **Behaviour scripts.** Your scripts, newest first, then the examples. Each row shows the character's name, the script's note, the approximate length, and the rhythm of the script (blue: the product speaks; grey: people speak).
 2. **Form.** The product image currently shown.
-3. **Form images.** All forms in `design/forms/` and the examples. Click one to play the selected script with that form.
+3. **Form images.** All forms in `design/forms/` and the examples. Click one to show it with the selected script.
 4. **Screen.** What the product shows on its screen at this moment.
 5. **Light.** The product's light: its colour, and whether it pulses or is dimmed.
 6. **Controls.** *Play* / *Pause*, *Step* (one line at a time), *Restart*, sound on and off, and the time.
@@ -99,7 +99,7 @@ What happens:
 
 ## 5. Review the script
 
-The script column (9) shows the whole file. It begins like this:
+The script column (9) shows the script as it plays. The file itself, which you can open in any text editor, begins like this (its first 18 lines):
 
 ```
 ---
@@ -108,10 +108,15 @@ note: Night on ward 4
 voice: Ash
 people: Joost (patient), Eva (his daughter, by voice message), Samira (night nurse), Bakker (roommate)
 ---
-# Night on ward 4. 23:10. Joost lies awake after hip surgery; Mr Bakker sleeps in the next bed.
+# Night on ward 4. 23:10. Joost de Vries, 67, lies awake the day after hip surgery, in a two-bed room.
+# Mr Bakker in the next bed is asleep. A voice message from his daughter Eva arrives: can she visit tomorrow at ten?
+# Joost is in pain and does not know whether he may take more pain relief. Samira, the night nurse, comes in.
+# Joost wants to answer Eva before he sleeps.
+23:10. The room is dark. Mr Bakker sleeps in the next bed. Joost lies awake.
 LIGHT: amber pulse dim
 Eva's message arrives. The device makes no sound.
 (pause 3)
+Joost notices the light and turns his head.
 JOOST (low): What is it?
 SCREEN: word Eva
 DEVICE (quietly): A message from Eva.
@@ -141,13 +146,13 @@ A form can be a rough drawing or a rendered image (PNG, JPG, WebP or SVG). A way
 
 1. Save the image in `design/forms/`, for example `design/forms/juno.png`. Keep sketches and earlier versions in `design/forms/process/`; VoiceIt shows only the images directly in `design/forms/`.
 2. Within a few seconds the image appears among the form images (3).
-3. Click it to play your script with it. Then click the example forms: does the same behaviour feel different in another body?
+3. Click it, and play your script with it. Then click the example forms: does the same behaviour feel different in another body?
 
 ## 8. Compare and judge
 
 - **Fit:** does this behaviour suit this form? Play it with other forms.
 - **Contrast:** play your scripts one after another, or compare their rhythm strips in the list.
-- **Consistency:** if a character has several scripts, does it behave like the same character in each? Ask *"Compare Juno's scripts."*
+- **Coherence:** if a character has several scripts, does it behave like the same character in each? Ask *"Compare Juno's scripts."*
 - **Details:** when does it speak first, and when does it wait? How much does it say? Whom does it address? What does it keep off the loudspeaker? How does it handle not knowing something?
 
 ## What to say to your agent
@@ -184,4 +189,5 @@ You do not need any of this to use VoiceIt. Your agent can do each step for you 
 - **A new script does not appear:** is VoiceIt still running in its terminal? Is the file in `design/behaviours/` (not somewhere else)? Ask the agent: *"Where did you save it?"*
 - **A script does not play as expected:** *"Check our scripts."* Problems are also marked in the script column (9).
 - **No sound:** is *Sound on* (6)? Test the voices in the Setup tab; voices differ between browsers and systems.
+- **`node` is not found** right after installing Node.js: close the terminal and open a new one.
 - **The agent does not seem to know VoiceIt:** is the session on the `voiceit` folder itself? Paste the starter message again.

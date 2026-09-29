@@ -57,7 +57,6 @@ function frontMatter(txt){
   m[1].split('\n').forEach(l => { const i = l.indexOf(':'); if (i > 0) meta[l.slice(0, i).trim().toLowerCase()] = l.slice(i + 1).trim(); });
   return {meta, body:txt.slice(m[0].length), offset:m[0].split('\n').length - 1, found:true};
 }
-function listItems(body){ return body.split('\n').map(l => l.trim()).filter(l => /^([-*]|\d+[.)])\s+/.test(l)).map(l => l.replace(/^([-*]|\d+[.)])\s+/, '')); }
 
 /* ---------- Screenplay parser ---------- */
 const PAUSE_RE = /^\(\s*(beat|pause)\b([^)]*)\)$/i;   // (beat), (pause 3); the number is checked below
@@ -262,6 +261,6 @@ function buildDesign(files){
   return {forms:sorted(forms, f => f.name), behaviours:sorted(behaviours, b => b.character + ' ' + b.note), vocabulary};
 }
 
-return {RESERVED, DEFAULT_VOICE, parseVocabulary, frontMatter, listItems, parseScript, cast, manner, speechDur, schedule,
+return {RESERVED, DEFAULT_VOICE, parseVocabulary, frontMatter, parseScript, cast, manner, speechDur, schedule,
   comments, parsePeople, validateBehaviour, buildDesign, formatTime, words, orList};
 });

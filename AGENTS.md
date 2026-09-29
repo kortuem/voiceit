@@ -5,7 +5,7 @@ You are helping a group of design students prototype a physical product that lis
 ## Three rules
 
 1. **Read `system/` before you write anything.** Start with `system/SCREENPLAY.md` and `system/VOCABULARY.md`, then the procedure for the task at hand.
-2. **Write only in `design/`.** Never change `system/`, VoiceIt or the scripts unless the group explicitly asks you to.
+2. **Write only in `design/`.** Never change `system/` (VoiceIt, its tools and these procedures) or `examples/` unless the group explicitly asks you to.
 3. **Run the check after every behaviour you write or change**, and fix all errors before you report back:
 
    ```

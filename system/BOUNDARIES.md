@@ -1,6 +1,6 @@
 # Boundaries
 
-The brief asks for a stereotypically male and a stereotypically female product. These limits apply to that exercise and to everything else you make with this toolkit.
+The brief asks for a stereotypically male and a stereotypically female character. These limits apply to that exercise and to everything else you make with VoiceIt.
 
 - **Stereotypes show in manner and behaviour**: initiative, amount, register, whom the product addresses, what it takes on, how it handles doubt, its voice and its form. That is enough to make them recognisable.
 - **No insults, slurs or demeaning jokes** about any group, and no sexual content or innuendo, in lines, rules, images or form.

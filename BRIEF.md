@@ -26,7 +26,7 @@ Give each character a name that does not give away which one it is: the class wi
 
 ## Boundaries
 
-Stereotypes show in manner and behaviour, never in insults or sexual content. A group may refuse to build a stereotype and argue why in `notes.md`. See `system/BOUNDARIES.md`.
+Stereotypes show in manner and behaviour, never in insults or sexual content. A group may refuse to build a stereotype and argue why in `design/notes.md`. See `system/BOUNDARIES.md`.
 
 ## Start here
 

@@ -399,7 +399,7 @@ body.watching .wprog:focus-visible{outline:2px solid var(--ink);outline-offset:2
       <h2>Among several people</h2>
       <p>A product that listens is rarely alone with one user. It has to decide whom it addresses, who merely overhears, and when to leave people alone.</p>
       <ul class="refs">
-        <li><b>Goffman, E. (1981). Footing. In <i>Forms of Talk</i> (first published in <a href="https://doi.org/10.1515/semi.1979.25.1-2.1">Semiotica, 1979</a>).</b> Addressed and unaddressed hearers, bystanders and overhearers: the vocabulary for a device in a shared room.</li>
+        <li><b>Goffman, E. (1981). Footing. In <i>Forms of Talk</i> (first published in <a href="https://doi.org/10.1515/semi.1979.25.1-2.1">Semiotica, 1979</a>).</b> Addressed and unaddressed hearers, bystanders and overhearers: the vocabulary for a product in a shared room.</li>
         <li><b>Porcheron, M., Fischer, J. E., Reeves, S. &amp; Sharples, S. (2018). <a href="https://doi.org/10.1145/3173574.3174214">Voice interfaces in everyday life</a>. CHI 2018.</b> Recordings of Amazon Echo in family homes: talk to the device is woven into talk among the people around it.</li>
         <li><b>Luria, M. et al. (2020). <a href="https://doi.org/10.1145/3313831.3376311">Social boundaries for personal agents in the interpersonal space of the home</a>. CHI 2020.</b> Families reacting to storyboards of agent behaviour: roles, ownership, privacy and when an agent should stay out.</li>
       </ul>
@@ -410,7 +410,7 @@ body.watching .wprog:focus-visible{outline:2px solid var(--ink);outline-offset:2
       <ul class="refs">
         <li><b>Ju, W. (2015). <a href="https://doi.org/10.1007/978-3-031-02210-4">The Design of Implicit Interactions</a>.</b> Interactions sorted by who takes the initiative and how much attention they ask: a grid for voice, light and silence.</li>
         <li><b>Zargham, N. et al. (2022). <a href="https://doi.org/10.1145/3543829.3543834">Understanding circumstances for desirable proactive behaviour of voice assistants: The proactivity dilemma</a>. CUI '22.</b> People welcome proactivity when it matters, and fear it when others are talking.</li>
-        <li><b>Bérubé, C. et al. (2024). <a href="https://doi.org/10.1016/j.chbr.2024.100411">Proactive behavior in voice assistants: A systematic review and conceptual model</a>.</b> Context, initiation and action: a checklist for how a device steps in, from a signal to a spoken suggestion.</li>
+        <li><b>Bérubé, C. et al. (2024). <a href="https://doi.org/10.1016/j.chbr.2024.100411">Proactive behavior in voice assistants: A systematic review and conceptual model</a>.</b> Context, initiation and action: a checklist for how a product steps in, from a signal to a spoken suggestion.</li>
         <li><b>Oh, J. et al. (2024). <a href="https://doi.org/10.1145/3613904.3642193">Better to ask than assume: Proactive voice assistants' communication strategies that respect user agency in a smart home environment</a>. CHI 2024.</b> How a proactive assistant can leave control with the person.</li>
       </ul>
     </section>
@@ -435,12 +435,12 @@ body.watching .wprog:focus-visible{outline:2px solid var(--ink);outline-offset:2
   <section class="view about" id="view-setup" role="tabpanel" aria-labelledby="tab-setup" hidden>
     <section>
       <h2>Getting started</h2>
-      <p>You need the Claude desktop app (its <b>Code</b> tab) or the Codex app, <b>Git</b> and <b>Node.js</b> (18 or newer, the LTS installer from <a href="https://nodejs.org">nodejs.org</a>). The README on <a href="https://github.com/kortuem/voiceit">github.com/kortuem/voiceit</a> has the same steps.</p>
+      <p>You need the Claude desktop app (its <b>Code</b> tab) or the Codex app, <b>Git</b> and <b>Node.js</b> (18 or newer, the LTS installer from <a href="https://nodejs.org">nodejs.org</a>). The <a href="https://github.com/kortuem/voiceit/blob/main/TUTORIAL.md">tutorial</a> on GitHub has the same steps, and what to do next.</p>
       <ol>
         <li><b>Make a folder for your course work</b>, for example <code>Documents/IDEM307</code>.</li>
         <li><b>Get VoiceIt from GitHub into it.</b> Open your agent with a new session on that folder and type: <i>“Clone https://github.com/kortuem/voiceit.git into this folder.”</i> This makes a folder <code>voiceit</code>.</li>
-        <li><b>Start a new session on the <code>voiceit</code> folder itself.</b> The agent only knows how VoiceIt works when it works in this folder.</li>
-        <li><b>Paste this as your first message:</b> <i>“We are working with VoiceIt in this folder. Read AGENTS.md and follow it. Write every behaviour into design/behaviours/, and check every script after writing or changing it.”</i></li>
+        <li><b>Start a new session on the <code>voiceit</code> folder itself.</b> In this folder the agent can read VoiceIt's instructions (<code>AGENTS.md</code>) and your design files.</li>
+        <li><b>Paste this as your first message</b>, and again at the start of every new session: <i>“We are working with VoiceIt in this folder. Read AGENTS.md and follow it. Write every behaviour into design/behaviours/, and check every script after writing or changing it.”</i></li>
         <li><b>Start VoiceIt</b> from a terminal in the <code>voiceit</code> folder: <code>node system/bin/preview</code>. Your browser opens this page. Leave the terminal open while you work; <code>Ctrl+C</code> stops it.
           <ul>
             <li>Mac: open Terminal, type <code>cd </code> (with a space), drag the <code>voiceit</code> folder onto the window, press Return.</li>
@@ -456,9 +456,9 @@ body.watching .wprog:focus-visible{outline:2px solid var(--ink);outline-offset:2
         <li><i>“Check our scripts”</i>: the agent reports what the check finds, with line numbers, also after you edited a script yourself.</li>
         <li><i>“Commit our work”</i> saves a version with Git; <i>“Pull the latest VoiceIt”</i> gets course updates.</li>
       </ul>
-      <p>Tested in Chrome on a Mac; Edge, Safari and Firefox should work. Voices differ between browsers and systems.</p>
+      <p>Tested in Chrome on a Mac. Not yet tested: Edge, Safari, Firefox, and anything on Windows. Voices differ between browsers and systems.</p>
       <h3>Without Node</h3>
-      <p>Open <code>system/voiceit.html</code> by double-clicking it, then choose the project folder here. Everything plays, but VoiceIt does not notice new files by itself (open the folder again after a change), and your agent cannot run the check.</p>
+      <p>Open <code>system/voiceit.html</code> by double-clicking it, then choose the <code>voiceit</code> folder here. Everything plays, but VoiceIt does not notice new files by itself (open the folder again after a change), and your agent cannot run the check.</p>
       <label class="btn file">Open folder…<input type="file" webkitdirectory directory multiple data-folder></label>
     </section>
     <section>
@@ -494,7 +494,7 @@ const lightColour = name => (vocab.light[name] || {}).colour || '#F4F4EF';
 // higher-pitched ones, so that the catalogue's range can be matched to what a laptop has.
 const hasSpeech = 'speechSynthesis' in window;
 let sysVoices = [];
-const LOWER_NAMES = /(daniel|alex\b|fred|aaron|arthur|male|guy|ryan|thomas|oliver|george|david|mark|james|gordon|rishi|reed|eddy|ralph|albert|bruce|tom\b|evan|nathan|lee\b|oskar|xander)/i;
+const LOWER_NAMES = /(daniel|alex\b|fred|aaron|arthur|\bmale\b|guy|ryan|thomas|oliver|george|david|mark|james|gordon|rishi|reed|eddy|ralph|albert|bruce|tom\b|evan|nathan|lee\b|oskar|xander)/i;
 const HIGHER_NAMES = /(samantha|karen|moira|tessa|female|victoria|fiona|serena|zira|susan|hazel|kate|libby|sonia|aria|jenny|allison|ava|nicky|zoe|martha|catherine|emma|sandy|shelley|flo\b|kathy|joana|amelie|anna|claire|ellen|natasha|veena|salli|joanna|kimberly|ivy|amy)/i;
 function loadVoices(){ try{ sysVoices=(speechSynthesis.getVoices()||[]).filter(v=>/^en/i.test(v.lang)); if(!sysVoices.length) sysVoices=speechSynthesis.getVoices()||[]; }catch(e){ sysVoices=[]; } }
 if(hasSpeech){ loadVoices(); try{ speechSynthesis.addEventListener('voiceschanged',loadVoices); }catch(e){} }
@@ -519,7 +519,7 @@ function playSound(name){ if(!audioOn) return; const c=ac(); if(!c) return; cons
   else if(name==='click'){ tone(c,2400,t,.03,{type:'square',g:.06}); }
 }
 
-/* ---------- Rendering the thing ---------- */
+/* ---------- Rendering the product ---------- */
 const screen=$('#screen'), lamp=$('#lamp');
 function renderScreen(s){
   if(!s || s.comp==='blank'){ screen.innerHTML=''; $('#screenSub').textContent='blank'; return; }
@@ -546,7 +546,7 @@ function touch(target){
   const d=document.createElement('span'); d.className='tap'; d.style.left=x+'px'; d.style.top=y+'px'; screen.appendChild(d); setTimeout(()=>d.remove(),900);
 }
 const cap=$('#caption');
-const thingName = () => (current() && current().character) || 'The product';
+const productName = () => (current() && current().character) || 'The product';
 function caption(l){
   markLine(l && typeof l==='object' ? l.ln : null);
   cap.classList.remove('msg');
@@ -560,26 +560,25 @@ function caption(l){
   if(l==='end'){ cap.innerHTML='<span class="txt act">End.</span>'; return; }
   if(l.kind==='speech'){
     const p=!l.device && people.find(x=>x.key===l.who);
-    const who=l.device?thingName():(p?p.name:l.who);
+    const who=l.device?productName():(p?p.name:l.who);
     cap.innerHTML=`<span class="who${l.device?' dev':''}">${esc(who)}${p&&p.role?`<span class="role"> · ${esc(p.role)}</span>`:''}${l.manner?` (${esc(l.manner)})`:''}</span><span class="txt">${esc(l.text)}</span>`; }
   else if(l.kind==='action') cap.innerHTML=`<span class="txt act">${esc(l.text)}</span>`;
   else if(l.kind==='pause') cap.innerHTML=`<span class="txt act">(${esc(l.text)})</span>`;
   else if(l.kind==='touch') cap.innerHTML=`<span class="txt act">${/^screen$/i.test(l.target)?'Taps the screen.':`Taps “${esc(l.target)}”.`}</span>`;
 }
 
-/* ---------- Lanes: one per person, the thing, screen, light, sound ---------- */
-// compact: all people share one lane (for Compare)
+/* ---------- Lanes: one per person, the product, screen, light, sound ---------- */
 function buildLanes(ev, total, pct, opts){
   const decl=opts.people||[], roleOf=k=>{ const p=decl.find(x=>x.key===k); return p&&p.role; }, nameOf=k=>{ const p=decl.find(x=>x.key===k); return p?p.name:k; };
   const who=decl.map(x=>x.key); ev.forEach(e=>{ if(e.l.kind==='speech' && !e.l.device && !who.includes(e.l.who)) who.push(e.l.who); });
-  const per=Object.fromEntries(who.map(n=>[n,''])); let people='', act='', dev='', scr='', lig='', snd='';
+  const per=Object.fromEntries(who.map(n=>[n,''])); let act='', dev='', scr='', lig='', snd='';
   const w=(a,b)=>`left:${pct(a)};width:calc(${pct(b-a)} - 1px)`;
   ev.forEach(e=>{
     const l=e.l;
     if(l.kind==='speech'){
       const lbl=esc(l.text), tip=esc(`${l.device?opts.name:l.who}${l.manner?` (${l.manner})`:''}: ${l.text}`);
       if(l.device) dev+=`<div class="seg device" style="${w(e.start,e.end)}" title="${tip}">${lbl}</div>`;
-      else { const seg=`<div class="seg person" style="${w(e.start,e.end)}" title="${tip}">${opts.compact?esc(l.who)+': ':''}${lbl}</div>`; if(opts.compact) people+=seg; else per[l.who]+=seg; }
+      else { const seg=`<div class="seg person" style="${w(e.start,e.end)}" title="${tip}">${lbl}</div>`; per[l.who]+=seg; }
     }
     else if(l.kind==='action'||l.kind==='pause') act+=`<div class="seg action" style="${w(e.start,e.end)}" title="${esc(l.text)}"></div>`;
     else if(l.kind==='touch') act+=`<div class="seg touch" style="${w(e.start,e.end)}" title="taps ${esc(l.target)}">tap</div>`;
@@ -589,9 +588,7 @@ function buildLanes(ev, total, pct, opts){
   const spans=kind=>{ const out=[]; let prev=null; ev.forEach(e=>{ if(e.l.kind===kind){ if(prev) prev.end=e.start; prev={start:e.start,end:total,l:e.l}; out.push(prev);} }); return out; };
   spans('screen').forEach(s=>{ const blank=s.l.comp==='blank'; const txt=blank?'blank':`${s.l.comp}: ${s.l.parts.filter(Boolean).join(' | ')}`; if(s.end>s.start) scr+=`<div class="seg screen${blank?' blank':''}" style="${w(s.start,s.end)}" title="${esc(txt)}">${esc(txt)}</div>`; });
   spans('light').forEach(s=>{ if(s.l.off||s.end<=s.start) return; const c=lightColour(s.l.colour); const bg=s.l.pulse?`repeating-linear-gradient(90deg,${c} 0 10px,transparent 10px 16px)`:c; lig+=`<div class="seg light" style="${w(s.start,s.end)};background:${bg};opacity:${s.l.dim?.45:1}" title="${[s.l.colour,s.l.pulse&&'pulse',s.l.dim&&'dim'].filter(Boolean).join(' ')}"></div>`; });
-  const lanes = opts.compact
-    ? [{name:'People',html:act+people}, {name:opts.name,html:dev,cls:'dev'}, {name:'Screen',html:scr,split:true}, {name:'Light',html:lig}]
-    : [{name:'Action',html:act}, ...who.map(n=>({name:nameOf(n),role:roleOf(n),html:per[n],cls:'who'})), {name:opts.name,html:dev,cls:'dev'}, {name:'Screen',html:scr,split:true}, {name:'Light',html:lig}, {name:'Sound',html:snd}];
+  const lanes = [{name:'Action',html:act}, ...who.map(n=>({name:nameOf(n),role:roleOf(n),html:per[n],cls:'who'})), {name:opts.name,html:dev,cls:'dev'}, {name:'Screen',html:scr,split:true}, {name:'Light',html:lig}, {name:'Sound',html:snd}];
   return {
     names:'<div class="tl-name ruler"></div>'+lanes.map(l=>`<div class="tl-name ${l.cls||''}" title="${esc(l.name)}${l.role?' · '+esc(l.role):''}">${esc(l.name)}${l.role?`<span class="role"> ${esc(l.role)}</span>`:''}</div>`).join(''),
     lanes:lanes.map(l=>`<div class="lane${l.split?' split':''}">${l.html}</div>`).join('')
@@ -605,7 +602,7 @@ let sched={ev:[],total:1}, people=[];
 const pct=t=>(t/sched.total*100)+'%';
 function drawTimeline(){
   $('#ruler').innerHTML=ruler(sched.total,pct);
-  const L=buildLanes(sched.ev, sched.total, pct, {name:thingName(), people});
+  const L=buildLanes(sched.ev, sched.total, pct, {name:productName(), people});
   $('#tlNames').innerHTML=L.names; $('#lanes').innerHTML=L.lanes;
   $('#wsegs').innerHTML=sched.ev.filter(e=>e.l.kind==='speech').map(e=>`<i class="${e.l.device?'d':''}" style="left:${pct(e.start)};width:${pct(Math.max(.2,e.end-e.start))}"></i>`).join('');
   const empty=!sched.ev.length; $('#tlEmpty').hidden=!empty;
@@ -855,7 +852,7 @@ function renderTranscript(text, r){
     const ln=i+1, s=raw.trim();
     if(ln<=fm.offset || !s || s.startsWith('#')) { if(probs[ln] && ln<=fm.offset) out.push(`<li class="note-line" data-ln="${ln}">${esc(s)}${probs[ln].map(p=>`<span class="prob">${esc(p)}</span>`).join('')}</li>`); return; }
     const l=byLn[ln]; let cls='', html=esc(s);
-    if(l && l.kind==='speech'){ const who=l.device?thingName():((people.find(x=>x.key===l.who)||{}).name||l.who);
+    if(l && l.kind==='speech'){ const who=l.device?productName():((people.find(x=>x.key===l.who)||{}).name||l.who);
       cls=l.device?'dev':''; html=`<span class="who">${esc(who.toUpperCase())}</span>${l.manner?` (${esc(l.manner)})`:''}: ${esc(l.text)}`; }
     else if(l && (l.kind==='screen'||l.kind==='light'||l.kind==='sound'||l.kind==='touch')) cls='cue';
     else if(l && (l.kind==='action'||l.kind==='pause')) cls='act';
@@ -899,8 +896,8 @@ function drawSetup(){
   const nb=Object.keys(data.behaviours).length, nf=Object.keys(data.forms).length;
   $('#setupChecks').innerHTML =
     ok(served, 'VoiceIt was started with node system/bin/preview.', 'You opened the page directly. That works, but see step 5, or “Without Node”.')+
-    ok(!!vocab, 'The vocabulary is loaded.', 'Start VoiceIt with the preview, or open the project folder.')+
-    ok(nb>0, `${plural(nb,'behaviour')} and ${plural(nf,'form')} found.`, 'No behaviours yet: start with the preview, or open the project folder.')+
+    ok(!!vocab, 'The vocabulary is loaded.', 'Start VoiceIt with the preview, or open the voiceit folder.')+
+    ok(nb>0, `${plural(nb,'behaviour')} and ${plural(nf,'form')} found.`, 'No behaviours yet: start with the preview, or open the voiceit folder.')+
     ok(hasSpeech && sysVoices.length>0, hasSpeech ? `${plural(sysVoices.length,'voice')} available in this browser.` : 'This browser cannot speak.', 'No voices found. Try another browser (Edge on Windows, Safari or Chrome on a Mac).');
   if(!vocab){ $('#voiceMap').innerHTML=''; return; }
   $('#voiceMap').innerHTML = '<thead><tr><th>Voice</th><th>Sound</th><th>Played with, on this laptop</th></tr></thead><tbody>'+
@@ -942,9 +939,11 @@ if(served){
   window.addEventListener('focus',()=>fetchDesign(true));
   // look for new or changed files every few seconds, but never in the middle of playback
   setInterval(()=>{ if(!document.hidden && !playing) fetchDesign(true); }, 3000);
+  // keep "just now" and "3 min ago" current without redrawing the list
+  setInterval(()=>{ document.querySelectorAll('.brow').forEach(r=>{ const b=data.behaviours[r.dataset.k], s=r.querySelector('.bt span'); if(b && !b.example && s) s.textContent=ago(b.mtime); }); }, 30000);
   document.addEventListener('visibilitychange',()=>{ if(!document.hidden) fetchDesign(true); });
 } else {
-  say('VoiceIt was opened without the preview. See the Setup tab: start it with node system/bin/preview, or open the project folder.');
+  say('VoiceIt was opened without the preview. See the Setup tab: start it with node system/bin/preview, or open the voiceit folder.');
 }
 // a tab you leave pauses, so two VoiceIt tabs never talk over each other
 document.addEventListener('visibilitychange',()=>{ if(document.hidden && playing) stop(); });
@@ -960,8 +959,8 @@ async function onFolder(e){
   }
   const d=VoiceIt.buildDesign(list);
   if(d.vocabulary){ if(!setVocab(d.vocabulary)) return; }
-  if(!vocab){ say('This folder has no system/VOCABULARY.md. Choose the whole project folder (the one with system/ and design/ inside).'); setTab('play'); return; }
-  if(!Object.keys(d.behaviours).length && !Object.keys(d.forms).length){ say('No behaviours or forms found. Choose the project folder or its design folder.'); setTab('play'); return; }
+  if(!vocab){ say('This folder has no system/VOCABULARY.md. Choose the whole voiceit folder (the one with system/ and design/ inside).'); setTab('play'); return; }
+  if(!Object.keys(d.behaviours).length && !Object.keys(d.forms).length){ say('No behaviours or forms found. Choose the voiceit folder.'); setTab('play'); return; }
   openedByHand=true; loadData(d); setTab('play');
 }
 bindFolderInputs();
