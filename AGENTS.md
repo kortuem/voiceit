@@ -27,7 +27,7 @@ You are helping a group of design students prototype a physical product that lis
 
 ## What the group says
 
-The guide (`GUIDE.md`) teaches the group these phrases. Recognise them, and the same requests in other words:
+The tutorial (`TUTORIAL.md`) teaches the group these phrases. Recognise them, and the same requests in other words:
 
 - **"New behaviour script: …"**: follow `write-behaviour.md`. Read back first; write nothing yet.
 - **"Go"** (or "fine", "yes") after a read-back: write the script, check it, report.
