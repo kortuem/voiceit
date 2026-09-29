@@ -4,6 +4,11 @@ What changed from one version of VoiceIt to the next, newest first. Versions bel
 
 For maintainers: when releasing, set `VERSION` in `system/voiceit.js`, add an entry here with the same number, and tag the commit. The tests check that the two numbers match.
 
+## 0.2.10 (29 September 2026)
+
+- **Sounds play in Safari:** the chime, alert and the click of a touch were silent in Safari (reported by a tester), while the voices played. Browsers start sound only from a click or key press, and VoiceIt started its sound engine only when the first sound came up in the script. Now the first click or key press on the page starts it.
+- The Setup tab has a *Play the sounds* button next to *Play the six voices*.
+
 ## 0.2.9 (29 September 2026)
 
 - **Better sound with good voices:** Premium, Enhanced and Natural voices now keep their own pitch. VoiceIt used to lower or raise the pitch of every voice (Ash to 0.82, Wren to 1.3, "low" further), which made the best voices sound artificial; heard side by side, the unaltered voices sounded clearly better. Speed and volume still follow the catalogue and directions such as *quietly*. Basic voices are still pitch-shifted.

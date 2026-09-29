@@ -224,7 +224,7 @@ You do not need any of this to use VoiceIt. Your agent can do each step for you 
 
 - **A new script does not appear:** is VoiceIt still running in its terminal? Is the file in `design/behaviours/` (not somewhere else)? Ask the agent: *"Where did you save it?"*
 - **A script does not play as expected:** *"Check our scripts."* Problems are also marked in the script column (9).
-- **No sound:** is *Sound on* (6)? Test the voices in the Setup tab; voices differ between browsers and systems.
+- **No sound:** is *Sound on* (6)? Test the voices and the sounds in the Setup tab; voices differ between browsers and systems. If the voices play but the sounds do not, reload the page (VoiceIt 0.2.10 or later is needed in Safari).
 - **`node` is not found** right after installing Node.js: close the terminal and open a new one.
 - **Node will not install, or VoiceIt will not start:** use [VoiceIt online](https://kortuem.github.io/voiceit/) as a backup. Click **Open your voiceit folder** in the list and choose your `voiceit` folder; the files stay on your laptop. Chrome and Edge follow the folder, so new scripts appear by themselves; in Safari and Firefox, open the folder again after a change. Your agent cannot run the check without Node, so read the problems VoiceIt marks in the script column.
 - **The agent does not seem to know VoiceIt:** is the session on the `voiceit` folder itself? Say: *"Read AGENTS.md and follow it."*

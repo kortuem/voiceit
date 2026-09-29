@@ -468,9 +468,9 @@ body.watching .wprog:focus-visible{outline:2px solid var(--ink);outline-offset:2
       <h2>This laptop</h2>
       <ul id="setupChecks" class="checks"></ul>
       <h3>Voices</h3>
-      <p>VoiceIt uses the voices your laptop has. The six voices of the catalogue are matched to them as well as possible, so they sound different on every laptop. Play them to hear what yours can do.</p>
+      <p>VoiceIt uses the voices your laptop has. The six voices of the catalogue are matched to them as well as possible, so they sound different on every laptop. Play them to hear what yours can do. The sounds (chime, alert, click) are made by VoiceIt itself and sound the same everywhere.</p>
       <p><b>Better voices (optional).</b> Mac: System Settings › Accessibility › Spoken Content › System voice › Manage Voices…, then download a few English voices marked Premium or Enhanced (for example Jamie, Serena, Karen, Ava, Daniel), and restart the browser. Windows: use Microsoft Edge, which offers natural-sounding voices (names ending in “Natural”); more voices can be added under Settings › Time &amp; language › Speech. VoiceIt uses the best voices it finds by itself.</p>
-      <p><button class="btn" id="voiceTest" type="button">Play the six voices</button></p>
+      <p><button class="btn" id="voiceTest" type="button">Play the six voices</button> <button class="btn" id="soundTest" type="button">Play the sounds</button></p>
       <table class="vtable" id="voiceMap"></table>
     </section>
   </section>
@@ -531,6 +531,11 @@ function sysVoiceFor(catName){
 /* ---------- Sound ---------- */
 let audioOn=true, actx=null;
 function ac(){ try{ if(!actx){ const A=window.AudioContext||window.webkitAudioContext; if(!A) return null; actx=new A(); } if(actx.state==='suspended') actx.resume(); return actx; }catch(e){ return null; } }
+// Browsers, Safari above all, let a page start sound only from a click or key press. Sounds play later, in the
+// middle of a script, so every click and key press starts the sound engine if it is not running yet.
+function unlockAudio(){ const c=ac(); if(!c || c.state==='running') return;
+  try{ const s=c.createBufferSource(); s.buffer=c.createBuffer(1,1,22050); s.connect(c.destination); s.start(0); }catch(e){} }
+['pointerdown','keydown','touchend'].forEach(t=>document.addEventListener(t,unlockAudio,true));
 function tone(c,f,t,d,{type='sine',g=.14,f2=null}={}){ const o=c.createOscillator(),a=c.createGain(); o.type=type; o.frequency.setValueAtTime(f,t); if(f2) o.frequency.exponentialRampToValueAtTime(f2,t+d); a.gain.setValueAtTime(.0001,t); a.gain.exponentialRampToValueAtTime(g,t+.012); a.gain.exponentialRampToValueAtTime(.0001,t+d); o.connect(a); a.connect(c.destination); o.start(t); o.stop(t+d+.05); }
 function playSound(name){ if(!audioOn) return; const c=ac(); if(!c) return; const t=c.currentTime+.02;
   if(name==='chime'){ tone(c,880,t,.9); tone(c,1318.5,t+.16,1.1); }
@@ -938,6 +943,13 @@ $('#voiceTest').addEventListener('click',async()=>{
       u.pitch=pitchFor(s, v.pitch); u.rate=v.rate; let done=false; const fin=()=>{ if(!done){ done=true; res(); } };
       u.onend=fin; u.onerror=fin; setTimeout(fin,6000); try{ speechSynthesis.speak(u); }catch(e){ fin(); } });
   }
+  btn.disabled=false;
+});
+
+$('#soundTest').addEventListener('click',async()=>{
+  if(!vocab) return;
+  stop(); const btn=$('#soundTest'); btn.disabled=true;
+  for(const n of Object.keys(vocab.sound)){ playSound(n); await sleep(1300); }
   btn.disabled=false;
 });
 
