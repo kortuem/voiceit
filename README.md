@@ -1,12 +1,15 @@
 # VoiceIt
 
-Prototyping things that listen and respond.
+A rapid prototyping tool for designing products that listen and speak.
 
-A lamp, a bedside unit, a car: any object can now be given an ear and a voice. How it should behave is hard to judge on paper; it has to be seen and heard, in time, among people. VoiceIt stages it before the thing exists.
+VoiceIt supports the exploration and testing of physical products whose behaviour unfolds in spoken interaction with the people around them. Such behaviour is difficult to assess on paper: it depends on timing, wording, voice and on who else is present. VoiceIt makes it perceptible early. A product's behaviour in a given situation is written as a script and played back in the browser with synthetic speech, screen content, light and sound, before any working system exists.
 
-- **Form**: what the thing looks like. You sketch it on paper and have it rendered. One image in `design/forms/`.
-- **Behaviour**: how it acts in one situation. You say it in your own words; your AI agent writes it as a script. One file in `design/behaviours/`.
-- **Character**: what comes across when a form and a behaviour are played together. It is not written down; it is what you judge. Does the behaviour fit the form? Is it the same character from one situation to the next?
+A prototype has two parts:
+
+- **Form**: the physical shape of the product, as an image. It is sketched on paper and rendered with an image model. One image in `design/forms/`.
+- **Behaviour**: how the product responds in a situation: what it says and when, what it shows on its screen, and what its light and sounds do. The designers describe it in their own words; an AI agent writes it as a script in VoiceIt's notation. One file in `design/behaviours/`.
+
+Forms and behaviours are independent: any behaviour can be played with any form. This makes it possible to test whether a behaviour suits a form, and to compare alternative designs side by side. All interaction is scripted; nothing is live. VoiceIt is intended for exploring many variations quickly, not for building a working product.
 
 ## What you need
 
@@ -45,9 +48,13 @@ A lamp, a bedside unit, a car: any object can now be given an ear and a voice. H
 - **Check.** *"Check our scripts."* The agent runs the check and explains every mistake, with its line, also after you edited a script yourself. VoiceIt marks problems in the script beside the stage too.
 - **Forms.** Sketch on paper, render (see `system/FORM.md`), and save the image in `design/forms/`.
 
-## Git while you work
+## Git while you work (optional)
 
-Git keeps versions of your folder, on your laptop; you do not need a GitHub account. Your agent can do each step for you when you ask.
+**What Git is.** Git is a version control system: it keeps the history of a folder. You used it once already, to *clone* VoiceIt: that made your own copy of the course's repository on GitHub, history included. From then on, the copy on your laptop is yours; Git works on it without a GitHub account.
+
+**What a commit is.** A *commit* is a saved snapshot of the whole folder at one moment, with a short message saying what changed ("first version of Rex"). Commits let you go back to an earlier version, see what changed between two versions, and try something without losing what worked. *Pull* brings new commits from the course's repository into your copy (course updates); *push* sends your commits to a repository on GitHub (only needed to share with others, and needs an account).
+
+You do not need any of this to use VoiceIt. Your agent can do each step for you when you ask:
 
 - **Save a version:** *"Commit our work: first version of Rex."* The first time, Git asks for your name and e-mail.
 - **See what changed:** *"What changed since our last commit?"*
