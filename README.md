@@ -8,9 +8,9 @@ VoiceIt supports early design decisions that are difficult to assess through ske
 
 ## Watch the tour
 
-[![Watch the tour: VoiceIt in 1 minute 26 seconds](media/voiceit-demo-poster.jpg)](media/voiceit-demo.mp4)
+[![Watch the tour: VoiceIt in 1 minute 26 seconds](media/voiceit-demo-poster.jpg)](https://github.com/kortuem/voiceit/raw/main/media/voiceit-demo.mp4)
 
-A short tour, with sound: start VoiceIt, pick a script and a form, play it, inspect a moment, edit the script and play it again. The video is also in your copy of the repository, in `media/`, with subtitles (`voiceit-demo.srt`).
+A short tour, with sound (click the image to download it, 7 MB): start VoiceIt, pick a script and a form, play it, inspect a moment, edit the script and play it again. The video is also in your copy of the repository, in `media/`, with subtitles (`voiceit-demo.srt`).
 
 ![Three smart speakers on a table: a Google Home, a Google Nest Hub with a screen, and a Google Home Mini](https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Google_Home_with_Home_Hub_and_Home_Mini_on_table.jpg/960px-Google_Home_with_Home_Hub_and_Home_Mini_on_table.jpg)
 
