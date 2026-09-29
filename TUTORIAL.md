@@ -128,13 +128,13 @@ The lines between `---` are facts: the character's name, its voice, a note of yo
 
 Read your script while it plays. Did the agent add anything you did not ask for? Its report names the decisions it made itself.
 
-## 6. Revise the dialogue
+## 6. Revise the script
 
-**Give a note.** Start with **Note on**, the name, and what should change:
+**Tell your agent what should change**, in your own words, and in which script:
 
-> Note on Juno: it talks over the doctor. It should wait until she has left.
+> Juno talks over the doctor. It should wait until she has left.
 
-The agent says first whether the note changes this moment or the character as a whole, then revises the script and checks it. The list shows the new version within a few seconds; play it again.
+The agent changes the script, checks it, and says what it changed. If your remark is about the character as a whole, it asks before changing the character's other scripts. The list shows the new version within a few seconds; play it again.
 
 **Or edit the script yourself.** Open the file in `design/behaviours/` in any text editor, change a line and save. VoiceIt plays the new version within a few seconds. Then ask:
 
@@ -154,24 +154,21 @@ A form can be a rough drawing or a rendered image (PNG, JPG, WebP or SVG). A way
 
 - **Fit:** does this behaviour suit this form? Play it with other forms.
 - **Contrast:** play your scripts one after another, or compare their rhythm strips in the list.
-- **Coherence:** if a character has several scripts, does it behave like the same character in each? Ask *"Compare Juno's scripts."*
+- **Coherence:** if a character has several scripts, does it behave like the same character in each? Your agent can compare the scripts for you.
 - **Details:** when does it speak first, and when does it wait? How much does it say? Whom does it address? What does it keep off the loudspeaker? How does it handle not knowing something?
 
 ## What to say to your agent
 
-These phrases work reliably. You can phrase things differently, but starting a request with the phrase makes clear what you want.
+Four phrases cover the whole cycle. For everything else, say what you want in your own words.
 
 | Say | When | What happens |
 | --- | --- | --- |
-| *We are working with VoiceIt in this folder. Read AGENTS.md and follow it. Write every behaviour into design/behaviours/, and check every script after writing or changing it.* | At the start of every new session. | The agent reads VoiceIt's instructions and is ready. |
-| **New behaviour script:** *name, scene. How it behaves.* | To make a new script, also for a character you already have, in another scene (*"New behaviour script: Pip, at night. …"*). | The agent reads back what it understood and waits. |
+| *We are working with VoiceIt in this folder. Read AGENTS.md and follow it. Write every behaviour into design/behaviours/, and check every script after writing or changing it.* | At the start of every session. | The agent reads VoiceIt's instructions and is ready. |
+| **New behaviour script:** *name, scene. How it behaves.* | To make a new script, also for a character you already have, in another scene. | The agent reads back what it understood and waits. |
 | **Go** | When the read-back is right. | The agent writes the script, checks it and reports. |
-| **Note on** *name:* *remark.* | After playing, when something should change. | The agent says whether the note changes this moment or the character, revises the script, and checks it. |
-| **Check our scripts** (or **Check** *name*) | After you edited a script yourself, or when something does not play as expected. | The agent runs the check, explains what it finds with line numbers, and asks before fixing. |
-| **Copy the** *name* **example** | To start from an example instead of from scratch. | The agent copies it into `design/behaviours/`, where you can change it. |
-| **Compare** *name*'s **scripts** | When a character has several scripts. | The agent says where its manner differs. It changes nothing. |
-| **Commit our work:** *what changed.* | Optional: to save a version (below). | The agent makes a Git commit. |
-| **Pull the latest VoiceIt** | When the teacher announces an update. | The agent brings in the update. |
+| **Check our scripts** | After you edited a script yourself, or when something does not play as expected. | The agent runs the check, explains what it finds with line numbers, and asks before fixing. |
+
+To revise a script, just say what should change (step 6). The agent can also copy an example for you to start from, or compare a character's scripts, if you ask. Saving versions and course updates are under Git, below.
 
 ## Commands
 

@@ -27,15 +27,18 @@ You are helping a group of design students prototype a physical product that lis
 
 ## What the group says
 
-The tutorial (`TUTORIAL.md`) teaches the group these phrases. Recognise them, and the same requests in other words:
+The tutorial (`TUTORIAL.md`) teaches the group three phrases. Recognise them, and the same requests in other words:
 
 - **"New behaviour script: …"**: follow `write-behaviour.md`. Read back first; write nothing yet.
 - **"Go"** (or "fine", "yes") after a read-back: write the script, check it, report.
-- **"Note on <name>: …"**: follow `notes.md`.
 - **"Check our scripts"** or **"Check <name>"**: follow `check.md`.
-- **"Copy the <name> example"**: copy the file from `examples/` into `design/behaviours/` (or `design/forms/`), unchanged, and say where it is.
-- **"Compare <name>'s scripts"**: read that character's scripts and say where its manner differs from one to the other. Change nothing.
-- **"Commit our work: …"** and **"Pull the latest VoiceIt"**: see Git below.
+
+Everything else arrives in the group's own words:
+
+- A remark about a script after playing it ("it talks too much", "it should wait for the doctor"): follow `notes.md`.
+- Starting from an example: copy the file from `examples/` into `design/behaviours/` (or `design/forms/`), unchanged, and say where it is.
+- Comparing a character's scripts: say where its manner differs from one to the other. Change nothing.
+- Saving a version, or getting a course update: see Git below.
 
 ## Git
 
