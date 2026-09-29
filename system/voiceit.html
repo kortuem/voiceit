@@ -330,18 +330,18 @@ body.watching .wprog:focus-visible{outline:2px solid var(--ink);outline-offset:2
   <!-- About: the only explanatory text -->
   <section class="view about" id="view-about" role="tabpanel" aria-labelledby="tab-about" hidden>
     <section>
-      <h2>What this is</h2>
-      <p>VoiceIt is a rapid prototyping tool for products that listen and speak, such as smart speakers. Whether such a product works depends on timing, wording, voice and on who else is present. It might give useful advice but interrupt at the wrong moment, speak too formally, or address the wrong person. That is hard to judge on paper. In VoiceIt, behaviour is written as a script and played back with synthetic voices, screen content, light and sound.</p>
+      <h2>About VoiceIt</h2>
+      <p>VoiceIt is a rapid prototyping tool for products that listen and speak, such as smart speakers. People's experience of such a product depends on its timing, wording and voice, and on who else is present. It might give useful advice but interrupt at the wrong moment, speak too formally, or address the wrong person. That is hard to judge on paper. In VoiceIt, you write the behaviour as a script and play it back with synthetic voices, screen content, light and sound.</p>
       <p>A prototype has two parts. The <b>form</b> is the physical shape of the product: one image. The <b>behaviour</b> is a script of how the product acts: what it says and when, what it shows on its screen, and what its light and sounds do. Any behaviour can be played with any form, to test whether the two suit each other and to compare alternatives.</p>
-      <p>The <b>character</b> is what comes across when a form and a behaviour are played together, and it is what you judge. A script names the character it explores (<code>character: Night light</code>), but it does not describe it: the description is in what the product does.</p>
-      <h3>How to work</h3>
+      <p>The <b>character</b> is the impression people form of who the product is when they play a behaviour with a form, and it is what you judge. A script gives the character a name (<code>character: Night light</code>); its lines, timing, screen content, light and sound define how the product behaves.</p>
+      <h3>Workflow</h3>
       <ol>
         <li><b>Behaviour.</b> Tell your agent, in your own words, who the product is and how it should behave. It writes the script into <code>design/behaviours/</code>. Play it, and tell your agent what to change: less, later, softer, not in front of her.</li>
         <li><b>Form.</b> Sketch the product on paper, have it rendered, mark up the render and render again (<code>system/FORM.md</code>). Save the image in <code>design/forms/</code>.</li>
         <li><b>Judge.</b> Play a behaviour with different forms, and play the behaviours one after another. The rhythm strips in the list show them side by side.</li>
         <li><b>Watch.</b> Press <b>Watch</b> to let form, screen and light fill the window, as an audience would see them. Space plays and pauses, the arrow keys step through the lines, Escape brings you back to where you were.</li>
       </ol>
-      <h3>What to judge</h3>
+      <h3>Judging a design</h3>
       <ul>
         <li><b>Fit.</b> Does this behaviour suit this form? Try it in another one.</li>
         <li><b>Coherence.</b> Is it the same character from one script to the next, for example at night and during visiting hour?</li>
@@ -357,8 +357,8 @@ body.watching .wprog:focus-visible{outline:2px solid var(--ink);outline-offset:2
     </section>
     <section>
       <h2>Background</h2>
-      <p>VoiceIt stages behaviour the way a screenplay stages a scene: written first, then played. It is related to experience prototyping and enactment, where designers act out a product's behaviour to judge it. It prototypes a product's role and its look and feel over time, not its implementation, and it aims at many rough variations rather than one refined prototype.</p>
-      <p>A product's character, in design research, is a coherent quality that holds across its appearance and its behaviour. Among several people, a product also has to decide whom it addresses, who merely overhears, and when to leave people alone.</p>
+      <p>VoiceIt stages behaviour the way a screenplay stages a scene: written first, then played. It is related to experience prototyping and enactment, where designers act out a product's behaviour to judge it. It prototypes a product's role and its look and feel over time; designers use it to make and compare many rough variations early on.</p>
+      <p>A product's character, in design research, is a coherent quality that holds across its appearance and its behaviour. Among several people, designers also have to decide whom the product addresses, who merely overhears, and when the product should leave people alone.</p>
       <p>The sources behind these ideas, and further reading, are in the Literature tab.</p>
     </section>
   </section>
@@ -367,7 +367,7 @@ body.watching .wprog:focus-visible{outline:2px solid var(--ink);outline-offset:2
   <section class="view about lit" id="view-literature" role="tabpanel" aria-labelledby="tab-literature" hidden>
     <section>
       <h2>Voices, gender and stereotypes</h2>
-      <p>Why do assistants sound and behave the way they do? These readings show voice and manner as design decisions, not facts of nature.</p>
+      <p>Why do assistants sound and behave the way they do? These readings examine how designers construct gender through voice, manner and interaction.</p>
       <ul class="refs">
         <li><b>UN News (2019). <a href="https://news.un.org/en/story/2019/05/1038691">Are robots sexist? UN report shows gender bias in talking digital tech</a>.</b> A short summary of UNESCO's report <i>I'd blush if I could</i>: female default voices and submissive replies built into assistants, and what the report recommends.</li>
         <li><b>Sutton, S. J. (2020). <a href="https://doi.org/10.1145/3405755.3406123">Gender ambiguous, not genderless: Designing gender in voice user interfaces with sensitivity</a>. CUI '20.</b> Listeners assign gender to a voice, and more than pitch does it; a "genderless" voice is undone by everything else in the design.</li>
@@ -440,7 +440,7 @@ body.watching .wprog:focus-visible{outline:2px solid var(--ink);outline-offset:2
         <li><b>Make a folder for your course work</b>, for example <code>Documents/IDEM307</code>.</li>
         <li><b>Get VoiceIt from GitHub into it.</b> Open your agent with a new session on that folder and type: <i>“Clone https://github.com/kortuem/voiceit.git into this folder.”</i> This makes a folder <code>voiceit</code>.</li>
         <li><b>Start a new session on the <code>voiceit</code> folder itself.</b> In this folder the agent can read VoiceIt's instructions (<code>AGENTS.md</code>) and your design files.</li>
-        <li><b>Paste this as your first message</b>, and again at the start of every new session: <i>“We are working with VoiceIt in this folder. Read AGENTS.md and follow it. Write every behaviour into design/behaviours/, and check every script after writing or changing it.”</i></li>
+        <li><b>To be sure, start every new session with</b> <i>“Read AGENTS.md and follow it.”</i> The folder carries its own instructions for the agent; Claude Code and Codex normally read them by themselves.</li>
         <li><b>Start VoiceIt</b> from a terminal in the <code>voiceit</code> folder: <code>node system/bin/preview</code>. Your browser opens this page. Leave the terminal open while you work; <code>Ctrl+C</code> stops it.
           <ul>
             <li>Mac: open Terminal, type <code>cd </code> (with a space), drag the <code>voiceit</code> folder onto the window, press Return.</li>

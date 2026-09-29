@@ -1,10 +1,10 @@
 # VoiceIt tutorial
 
-This tutorial takes you through one design session: from playing an example to a behaviour of your own, revised and paired with a product image. The [README](README.md) says what VoiceIt is for.
+This tutorial takes you through one design session: from playing an example to a behaviour script of your own, revised and paired with a product image. The eight steps come first; a [reference](#reference) for later follows. Background on VoiceIt is in the [README](README.md).
 
 New to VoiceIt? [Watch the tour](https://github.com/kortuem/voiceit/raw/main/media/voiceit-demo.mp4) first (1 min 26 s, with sound; a 7 MB download, also in `media/` in your copy).
 
-Quick reference: [what to say to your agent](#what-to-say-to-your-agent), [commands](#commands) for the terminal, and the script notation in [system/SCREENPLAY.md](system/SCREENPLAY.md).
+Quick reference: [phrases for the agent](#phrases-for-the-agent), [commands](#commands), [troubleshooting](#troubleshooting), and the script notation in [system/SCREENPLAY.md](system/SCREENPLAY.md).
 
 ## Words used here
 
@@ -13,7 +13,7 @@ Quick reference: [what to say to your agent](#what-to-say-to-your-agent), [comma
 | **Product** | What you design: a physical product that listens and speaks, such as a smart speaker. In the brief, a bedside smart speaker with a small screen and a light. |
 | **Form** | An image of the product: a drawing or a render. One file in `design/forms/`. |
 | **Behaviour script** | How the product behaves in one scene: who says what, when, and what the product shows, lights and sounds. One file in `design/behaviours/`. "Script" for short. |
-| **Character** | Who the product is: what comes across when a form and a behaviour script are played together. A script names the character it explores (`character: Juno`); you judge the character. |
+| **Character** | The impression of who the product is, formed by its form and its behaviour together. You do not write the character down: you judge it by playing a behaviour script with a form. A script only gives it a name (`character: Juno`). |
 | **Agent** | Your AI coding assistant, Claude Code or Codex, in a session on your `voiceit` folder. It writes, revises and checks behaviour scripts with you. |
 | **VoiceIt** | The page in your browser that plays behaviour scripts. |
 
@@ -27,12 +27,12 @@ You need the **Claude desktop app** (its **Code** tab) or the **Codex** app, sig
    > Clone https://github.com/kortuem/voiceit.git into this folder.
 
    A folder `voiceit` appears. (Already cloned it in a terminal, as in the README? Skip this step and open that folder in step 3.)
-3. **Start a new session on the `voiceit` folder itself.** In this folder the agent can read VoiceIt's instructions (`AGENTS.md`) and your design files.
-4. **Paste this as your first message**, and again at the start of every new session:
+3. **Start a new session on the `voiceit` folder itself.** The folder carries its own instructions for the agent, in `AGENTS.md`; Claude Code and Codex read them by themselves when they work in this folder.
+4. **To be sure, start every new session with:**
 
-   > We are working with VoiceIt in this folder. Read AGENTS.md and follow it. Write every behaviour into design/behaviours/, and check every script after writing or changing it.
+   > Read AGENTS.md and follow it.
 
-   The agent confirms that it has read the instructions.
+   The agent replies that it has read the instructions.
 5. **Start VoiceIt.** Open a terminal in the `voiceit` folder and type `node system/bin/preview`. Your browser opens VoiceIt. Leave the terminal open while you work; `Ctrl+C` stops it.
 
    <details><summary>Opening a terminal in the <code>voiceit</code> folder</summary>
@@ -54,7 +54,7 @@ The example scene: **night on ward 4**, 23:10. Joost, 67, lies awake the day aft
 2. Press **Play**. The light pulses amber, without a sound. When Joost asks what it is, the screen shows *Eva* and the Night light says quietly: *"A message from Eva."* Joost taps *Show text*, and Eva's message appears on the screen. When he asks about a painkiller, it says it cannot advise and offers to call the nurse; while Samira is on her way, the light is dim blue.
 3. Now click **Host · Night on ward 4** and press **Play**. Same scene, same people, other character: the Host reads everything aloud (*"Joost, you have a new voice message from Eva. I'll play it for you."*), next to a sleeping roommate.
 
-Two characters in one scene: that contrast is what VoiceIt is for.
+Play both and compare: the scene and the people are the same; only the product's behaviour differs.
 
 ## 3. Inspect a conversation
 
@@ -98,9 +98,9 @@ Describe actions, not only adjectives. *"Friendly"* can be written in a hundred 
 
 > New behaviour script: Beacon, visiting hour. It communicates with its light: soft white when someone comes in, an amber pulse when there is news for Anna, off while the doctor is in the room. It speaks only once, at the end, to remind Anna of what the doctor said. Low voice.
 
-What happens:
+Then:
 
-1. The agent **reads back** what it understood (name, what is going on, voice, key moments) and may ask one question. Nothing is written yet.
+1. The agent **reads back** what it understood (name, scene, voice, key moments), and asks a question only if something unclear would change the behaviour. Nothing is written yet.
 2. You answer, or say **Go**. The agent writes the script into `design/behaviours/`, checks it, and tells you how long it plays and which decisions it made itself.
 3. Within a few seconds the script appears at the top of the list in VoiceIt, marked *just now*. You do not need to reload the page. Click it and press **Play**.
 
@@ -162,13 +162,17 @@ A form can be a rough drawing or a rendered image (PNG, JPG, WebP or SVG). A way
 - **Coherence:** if a character has several scripts, does it behave like the same character in each? Your agent can compare the scripts for you.
 - **Details:** when does it speak first, and when does it wait? How much does it say? Whom does it address? What does it keep off the loudspeaker? How does it handle not knowing something?
 
-## What to say to your agent
+# Reference
+
+Look things up here while you work.
+
+## Phrases for the agent
 
 Four phrases cover the whole cycle. For everything else, say what you want in your own words.
 
-| Say | When | What happens |
+| Say | When | Result |
 | --- | --- | --- |
-| *We are working with VoiceIt in this folder. Read AGENTS.md and follow it. Write every behaviour into design/behaviours/, and check every script after writing or changing it.* | At the start of every session. | The agent reads VoiceIt's instructions and is ready. |
+| **Read AGENTS.md and follow it.** | At the start of every session, as a safety net: the agent normally reads `AGENTS.md` by itself. | The agent reads VoiceIt's instructions and is ready. |
 | **New behaviour script:** *name, scene. How it behaves.* | To make a new script, also for a character you already have, in another scene. | The agent reads back what it understood and waits. |
 | **Go** | When the read-back is right. | The agent writes the script, checks it and reports. |
 | **Check our scripts** | After you edited a script yourself, or when something does not play as expected. | The agent runs the check, explains what it finds with line numbers, and asks before fixing. |
@@ -201,13 +205,13 @@ design/behaviours/juno - visiting hour.md:17  warning  OKAFOR speaks but is not 
 Checked 1 behaviour: 5 errors, 2 warnings.
 ```
 
-Errors stop a line from playing as written; fix them. Warnings are worth reading; they usually mean the script will not play as you intended. VoiceIt marks the same problems on their lines in the script column. The full list of what the check looks for is at the end of [system/SCREENPLAY.md](system/SCREENPLAY.md#what-the-check-looks-for).
+Errors stop a line from playing as written; fix them. Warnings are worth reading; they usually mean the script will not play as you intended. VoiceIt marks the same problems on their lines in the script column. The full list of checks is under [Checks and warnings](system/SCREENPLAY.md#checks-and-warnings) in the notation.
 
 ## Saving versions with Git (optional)
 
-**What Git is.** Git is a version control system: it keeps the history of a folder. You used it once already, to *clone* VoiceIt: that made a copy of the course's repository on your laptop, history included. The copy on your laptop is yours; Git works on it without a GitHub account.
+**Git** is a version control system: it keeps the history of a folder. You used it once already, to *clone* VoiceIt: that made a copy of the course's repository on your laptop, history included. The copy on your laptop is yours; Git works on it without a GitHub account.
 
-**What a commit is.** A *commit* is a saved snapshot of the whole folder at one moment, with a short message saying what changed ("first version of Juno"). Commits let you go back to an earlier version, see what changed between two versions, and try something without losing what worked. *Pull* brings new commits from the course's repository into your copy (course updates); *push* sends your commits to a repository on GitHub (only needed to share with others, and needs an account).
+A **commit** is a saved snapshot of the whole folder at one moment, with a short message saying what changed ("first version of Juno"). Commits let you go back to an earlier version, see what changed between two versions, and try something without losing what worked. *Pull* brings new commits from the course's repository into your copy (course updates); *push* sends your commits to a repository on GitHub (only needed to share with others, and needs an account).
 
 You do not need any of this to use VoiceIt. Your agent can do each step for you when you ask:
 
@@ -216,10 +220,10 @@ You do not need any of this to use VoiceIt. Your agent can do each step for you 
 - **Get course updates:** *"Pull the latest VoiceIt."* (In a terminal: `git pull --no-rebase`.) This brings in changes to `system/` and the brief. It usually goes smoothly as long as you have not changed `system/` or `examples/`.
 - **Share with your group (needs a GitHub account):** fork the repository on GitHub, clone your fork, and push your commits there; teammates clone the same fork.
 
-## When something does not work
+## Troubleshooting
 
 - **A new script does not appear:** is VoiceIt still running in its terminal? Is the file in `design/behaviours/` (not somewhere else)? Ask the agent: *"Where did you save it?"*
 - **A script does not play as expected:** *"Check our scripts."* Problems are also marked in the script column (9).
 - **No sound:** is *Sound on* (6)? Test the voices in the Setup tab; voices differ between browsers and systems.
 - **`node` is not found** right after installing Node.js: close the terminal and open a new one.
-- **The agent does not seem to know VoiceIt:** is the session on the `voiceit` folder itself? Paste the starter message again.
+- **The agent does not seem to know VoiceIt:** is the session on the `voiceit` folder itself? Say: *"Read AGENTS.md and follow it."*

@@ -4,6 +4,16 @@ What changed from one version of VoiceIt to the next, newest first. Versions bel
 
 For maintainers: when releasing, set `VERSION` in `system/voiceit.js`, add an entry here with the same number, and tag the commit. The tests check that the two numbers match.
 
+## 0.2.5 (29 September 2026)
+
+After an outside review, and tested in a Claude Code session (write, revise, hand edit and check):
+
+- **Shorter start:** the folder carries its own instructions (`AGENTS.md`), which Claude Code and Codex read by themselves; students start a session with just "Read AGENTS.md and follow it."
+- **Agent procedures with less ritual:** the agent reads only the instructions it needs, asks a question only when an ambiguity would change the behaviour, and decides by itself whether a revision concerns one moment or the whole character (it still asks before changing other scripts).
+- **Tutorial in two parts:** the eight steps, then a Reference (phrases, commands, Git, troubleshooting).
+- **Character defined more sharply**, near the top of the README: the impression people form of the product from its form and behaviour together.
+- **Language:** concepts no longer act ("character comes across", "the screenplay treats people"), fewer "not X but Y" sentences, headings that are statements rather than questions, and a Documentation list in the README.
+
 ## 0.2.4 (29 September 2026)
 
 - **New example forms**: a hand sketch of an hourglass-shaped speaker and a rendering made from it replace the two line drawings. Together they show the form loop: sketch, then render.

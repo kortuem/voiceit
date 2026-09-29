@@ -1,12 +1,12 @@
 # Vocabulary
 
-Everything a product can show, light, sound and say with. A behaviour may use only what is listed here. This file is the single source: the check script and VoiceIt read the entries below, so what you read here is exactly what VoiceIt accepts.
+The available screen components, lights, sounds and voices. A behaviour may use only what is listed here. VoiceIt and the check both read the entries below, so changing an entry here changes what both accept.
 
-Each entry is one fenced block. Its first word (`component`, `light`, `modifier`, `sound`, `voice`, `manner`) says what kind of entry it is; the lines inside are `key: value`. Do not change entries during the session. Adding a new one is a later exercise.
+Each entry is one fenced block. Its first word (`component`, `light`, `modifier`, `sound`, `voice`, `manner`) names the kind of entry; the lines inside are `key: value`. Do not change entries during the session. Adding a new one is a later exercise.
 
 ## Screen components
 
-The screen is paper and ink: one ink colour, one typeface, emphasis only by weight and space. Colour belongs to the light. The screen speaks in type; the light speaks in colour.
+The screen is plain: one ink colour on paper, one typeface, and emphasis only through weight and spacing. Colour is reserved for the light.
 
 A screen cue takes effect when the next line starts and stays until the next screen cue. Parts are separated by `|`.
 
@@ -110,7 +110,7 @@ effect: one short tick; confirms a touch
 
 ## Voices
 
-The product has one voice from this catalogue, named in the front matter of each behaviour (`voice: Ash`). People in the script get the other voices automatically. The catalogue describes how a voice sounds, not who it belongs to.
+The product has one voice from this catalogue, named in the front matter of each behaviour (`voice: Ash`). People in the script get the other voices automatically. The catalogue describes each voice by its sound; any character can use any voice.
 
 `range` places the voice from low to high; `pitch` and `rate` are what VoiceIt uses with browser voices (1 is the browser's normal).
 

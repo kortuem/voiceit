@@ -4,7 +4,7 @@ A behaviour is a script: how the product acts in one scene, one event per line, 
 
 ## The file
 
-A behaviour lives in `design/behaviours/`, one file each, named after the character and a few words of your own (`night light - visiting hour.md`). It starts with a few facts, then a few comment lines on what is going on, then the script:
+A behaviour lives in `design/behaviours/`, one file each, named after the character and a few words of your own (`night light - visiting hour.md`). It starts with a few facts, then a few comment lines describing the scene, then the script:
 
 ```
 ---
@@ -20,11 +20,11 @@ LIGHT: white dim
 …
 ```
 
-- `character` (required): the name of the character this script explores. It names the character; it does not describe it. The character itself is what comes across when the script is played.
+- `character` (required): the character's name. The script's lines, timing, screen, light and sound define how the product behaves; people judge its character when they play the script with a form.
 - `voice` (required): one name from the voice catalogue in `VOCABULARY.md` (Ash, Theo, Sam, Noor, Mira, Wren).
-- `note` (optional): one line of your own, shown under the character's name in VoiceIt's list, for example where it takes place or what this version tries out. VoiceIt does nothing else with it.
+- `note` (optional): one line of your own, shown under the character's name in VoiceIt's list, for example the scene or the variation being tested. VoiceIt does nothing else with it.
 - `people` (optional but recommended): everyone present, each with their role in brackets. The name is the one used in the script, so `Anna` speaks as `ANNA:`. VoiceIt shows the role next to the name, and gives everyone a lane on the timeline, also those who stay silent. The check warns when someone speaks who is not listed.
-- `#` lines right after the front matter are comments: what is going on and who is there, for the reader. VoiceIt shows them above the script; they are not played.
+- `#` lines right after the front matter are comments for the reader: the scene and who is present. VoiceIt shows them above the script; they are not played.
 
 ## Lines
 
@@ -75,9 +75,9 @@ EVA (voice message, warm): Hi Dad, how are you feeling? Can I come by tomorrow a
 BAKKER (half asleep, low): Hm? Who's that?
 ```
 
-Same scene, same vocabulary: every difference is behaviour, and it adds up to a different character.
+Both scripts use the same scene and the same vocabulary. They differ in what the product says, when it speaks and what it shows, and people who play them judge two different characters.
 
-## What the check looks for
+## Checks and warnings
 
 `node system/bin/check` reports, with line numbers:
 

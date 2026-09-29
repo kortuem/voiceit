@@ -1,10 +1,10 @@
 # Instructions for the agent
 
-You are helping a group of design students prototype a physical product that listens and speaks (a smart speaker, for example), with VoiceIt. They sketch its form and say how it should behave; you write the behaviour down as a behaviour script that VoiceIt plays. The group judges the character that comes across.
+You are helping a group of design students prototype a physical product that listens and speaks (a smart speaker, for example), with VoiceIt. The group sketches the product's form and says how the product should behave; you write that behaviour as a behaviour script, which VoiceIt plays. The group then judges the product's character from the form and the behaviour together.
 
 ## Three rules
 
-1. **Read `system/` before you write anything.** Start with `system/SCREENPLAY.md` and `system/VOCABULARY.md`, then the procedure for the task at hand.
+1. **Read the VoiceIt instructions before you write a script.** For every behaviour script, read `system/SCREENPLAY.md` and `system/VOCABULARY.md`, and the procedure in `system/operations/` for the task at hand. You do not need to read VoiceIt's code.
 2. **Write only in `design/`.** Never change `system/` (VoiceIt, its tools and these procedures) or `examples/` unless the group explicitly asks you to.
 3. **Run the check after every behaviour you write or change**, and fix all errors before you report back:
 
@@ -12,20 +12,20 @@ You are helping a group of design students prototype a physical product that lis
    node system/bin/check
    ```
 
-## What is where
+## Repository map
 
 - `BRIEF.md`: the current assignment: the setting, the people and what to make.
-- `system/SCREENPLAY.md`: the notation. `system/VOCABULARY.md`: everything a product can show, light, sound and say with. `system/FORM.md`: from sketch to rendered form. `system/BOUNDARIES.md`: the limits.
+- `system/SCREENPLAY.md`: the notation. `system/VOCABULARY.md`: the available screen components, lights, sounds and voices. `system/FORM.md`: from sketch to rendered form. `system/BOUNDARIES.md`: the limits.
 - `system/operations/`: the procedures you follow. The group need not name them; pick the one that fits.
-  - `write-behaviour.md`: the group says how their product should behave.
-  - `revise.md`: the group wants a script changed after playing it ("it talks too much", "it should wait"). Before changing anything, say in one sentence whether the change is to this moment or to the character, then follow the procedure.
-  - `check.md`: the group asks whether their scripts are correct, or edited a script by hand. Run the check and explain every problem in plain words, with its line.
+  - `write-behaviour.md`: the group describes how their product should behave.
+  - `revise.md`: the group wants a script changed after playing it ("it talks too much", "it should wait").
+  - `check.md`: the group asks whether their scripts are correct, or has edited a script by hand.
 - `design/forms/`: the form images, one per form.
-- `design/behaviours/`: the group's behaviours, one script each.
+- `design/behaviours/`: the group's behaviour scripts, one file each.
 - `examples/`: the worked example (the Host and the Night light; as forms, a hand sketch and a rendering made from it). Never change these files. To start from an example, copy it into `design/behaviours/` (or `design/forms/`) and change the copy.
 - `design/notes.md`: the group's observations.
 
-## What the group says
+## Student requests
 
 The tutorial (`TUTORIAL.md`) teaches the group three phrases. Recognise them, and the same requests in other words:
 
@@ -33,11 +33,11 @@ The tutorial (`TUTORIAL.md`) teaches the group three phrases. Recognise them, an
 - **"Go"** (or "fine", "yes") after a read-back: write the script, check it, report.
 - **"Check our scripts"** or **"Check <name>"**: follow `check.md`.
 
-Everything else arrives in the group's own words:
+The group phrases everything else in their own words:
 
 - A remark about a script after playing it ("it talks too much", "it should wait for the doctor"): follow `revise.md`.
 - Starting from an example: copy the file from `examples/` into `design/behaviours/` (or `design/forms/`), unchanged, and say where it is.
-- Comparing a character's scripts: say where its manner differs from one to the other. Change nothing.
+- Comparing a character's scripts: say where the product's manner differs from one script to the next. Change nothing.
 - Saving a version, or getting a course update: see Git below.
 
 ## Git

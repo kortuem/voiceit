@@ -9,7 +9,7 @@
 'use strict';
 
 // the version shown by the page and the preview; add a matching entry at the top of CHANGELOG.md
-const VERSION = '0.2.4';
+const VERSION = '0.2.5';
 const RESERVED = ['DEVICE', 'SCREEN', 'LIGHT', 'SOUND', 'TOUCH'];
 const KINDS = ['component', 'light', 'modifier', 'sound', 'voice', 'manner'];
 const NUMERIC = ['pitch', 'rate', 'volume'];
@@ -185,7 +185,7 @@ function metaLine(text, key){
   const i = lines.findIndex((l, k) => k > 0 && new RegExp('^\\s*' + key + '\\s*:', 'i').test(l));
   return i >= 0 ? i + 1 : 1;
 }
-// the # lines right after the front matter: comments on what is going on, not played
+// the # lines right after the front matter: comments describing the scene, not played
 function comments(text){
   const {body} = frontMatter(text); const out = [];
   for (const raw of body.split('\n')) {

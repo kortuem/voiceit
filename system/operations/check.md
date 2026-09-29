@@ -14,7 +14,7 @@
    - how it could be written instead, using only `SCREENPLAY.md` and `VOCABULARY.md`.
    Errors stop a line from playing as intended; warnings are worth reading but may be intended.
 4. **Ask before fixing.** If the group says yes, change only the lines concerned, keep everything else as they wrote it (including their own edits), and run the check again.
-5. **Mention what the check cannot see**, if you notice it, but label it as an observation, not an error: a screen or light cue placed after the line it belongs to, something the group described that never happens, a person who speaks but has no role in the `people` line.
+5. **Mention problems the check does not detect**, if you notice them, labelled as observations rather than errors: a screen or light cue placed after the line it belongs to, something the group described that never happens, a person who speaks but has no role in the `people` line.
 
 ## Never
 

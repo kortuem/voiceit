@@ -6,10 +6,10 @@
 
 ## Steps
 
-1. **Say first what kind of change it is**, in one sentence, before changing anything:
+1. **Decide what kind of change it is**:
    - **A change to this moment**: it changes lines in this script only ("here it should wait").
-   - **A change to the character**: it changes who the product is ("it never interrupts a doctor"), so it may apply to its other scripts too.
-   If you are not sure, ask which one they mean.
+   - **A change to the character**: it sets a rule for the product as a whole ("it never interrupts a doctor"), so it may apply to the character's other scripts too.
+   If you cannot tell which the group means, ask.
 2. **For a change to this moment:** change only the lines concerned. Keep the rest as it is, including the group's own edits.
 3. **For a change to the character:** change this script. Then name the character's other scripts the change would affect, and ask before changing any of them.
 4. **Run** `node system/bin/check` on every file you changed and fix all errors.
@@ -17,6 +17,5 @@
 
 ## Never
 
-- Change anything before saying what kind of change it is.
 - Change another script without asking.
 - Rewrite parts of the script the request was not about.

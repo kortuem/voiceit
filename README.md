@@ -4,7 +4,7 @@ VoiceIt is a rapid prototyping tool for exploring how products such as smart spe
 
 Designers describe the interaction they want to explore in everyday language, and an AI coding assistant helps turn it into a script that VoiceIt can play in the browser. They can listen to the dialogue, inspect the sequence of events and revise the wording, voices or timing. An image represents the proposed physical design, allowing the same behaviour to be tried with different forms. All interactions are scripted, so designers can explore specific situations without implementing speech recognition or a live conversational system.
 
-VoiceIt supports early design decisions that are difficult to assess through sketches alone. A smart speaker might offer useful advice but interrupt at the wrong moment, speak too formally or address the wrong person. Playing through these situations helps designers discuss how a product should respond and what role it should take. The tool makes it practical to try several alternatives, evaluate the relationship between appearance and behaviour, and refine a concept before investing in hardware and software development.
+With VoiceIt, designers can make early design decisions that are difficult to assess through sketches alone. A smart speaker might offer useful advice but interrupt at the wrong moment, speak too formally or address the wrong person. By playing through these situations, designers can discuss how a product should respond and what role it should take. They can try several alternatives, evaluate the relationship between appearance and behaviour, and refine a concept before investing in hardware and software development.
 
 ## Watch the tour
 
@@ -28,7 +28,9 @@ Use **Pause**, **Step** and **Restart** to examine particular moments. The timel
 
 Try a different form with the same behaviour, or play another script to compare approaches. To change the dialogue or actions, ask your AI coding assistant or edit the script file. While VoiceIt is running, saved changes appear in the browser within a few seconds.
 
-## Scripts and forms
+## Form, behaviour and character
+
+You design two things: the product's **form**, an image of the product, and its **behaviour**, written as a script. The product's **character** is the impression people form of who the product is when they play a behaviour with a form. You judge the character by playing; a script only gives it a name.
 
 A behaviour script reads like a screenplay. **Script excerpt**, from the example *Night light, night on ward 4*:
 
@@ -44,7 +46,7 @@ SCREEN: choice Eva's message | Show text | Later
 TOUCH: Show text
 ```
 
-Plain lines say what happens. A name in capitals speaks, with its manner in brackets; `DEVICE` is the product. `LIGHT`, `SCREEN` and `SOUND` are the product's light signals, screen content and sound effects; `TOUCH` is someone tapping the screen; `(pause 3)` is three seconds of silence. A complete script also starts with a few facts: the character's name, its voice and the people present. The notation is in [system/SCREENPLAY.md](system/SCREENPLAY.md); everything a product can show, light, sound and say with is in [system/VOCABULARY.md](system/VOCABULARY.md).
+Plain lines say what happens. A name in capitals speaks, with its manner in brackets; `DEVICE` is the product. `LIGHT`, `SCREEN` and `SOUND` are the product's light signals, screen content and sound effects; `TOUCH` is someone tapping the screen; `(pause 3)` is three seconds of silence. A complete script also starts with a few facts: the character's name, its voice and the people present. The notation is in [system/SCREENPLAY.md](system/SCREENPLAY.md); the available screen components, lights, sounds and voices are in [system/VOCABULARY.md](system/VOCABULARY.md).
 
 A form is an image of the product: a drawing or a rendered image, as PNG, JPG, WebP or SVG. A rough drawing can be enough to judge an interaction. [system/FORM.md](system/FORM.md) describes a way to develop one from a paper sketch with an image-generation tool.
 
@@ -82,10 +84,18 @@ The [tutorial](TUTORIAL.md) takes you through one design session: setting up the
 
 ## Voices and timing
 
-- Voices come from your browser and operating system, so they sound different on every laptop. VoiceIt's **Setup** tab plays them. For much better voices, download Premium or Enhanced voices on a Mac, or use Edge on Windows: see step 7 of the [tutorial](TUTORIAL.md#1-set-up).
-- Durations (≈) and the timeline are estimates; real speech may take a little longer.
-- A manner in brackets, such as `(quietly, hesitating)`, is written for a performer. Browser voices follow only words about volume, pitch and speed (quiet, low, loud, slow, fast; see [the vocabulary](system/VOCABULARY.md#manner)) and ignore the rest.
+- Voices come from your browser and operating system, so they sound different on every laptop; durations (≈) are estimates. For much better voices, download Premium or Enhanced voices on a Mac, or use Edge on Windows: see step 7 of the [tutorial](TUTORIAL.md#1-set-up).
 - Browsers: tested in Chrome on macOS. Not yet tested: Edge, Safari, Firefox, and anything on Windows.
+
+## Documentation
+
+- [TUTORIAL.md](TUTORIAL.md): one design session, step by step, and a reference.
+- [BRIEF.md](BRIEF.md): the current assignment.
+- [system/SCREENPLAY.md](system/SCREENPLAY.md): the script notation and the checks.
+- [system/VOCABULARY.md](system/VOCABULARY.md): screen components, lights, sounds, voices and manner.
+- [system/FORM.md](system/FORM.md): from sketch to rendered form.
+- [system/BOUNDARIES.md](system/BOUNDARIES.md): the limits for the stereotype exercise and beyond.
+- [CHANGELOG.md](CHANGELOG.md): what changed from version to version.
 
 ## Folders
 
@@ -98,6 +108,6 @@ Without Node, open `system/voiceit.html` in your browser and choose the `voiceit
 
 ## Status and licence
 
-VoiceIt is in development, for the course IDEM307 at TU Delft. This is version 0.2.4, an early release; what changed from version to version is in [CHANGELOG.md](CHANGELOG.md). Report problems in [GitHub Issues](https://github.com/kortuem/voiceit/issues) (needs a GitHub account) or tell your teacher. For maintainers: `node --test system/test/voiceit.test.js` runs the tests.
+VoiceIt is in development, for the course IDEM307 at TU Delft. This is version 0.2.5, an early release; what changed from version to version is in [CHANGELOG.md](CHANGELOG.md). Report problems in [GitHub Issues](https://github.com/kortuem/voiceit/issues) (needs a GitHub account) or tell your teacher. For maintainers: `node --test system/test/voiceit.test.js` runs the tests.
 
 The code and the example files are under the [MIT licence](LICENSE). The smart speaker photo above is not part of the repository; it is shown from Wikimedia Commons under its own licence, CC BY-SA 4.0. Visual style after Vlak (vlak.dev) by Renn, Noord.

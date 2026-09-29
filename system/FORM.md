@@ -1,6 +1,6 @@
 # Form
 
-The form is the product's body: what it looks like where it stands. You design it by hand and render it with an image-generation tool, in four steps you can repeat as often as you like. VoiceIt shows the form beside the screen and the light, and any behaviour can be played with any form.
+The form is the product's body: its shape, material and appearance where it stands. You design it by hand and render it with an image-generation tool, in four steps you can repeat as often as you like. VoiceIt shows the form beside the screen and the light, and any behaviour can be played with any form.
 
 ## The loop
 
@@ -31,7 +31,7 @@ Tips:
 
 - Change one or two things per step. Many changes at once make the model redraw the whole object.
 - If the model drifts, go back to your last good render and mark up again.
-- Keep the screen a plain dark or light rectangle. What it shows is designed in the screenplay, not in the render.
+- Keep the screen a plain dark or light rectangle. Design the screen content in the behaviour script.
 - The same form can carry different behaviours. Try yours in someone else's form, and theirs in yours.
 
 If you already have a Vizcom account, you may use it for the render steps; the procedure is the same.

@@ -14,7 +14,7 @@ People: Anna (patient), Daan (her son), Lotte (her granddaughter, 8), De Wit (ro
 2. **A stereotypically female character.**
 3. **Your own**: how you think a product like this should look, speak and behave.
 
-The first two are constructed on purpose. Build them from what you know of how people and products are expected to behave, and pay attention to what you reach for. The third is where your own design happens.
+The first two are constructed on purpose. Build them from what you know of how people and products are expected to behave, and pay attention to what you reach for. The third is your own design.
 
 ## For each character
 
@@ -26,7 +26,7 @@ Give each character a name that does not give away which one it is: the class wi
 
 ## Boundaries
 
-Stereotypes show in manner and behaviour, never in insults or sexual content. A group may refuse to build a stereotype and argue why in `design/notes.md`. See `system/BOUNDARIES.md`.
+Express stereotypes through manner and behaviour, never through insults or sexual content. A group may refuse to build a stereotype and argue why in `design/notes.md`. See `system/BOUNDARIES.md`.
 
 ## Start here
 
