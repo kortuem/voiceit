@@ -6,6 +6,12 @@ Designers describe the interaction they want to explore in everyday language, an
 
 VoiceIt supports early design decisions that are difficult to assess through sketches alone. A smart speaker might offer useful advice but interrupt at the wrong moment, speak too formally or address the wrong person. Playing through these situations helps designers discuss how a product should respond and what role it should take. The tool makes it practical to try several alternatives, evaluate the relationship between appearance and behaviour, and refine a concept before investing in hardware and software development.
 
+## Watch the tour
+
+[![Watch the tour: VoiceIt in 1 minute 26 seconds](media/voiceit-demo-poster.jpg)](media/voiceit-demo.mp4)
+
+A short tour, with sound: start VoiceIt, pick a script and a form, play it, inspect a moment, edit the script and play it again. The video is also in your copy of the repository, in `media/`, with subtitles (`voiceit-demo.srt`).
+
 ![Three smart speakers on a table: a Google Home, a Google Nest Hub with a screen, and a Google Home Mini](https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Google_Home_with_Home_Hub_and_Home_Mini_on_table.jpg/960px-Google_Home_with_Home_Hub_and_Home_Mini_on_table.jpg)
 
 *Smart speakers, one of them with a screen. Photo: Y2kcrazyjoker4, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), via [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Google_Home_with_Home_Hub_and_Home_Mini_on_table.jpg).*
@@ -85,6 +91,7 @@ The [tutorial](TUTORIAL.md) takes you through one design session: setting up the
 
 - [design/](design/) is yours: forms, behaviour scripts and notes.
 - [examples/](examples/) holds the example scripts and forms. Leave them as they are; to start from one, copy it into `design/`.
+- [media/](media/) holds the video tour.
 - [system/](system/) is the tool: notation, vocabulary, procedures for the AI coding assistant, and VoiceIt itself.
 
 Without Node, open `system/voiceit.html` in your browser and choose the `voiceit` folder with **Open folder** in the Setup tab. Scripts and forms play (tested in Chrome), but VoiceIt does not notice new files by itself, and the scripts cannot be checked.

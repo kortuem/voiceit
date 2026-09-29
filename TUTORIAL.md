@@ -2,6 +2,8 @@
 
 This tutorial takes you through one design session: from playing an example to a behaviour of your own, revised and paired with a product image. The [README](README.md) says what VoiceIt is for.
 
+New to VoiceIt? [Watch the tour](media/voiceit-demo.mp4) first (1 min 26 s, with sound).
+
 Quick reference: [what to say to your agent](#what-to-say-to-your-agent), [commands](#commands) for the terminal, and the script notation in [system/SCREENPLAY.md](system/SCREENPLAY.md).
 
 ## Words used here

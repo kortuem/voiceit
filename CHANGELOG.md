@@ -4,6 +4,10 @@ What changed from one version of VoiceIt to the next, newest first. Versions bel
 
 For maintainers: when releasing, set `VERSION` in `system/voiceit.js`, add an entry here with the same number, and tag the commit. The tests check that the two numbers match.
 
+## Unreleased
+
+- A short video tour (`media/voiceit-demo.mp4`, 1 min 26 s, with subtitles), linked from the README and the tutorial.
+
 ## 0.2.3 (29 September 2026)
 
 - **Better voices, optional setup**: the tutorial (step 7), the README and the Setup tab explain how to get much better voices: Premium or Enhanced voices on a Mac, Edge's natural voices on Windows.
