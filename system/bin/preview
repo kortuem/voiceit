@@ -26,11 +26,14 @@ function readTree(dir, out = []){
     if (e.name.startsWith('.') || e.name === 'node_modules') continue;
     const full = path.join(dir, e.name);
     if (e.isDirectory()) readTree(full, out);
-    else if (/\.md$/i.test(e.name)) out.push({path:rel(full), text:fs.readFileSync(full, 'utf8'), mtime:Math.round(fs.statSync(full).mtimeMs)});
-    else if (/\.(png|jpe?g|webp|svg)$/i.test(e.name)) {
-      const url = '/' + rel(full).split('/').map(encodeURIComponent).join('/') + '?v=' + Math.round(fs.statSync(full).mtimeMs);
-      out.push({path:rel(full), url});
-    }
+    // a file that disappears or cannot be read (a cloud file not yet downloaded) is skipped, not fatal
+    else try {
+      if (/\.md$/i.test(e.name)) out.push({path:rel(full), text:fs.readFileSync(full, 'utf8'), mtime:Math.round(fs.statSync(full).mtimeMs)});
+      else if (/\.(png|jpe?g|webp|svg)$/i.test(e.name)) {
+        const url = '/' + rel(full).split('/').map(encodeURIComponent).join('/') + '?v=' + Math.round(fs.statSync(full).mtimeMs);
+        out.push({path:rel(full), url});
+      }
+    } catch (err) { /* skipped */ }
   }
   return out;
 }
@@ -44,14 +47,19 @@ const server = http.createServer((req, res) => {
   let pathname;
   try { pathname = decodeURIComponent(new URL(req.url, 'http://localhost').pathname); }
   catch (e) { return send(res, 400, 'text/plain', 'Bad request'); }
+  if (pathname.includes('\0')) return send(res, 400, 'text/plain', 'Bad request');
   if (pathname === '/') { res.writeHead(302, {Location:'/system/voiceit.html'}); return res.end(); }
-  if (pathname === '/design.json') return send(res, 200, TYPES['.json'], JSON.stringify(design()));
+  if (pathname === '/design.json') {
+    try { return send(res, 200, TYPES['.json'], JSON.stringify(design())); }
+    catch (e) { return send(res, 500, 'text/plain', 'Could not read the design folder'); }
+  }
   const file = path.resolve(root, '.' + pathname);
   const inside = file === root || file.startsWith(root + path.sep);
   if (!inside || rel(file).split('/').some(s => s.startsWith('.'))) return send(res, 404, 'text/plain', 'Not found');
   fs.stat(file, (err, st) => {
     if (err || !st.isFile()) return send(res, 404, 'text/plain', 'Not found');
-    send(res, 200, TYPES[path.extname(file).toLowerCase()] || 'application/octet-stream', fs.readFileSync(file));
+    let body; try { body = fs.readFileSync(file); } catch (e) { return send(res, 404, 'text/plain', 'Not found'); }
+    send(res, 200, TYPES[path.extname(file).toLowerCase()] || 'application/octet-stream', body);
   });
 });
 

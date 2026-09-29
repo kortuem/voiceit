@@ -9,7 +9,7 @@
 'use strict';
 
 // the version shown by the page and the preview; add a matching entry at the top of CHANGELOG.md
-const VERSION = '0.3.1';
+const VERSION = '0.3.2';
 const RESERVED = ['DEVICE', 'SCREEN', 'LIGHT', 'SOUND', 'TOUCH'];
 const KINDS = ['component', 'light', 'modifier', 'sound', 'voice', 'manner'];
 const NUMERIC = ['pitch', 'rate', 'volume'];
@@ -23,7 +23,7 @@ function formatTime(t){ t = Math.max(0, Math.round(t)); return Math.floor(t / 60
 
 /* ---------- Vocabulary: fenced entries in VOCABULARY.md ---------- */
 function parseVocabulary(md){
-  md = String(md || '').replace(/\r\n/g, '\n');
+  md = String(md || '').replace(/^\uFEFF/, '').replace(/\r\n/g, '\n');
   const v = {component:{}, light:{}, modifier:{}, sound:{}, voice:{}, manner:{}, problems:[]};
   const re = /^```[ \t]*([a-z]+)[ \t]*\n([\s\S]*?)\n```[ \t]*$/gm;
   let m;
@@ -52,25 +52,30 @@ function parseVocabulary(md){
 
 /* ---------- Files ---------- */
 function frontMatter(txt){
-  txt = String(txt || '').replace(/\r\n/g, '\n');
+  txt = String(txt || '').replace(/^\uFEFF/, '').replace(/\r\n/g, '\n');
   const m = txt.match(/^---[ \t]*\n([\s\S]*?)\n---[ \t]*(\n|$)/);
   const meta = {};
   if (!m) return {meta, body:txt, offset:0, found:false};
-  m[1].split('\n').forEach(l => { const i = l.indexOf(':'); if (i > 0) meta[l.slice(0, i).trim().toLowerCase()] = l.slice(i + 1).trim(); });
+  // values may be quoted YAML-style: character: "Rex"
+  const unquote = v => { const q = v.match(/^(["'“‘])(.*)(["'”’])$/); return q ? q[2].trim() : v; };
+  m[1].split('\n').forEach(l => { const i = l.indexOf(':'); if (i > 0) meta[l.slice(0, i).trim().toLowerCase()] = unquote(l.slice(i + 1).trim()); });
   return {meta, body:txt.slice(m[0].length), offset:m[0].split('\n').length - 1, found:true};
 }
 
 /* ---------- Screenplay parser ---------- */
 const PAUSE_RE = /^\(\s*(beat|pause)\b([^)]*)\)$/i;   // (beat), (pause 3); the number is checked below
-const SECONDS_RE = /^\d+(\.\d+)?\s*s?$/;
+const SECONDS_RE = /^\d+(\.\d+)?\s*(s|secs?|seconds?)?$/i;
 const LONG_PAUSE = 60;
 const CUE_RE = /^(SCREEN|LIGHT|SOUND|TOUCH)\s*:\s*(.*)$/i;
-const SPEECH_RE = /^([A-Z][A-Z0-9 .'’-]*?)\s*(?:\(([^)]*)\))?\s*:\s*(.+)$/;
-const LOOKS_NAME_RE = /^([A-Za-z][\w .'’-]{0,30}?)\s*(?:\([^)]*\))?\s*:\s*\S/;
+const SPEECH_RE = /^(\p{Lu}[\p{Lu}\p{N} .'’-]*?)\s*(?:\(([^)]*)\))?\s*:\s*(.+)$/u;
+const LOOKS_NAME_RE = /^(\p{L}[\p{L}\p{N}_ .'’-]{0,30}?)\s*(?:\([^)]*\))?\s*:\s*\S/u;
 
 function parseScript(txt, vocab){
   const comps = Object.keys(vocab.component), lights = vocab.light, mods = Object.keys(vocab.modifier), sounds = Object.keys(vocab.sound);
   const {meta, body, offset} = frontMatter(txt);
+  const vname = Object.keys(vocab.voice).find(n => n.toLowerCase() === String(meta.voice || '').toLowerCase());
+  if (vname) meta.voice = vname;   // voice: ash plays Ash
+  const known = parsePeople(meta.people).map(x => x.key);
   const lines = [], errors = [], warnings = [];
   const self = (meta.character || '').trim().toUpperCase();   // the product may also speak under its character's name
   body.split('\n').forEach((raw, i) => {
@@ -84,12 +89,16 @@ function parseScript(txt, vocab){
         if (arg) warnings.push({ln, msg:`(beat) is always one second; for “${arg}” write (pause n).`});
         lines.push({kind:'pause', secs:1, ln, text:'beat'}); return;
       }
-      if (/^\d+,\d+\s*s?$/.test(arg)) { errors.push({ln, msg:`“(pause ${arg})”: write the number with a point, not a comma: (pause ${arg.replace(',', '.').replace(/\s*s$/, '')}). Not played.`}); return; }
+      if (/^\d+,\d+\s*(s|secs?|seconds?)?$/i.test(arg)) { errors.push({ln, msg:`“(pause ${arg})”: write the number with a point, not a comma: (pause ${arg.replace(',', '.').replace(/\s*[a-z]+$/i, '')}). Not played.`}); return; }
       if (!SECONDS_RE.test(arg)) { errors.push({ln, msg:`“(pause${arg ? ' ' + arg : ''})” needs a number of seconds, like (pause 3). Not played.`}); return; }
       const secs = parseFloat(arg);
       if (secs === 0) warnings.push({ln, msg:'(pause 0) adds no silence.'});
       if (secs > LONG_PAUSE) warnings.push({ln, msg:`A pause of ${secs} seconds is very long. Is that intended?`});
       lines.push({kind:'pause', secs, ln, text:`${secs} seconds`}); return;
+    }
+    if (/^\(\s*(beat|pause)\b[^)]*\)\s*\S/i.test(s)) {
+      errors.push({ln, msg:`Put “${s.match(/^\([^)]*\)/)[0]}” on a line of its own. As written, the line is read as an action and the pause is not played.`});
+      lines.push({kind:'action', text:s, ln}); return;
     }
     if ((m = s.match(CUE_RE))) {
       const key = m[1].toUpperCase(), rest = m[2].trim();
@@ -118,9 +127,12 @@ function parseScript(txt, vocab){
     if ((m = s.match(SPEECH_RE)) && !RESERVED.slice(1).includes(m[1].trim())) {
       const who = m[1].trim(); const text = m[3].trim(); const cut = /(—|--)\s*$/.test(text);
       const device = who === 'DEVICE' || (!!self && who === self);
+      const after = text.match(/^\(([^)]*)\)/);
+      if (after && !m[2]) warnings.push({ln, msg:`“(${after[1]})” after the colon is spoken aloud. Put it before the colon: ${who} (${after[1]}): …`});
       lines.push({kind:'speech', who:device ? 'DEVICE' : who, device, manner:(m[2] || '').trim(), text, cut, ln}); return;
     }
-    if ((m = s.match(LOOKS_NAME_RE)) && !/^\d/.test(s)) {
+    if ((m = s.match(LOOKS_NAME_RE)) && !/^\d/.test(s) && !/:\s*\d/.test(s.slice(m[1].length))
+        && (words(m[1]) <= 2 || known.includes(m[1].trim().toUpperCase()))) {
       warnings.push({ln, msg:`“${m[1]}:” looks like a speaker. Names are written in capitals; this line is read as an action.`});
     }
     lines.push({kind:'action', text:s, ln});
@@ -150,14 +162,14 @@ function cast(lines, deviceVoice, vocab, people){
   const uses = n => [...map.values()].filter(x => x === n).length;
   const pick = cands => cands.find(n => !uses(n)) || [...cands].sort((a, b) => uses(a) - uses(b))[0];
   const speaks = new Set(lines.filter(l => l.kind === 'speech').map(l => l.who));
-  (people || []).forEach(p => {
-    const v = (p.voice || '').trim(); if (!v || !speaks.has(p.key) || p.key === 'DEVICE') return;
-    const named = names.find(n => n.toLowerCase() === v.toLowerCase());
-    if (named) { map.set(p.key, named); return; }
-    if (/^(low|high)$/i.test(v)) {
-      const low = /^low$/i.test(v), cands = pool.filter(n => isLowVoice(vocab.voice[n]) === low);
-      map.set(p.key, pick(cands.length ? cands : pool));
-    }
+  const hinted = (people || []).filter(p => p.voice && speaks.has(p.key) && p.key !== 'DEVICE');
+  // voices named in the people line first, so that low and high cannot take them away
+  hinted.forEach(p => { const named = names.find(n => n.toLowerCase() === p.voice.toLowerCase()); if (named) map.set(p.key, named); });
+  hinted.filter(p => /^(low|high)$/i.test(p.voice)).forEach(p => {
+    const low = /^low$/i.test(p.voice);
+    // the most clearly low (or high) voices first: by pitch
+    const cands = pool.filter(n => isLowVoice(vocab.voice[n]) === low).sort((a, b) => (vocab.voice[a].pitch - vocab.voice[b].pitch) * (low ? 1 : -1));
+    map.set(p.key, pick(cands.length ? cands : pool));
   });
   lines.forEach(l => {
     if (l.kind !== 'speech' || map.has(l.who)) return;
@@ -212,8 +224,10 @@ function comments(text){
 }
 // people: Joost (patient, voice low), Eva (his daughter, voice high), Samira (night nurse)
 // Returns [{key:'JOOST', name:'Joost', role:'patient', voice:'low'}]; key is the name as written in the script.
-// The voice is the last part of the brackets when it starts with "voice": low, high or a catalogue name.
-function parsePeople(str){
+// The voice is a part of the brackets that reads "voice low", "voice: high" or "voice Wren". With the vocabulary,
+// only low, high and catalogue names count, so a role such as "voice coach" stays a role.
+function parsePeople(str, vocab){
+  const names = vocab ? Object.keys(vocab.voice).map(n => n.toLowerCase()) : null;
   const out = []; let depth = 0, buf = '';
   // split on commas that are not inside brackets, so a role may contain a comma
   for (const ch of String(str || '') + ',') {
@@ -224,9 +238,11 @@ function parsePeople(str){
       const m = t.match(/^([^()]+?)\s*(?:\(([^)]*)\))?$/);
       if (m) {
         const parts = (m[2] || '').split(',').map(x => x.trim()).filter(Boolean);
-        const vm = parts.length ? parts[parts.length - 1].match(/^voice\s+(.+)$/i) : null;
-        if (vm) parts.pop();
-        out.push({key:m[1].trim().toUpperCase(), name:m[1].trim(), role:parts.join(', '), voice:vm ? vm[1].trim() : ''});
+        const hint = x => { const vm = x.match(/^voice\s*[:=]?\s*(\S+)$/i); if (!vm) return null;
+          const v = vm[1]; return /^(low|high)$/i.test(v) || !names || names.includes(v.toLowerCase()) ? v : null; };
+        const i = parts.findIndex(hint), voice = i >= 0 ? hint(parts[i]) : '';
+        if (i >= 0) parts.splice(i, 1);
+        out.push({key:m[1].trim().toUpperCase(), name:m[1].trim(), role:parts.join(', '), voice});
       }
       continue; }
     buf += ch;
@@ -243,10 +259,10 @@ function validateBehaviour(text, vocab){
     REQUIRED.forEach(k => { if (!p.meta[k]) errors.push({ln:1, msg:`The front matter has no ${k}.`}); });
     if (p.meta.voice && !vocab.voice[p.meta.voice]) errors.push({ln:metaLine(text, 'voice'), msg:`“${p.meta.voice}” is not in the voice catalogue. Choose one of ${orList(voices)}.`});
   }
-  const people = parsePeople(p.meta.people);
+  const people = parsePeople(p.meta.people, vocab);
   people.forEach(x => {
-    if (x.voice && !/^(low|high)$/i.test(x.voice) && !voices.some(n => n.toLowerCase() === x.voice.toLowerCase()))
-      errors.push({ln:metaLine(text, 'people'), msg:`“voice ${x.voice}” for ${x.name}: write voice low, voice high, or a voice from the catalogue (${orList(voices)}).`});
+    const odd = x.role.split(',').map(r => r.trim()).find(r => /^voice\s*[:=]?\s*\S+$/i.test(r));
+    if (odd) warnings.push({ln:metaLine(text, 'people'), msg:`“${odd}” for ${x.name} is read as part of the role. To choose a voice, write voice low, voice high, or a voice from the catalogue (${orList(voices)}).`});
   });
   if (people.length) {
     const known = people.map(x => x.key), seen = new Set();
@@ -273,7 +289,7 @@ function validateBehaviour(text, vocab){
       const msg = named.length > 1 || whos.includes('DEVICE')
         ? `${list} have the same voice, ${v}, so listeners cannot tell them apart. Give ${whos.includes('DEVICE') ? names[1] : names[names.length - 1]} another voice in the people line.`
         : hinted
-        ? `${list} share the voice ${v}: with the product on ${product}, only ${free} ${reg} ${free === 1 ? 'voice is' : 'voices are'} left for people. ${fewer}, or give the product a voice that is not ${reg}.`
+        ? `${list} share the voice ${v}: ${isLowVoice(vocab.voice[product]) === low ? `with the product on ${product}, only ${free}` : `the catalogue has only ${free}`} ${reg} ${free === 1 ? 'voice' : 'voices'} for people. ${fewer}${isLowVoice(vocab.voice[product]) === low ? `, or give the product a voice that is not ${reg}` : ''}.`
         : `${list} share the voice ${v}: the catalogue has ${voices.length} voices, and the product uses one. ${fewer}.`;
       warnings.push({ln:lineOf(whos[whos.length - 1]), msg:msg[0].toUpperCase() + msg.slice(1)});
     });

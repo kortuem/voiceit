@@ -48,7 +48,7 @@ for (const b of Object.values(design.behaviours)) {
   r.errors.forEach(p => problems.push({file:b.path, ln:p.ln, level:'error', msg:p.msg}));
   r.warnings.forEach(p => problems.push({file:b.path, ln:p.ln, level:'warning', msg:p.msg}));
   if (!r.errors.length) {
-    const sched = VoiceIt.schedule(r.parsed.lines, VoiceIt.cast(r.parsed.lines, b.meta.voice, vocab, VoiceIt.parsePeople(b.meta.people)), vocab);
+    const sched = VoiceIt.schedule(r.parsed.lines, VoiceIt.cast(r.parsed.lines, r.parsed.meta.voice, vocab, VoiceIt.parsePeople(b.meta.people, vocab)), vocab);
     console.log(`${b.path}  plays for about ${VoiceIt.formatTime(sched.total)} (${r.parsed.lines.length} lines)`);
   }
 }

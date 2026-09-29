@@ -21,7 +21,7 @@ LIGHT: white dim
 ```
 
 - `character` (required): the character's name. The script's lines, timing, screen, light and sound define how the product behaves; people judge its character when they play the script with a form.
-- `voice` (required): one name from the voice catalogue in `VOCABULARY.md` (Ash, Theo, Sam, Noor, Mira, Wren).
+- `voice` (required): one name from the voice catalogue in `VOCABULARY.md` (Ash, Theo, Rowan, Sam, Noor, Mira, Wren).
 - `note` (optional): one line of your own, shown under the character's name in VoiceIt's list, for example the scene or the variation being tested. VoiceIt does nothing else with it.
 - `people` (optional but recommended): everyone present, each with their role in brackets. The name is the one used in the script, so `Anna` speaks as `ANNA:`. VoiceIt shows the role next to the name, and gives everyone a lane on the timeline, also those who stay silent. The check warns when someone speaks who is not listed. To choose a person's voice, end the brackets with `voice low`, `voice high` or a voice from the catalogue (`voice Wren`); without it, VoiceIt picks a free voice, which may be low or high. See Voices in `VOCABULARY.md`.
 - `#` lines right after the front matter are comments for the reader: the scene and who is present. VoiceIt shows them above the script; they are not played.

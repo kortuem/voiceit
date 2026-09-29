@@ -807,7 +807,7 @@ function summarise(){
   summary={};
   Object.entries(data.behaviours).forEach(([k,b])=>{
     const r=VoiceIt.validateBehaviour(b.text, vocab);
-    const s=VoiceIt.schedule(r.parsed.lines, VoiceIt.cast(r.parsed.lines, r.parsed.meta.voice, vocab, VoiceIt.parsePeople(r.parsed.meta.people)), vocab);
+    const s=VoiceIt.schedule(r.parsed.lines, VoiceIt.cast(r.parsed.lines, r.parsed.meta.voice, vocab, VoiceIt.parsePeople(r.parsed.meta.people, vocab)), vocab);
     summary[k]={r, s:r.parsed.lines.length?s:{ev:[],total:1}};
   });
 }
@@ -863,10 +863,10 @@ function reparse(){
   stop();
   const b=current(), text=b?b.text:'';
   const r = VoiceIt.validateBehaviour(text, vocab);
-  castMap = VoiceIt.cast(r.parsed.lines, r.parsed.meta.voice, vocab, VoiceIt.parsePeople(r.parsed.meta.people));
+  castMap = VoiceIt.cast(r.parsed.lines, r.parsed.meta.voice, vocab, VoiceIt.parsePeople(r.parsed.meta.people, vocab));
   sched = VoiceIt.schedule(r.parsed.lines, castMap, vocab);
   if(!r.parsed.lines.length) sched = {ev:[], total:1};
-  people = VoiceIt.parsePeople(r.parsed.meta.people);
+  people = VoiceIt.parsePeople(r.parsed.meta.people, vocab);
   if(!b){ check.className='check'; check.textContent='No behaviour selected.'; }
   else if(r.errors.length||r.warnings.length){ check.className='check bad'; check.textContent=`${plural(r.errors.length,'error')}, ${plural(r.warnings.length,'warning')}, marked below. The rest still plays.`; }
   else { check.className='check'; check.textContent=`Reads cleanly · ${r.parsed.lines.length} lines · about ${fmt(sched.total)}`; }
@@ -888,7 +888,7 @@ $('#fstrip').addEventListener('click',e=>{ const c=e.target.closest('.fchip'); i
 const voiceLabel = n => { const sv=sysVoiceFor(n); return esc(n)+(sv?` <span class="sv">(${esc(sv.name)})</span>`:''); };
 // People the script tells apart, but this laptop plays with one voice: it has too few voices.
 function alike(){
-  const byLaptop=new Map(), names=VoiceIt.parsePeople(current()&&current().meta.people);
+  const byLaptop=new Map(), names=people;
   castMap.forEach((cat,who)=>{ const s=sysVoiceFor(cat); if(!s) return; const e=byLaptop.get(s.name)||{cats:new Set(),who:[]}; e.cats.add(cat);
     e.who.push(who==='DEVICE'?'the product':((names.find(x=>x.key===who)||{}).name||who)); byLaptop.set(s.name,e); });
   const same=[...byLaptop].filter(([,e])=>e.cats.size>1);
@@ -899,7 +899,7 @@ function alike(){
 function renderTranscript(text, r){
   const b=current();
   if(!b){ $('#scriptMeta').innerHTML=''; $('#transcript').innerHTML=''; return; }
-  const m=r.parsed.meta, ppl=VoiceIt.parsePeople(m.people);
+  const m=r.parsed.meta, ppl=VoiceIt.parsePeople(m.people, vocab);
   $('#scriptMeta').innerHTML =
     `<p><b>${esc(m.character||b.character)}</b>${m.note?` · ${esc(m.note)}`:''}${m.voice?` · voice ${voiceLabel(castMap.get('DEVICE'))}`:''}</p>`+
     alike()+
@@ -982,7 +982,7 @@ function hearVoice(name){ const v=vocab && vocab.voice[name]; if(!v||!hasSpeech)
   return new Promise(res=>{ const u=new SpeechSynthesisUtterance(`This is ${v.name}. ${v.sound}.`); const s=sysVoiceFor(v.name); if(s) u.voice=s;
     u.pitch=pitchFor(s, v.pitch); u.rate=v.rate; let done=false; const fin=()=>{ if(!done){ done=true; res(); } };
     u.onend=fin; u.onerror=fin; setTimeout(fin,6000); try{ speechSynthesis.speak(u); }catch(e){ fin(); } }); }
-if(hasSpeech){ try{ speechSynthesis.addEventListener('voiceschanged',()=>{ if(cur.tab==='setup') drawSetup(); }); }catch(e){} }
+if(hasSpeech){ try{ speechSynthesis.addEventListener('voiceschanged',()=>{ if(cur.tab==='setup') drawSetup(); if(current() && !playing && !stepping) reparse(); }); }catch(e){} }
 $('#voiceTest').addEventListener('click',async()=>{
   if(!vocab||!hasSpeech) return;
   stop(); const btn=$('#voiceTest'); btn.disabled=true;
@@ -1032,9 +1032,9 @@ async function startHosted(){
     combine();
     say('This is VoiceIt online: the examples play here. To play your own scripts, open your voiceit folder in the list; the files stay on your laptop.');
   }catch(e){ say('Could not load VoiceIt online. Check the internet connection, or start VoiceIt on this laptop with: node system/bin/preview'); }
-  // a folder opened in Chrome or Edge is followed like the preview does: new and changed files appear by themselves
-  setInterval(()=>{ if(dirHandle && !document.hidden && !playing) readPicked(true); }, 3000);
 }
+// a folder opened in Chrome or Edge is followed like the preview does: new and changed files appear by themselves
+setInterval(()=>{ if(dirHandle && !document.hidden && !playing && !stepping) readPicked(true); }, 3000);
 async function start(){
   let r=null; try{ r=await fetch('../design.json',{cache:'no-store'}); }catch(e){}
   if(!r || !r.ok){ await startHosted(); return; }
@@ -1042,7 +1042,7 @@ async function start(){
   fetchDesign(false);
   window.addEventListener('focus',()=>fetchDesign(true));
   // look for new or changed files every few seconds, but never in the middle of playback
-  setInterval(()=>{ if(!document.hidden && !playing) fetchDesign(true); }, 3000);
+  setInterval(()=>{ if(!document.hidden && !playing && !stepping) fetchDesign(true); }, 3000);
   // keep "just now" and "3 min ago" current without redrawing the list
   setInterval(()=>{ document.querySelectorAll('.brow').forEach(r=>{ const b=data.behaviours[r.dataset.k], s=r.querySelector('.bt span'); if(b && !b.example && s) s.textContent=ago(b.mtime); }); }, 30000);
   document.addEventListener('visibilitychange',()=>{ if(!document.hidden) fetchDesign(true); });
@@ -1050,7 +1050,7 @@ async function start(){
 /* ---------- Your own folder, opened in the browser ---------- */
 // Chrome and Edge can keep a folder open and read it again; other browsers read it once per Open.
 const canWatch = 'showDirectoryPicker' in window;
-let dirHandle=null, folderSig='', folderURLs=[];
+let dirHandle=null, folderSig='', folderURLs={};   // image addresses by path, date and size
 function folderControl(){
   if(canWatch) return `<button type="button" class="btn small" data-pick>${dirHandle?'Choose another folder…':'Open your voiceit folder…'}</button>`+
     (dirHandle?`<p class="hint">Following <b>${esc(dirHandle.name)}</b>: new and changed files appear by themselves.</p>`:'');
@@ -1074,13 +1074,13 @@ async function readPicked(quiet){
   const sig=found.map(x=>x.p+':'+x.f.lastModified+':'+x.f.size).join('|');
   if(sig===folderSig) return;
   folderSig=sig;
-  const list=[], urls=[];
+  const list=[], urls={};
   for(const {p, f} of found){
     if(/\.md$/i.test(p)) list.push({path:p, text:await f.text(), mtime:f.lastModified});
-    else { const u=URL.createObjectURL(f); urls.push(u); list.push({path:p, url:u}); }
+    else { const id=p+':'+f.lastModified+':'+f.size, u=folderURLs[id]||URL.createObjectURL(f); urls[id]=u; list.push({path:p, url:u}); }
   }
   useFolder(list, quiet);
-  folderURLs.forEach(u=>URL.revokeObjectURL(u)); folderURLs=urls;
+  Object.keys(folderURLs).forEach(id=>{ if(!urls[id]) URL.revokeObjectURL(folderURLs[id]); }); folderURLs=urls;
 }
 // one place for both ways of opening a folder
 function useFolder(list, quiet){

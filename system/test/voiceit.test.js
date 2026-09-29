@@ -113,10 +113,46 @@ test('people who share a voice get a warning that says how to resolve it', () =>
   assert.strictEqual(lines(castOf('Joost (voice low), Bakker (voice low)', 'JOOST: Hi.\nBAKKER: Hi.\n').r), '');
 });
 
-test('an unknown voice in the people line is an error on that line', () => {
+test('an unknown voice word in the people line stays part of the role, with a warning', () => {
   const {r} = castOf('Anna (patient, voice deep)', 'ANNA: Hi.\n');
-  assert.strictEqual(lines(r), 'E4');
-  assert.match(r.errors[0].msg, /voice deep.*Anna.*voice low, voice high/);
+  assert.strictEqual(lines(r), 'W4');
+  assert.match(r.warnings[0].msg, /voice deep.*Anna.*read as part of the role/);
+  assert.deepStrictEqual(VoiceIt.parsePeople('Eva (voice message), Mia (daughter, voice: high), Joost (voice low, patient)', vocab).map(x => [x.role, x.voice]),
+    [['voice message', ''], ['daughter', 'high'], ['patient', 'low']]);
+});
+
+test('named voices are cast before low and high, which prefer the clearest voices', () => {
+  const {map} = castOf('A (voice low), B (voice Theo)', 'A: Hi.\nB: Hi.\n');
+  assert.strictEqual(map.get('B'), 'Theo');
+  assert.strictEqual(map.get('A'), 'Rowan');
+  const high = castOf('Anna (voice high)', 'ANNA: Hi.\n').map.get('ANNA');
+  assert.strictEqual(high, 'Wren');
+});
+
+test('names with accents speak; times and long phrases before a colon are actions without a warning', () => {
+  const r = VoiceIt.validateBehaviour(head + 'DANIËL: Hoi.\nZOË (softly): Hi.\nAt 15:00 Anna wakes.\nLater that night: the ward is quiet.\nAnna: Hello.\n', vocab);
+  assert.deepStrictEqual(r.parsed.lines.map(l => l.kind), ['speech', 'speech', 'action', 'action', 'action']);
+  assert.strictEqual(lines(r), 'W9');
+});
+
+test('quoted, lower-case and BOM front matter is read as meant', () => {
+  const r = VoiceIt.validateBehaviour('\uFEFF---\ncharacter: "Rex"\nvoice: ash\n---\nREX: Hello.\n', vocab);
+  assert.deepStrictEqual(r.errors, []);
+  assert.strictEqual(r.parsed.meta.voice, 'Ash');
+  assert.strictEqual(r.parsed.lines[0].who, 'DEVICE');
+});
+
+test('a manner after the colon, a pause with more on its line, and seconds written out', () => {
+  const r = check('DEVICE: (quietly) Good evening.\n(pause 3) Joost waits.\n(pause 2 seconds)\n');
+  assert.strictEqual(lines(r), 'E6 W5');
+  assert.match(r.warnings[0].msg, /spoken aloud.*DEVICE \(quietly\): /);
+  assert.strictEqual(r.parsed.lines[2].secs, 2);
+});
+
+test('the shared-voice advice names the product only when it is in the same register', () => {
+  const {r} = castOf('A (voice low), B (voice low), C (voice low), D (voice low)', 'A: 1.\nB: 2.\nC: 3.\nD: 4.\n', 'Mira');
+  assert.match(r.warnings[0].msg, /the catalogue has only 3 low voices for people\. Let fewer people speak/);
+  assert.doesNotMatch(r.warnings[0].msg, /give the product/);
 });
 
 test('the product may speak under its character name', () => {

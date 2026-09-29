@@ -4,6 +4,19 @@ What changed from one version of VoiceIt to the next, newest first. Versions bel
 
 For maintainers: when releasing, set `VERSION` in `system/voiceit.js`, add an entry here with the same number, and tag the commit. The tests check that the two numbers match.
 
+## 0.3.2 (29 September 2026)
+
+Fixes from an independent review of the code.
+
+- **Names with accents speak:** `DANIËL:` or `ZOË:` used to be read, without a warning, as an action.
+- **Front matter as agents often write it:** `character: "Rex"` (quoted), `voice: ash` (lower case) and files saved with a byte-order mark (older Windows Notepad) are read as meant.
+- **Voices in the people line:** `voice: low` (with a colon) and a voice anywhere in the brackets now count. A role such as `voice coach` stays a role, with a warning instead of an error. Voices named by name are given out first, and `voice low` / `voice high` take the most clearly low or high voices first.
+- **Fewer false warnings, more useful ones:** times (`At 15:00 Anna wakes.`) and longer phrases before a colon no longer look like speakers. New: a manner after the colon (`DEVICE: (quietly) Hello.`, which was spoken aloud) and a pause with more text on its line (which was not played). `(pause 2 seconds)` is accepted. The shared-voice advice suggests changing the product's voice only when that would help.
+- **Online, following a folder:** a change to another file no longer rewinds the script you are on, and a Step is not interrupted. A page opened by double-clicking now also follows the folder it says it follows.
+- **Voices** arriving after a script is shown now update the voice names in the script column.
+- **Preview:** odd requests and files that cannot be read (for example cloud files not yet downloaded) no longer stop it.
+- `SCREENPLAY.md` lists Rowan.
+
 ## 0.3.1 (29 September 2026)
 
 - **When people share a voice, VoiceIt says why and what to do.** The check warns when two speakers have the same voice because the catalogue has too few (three low and four high voices, one of them the product's), and suggests letting fewer people speak or giving the product a voice of the other register. The agent reports this to the group instead of dropping people itself.
