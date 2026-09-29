@@ -32,21 +32,30 @@ Try a different form with the same behaviour, or play another script to compare 
 
 You design two things: the product's **form**, an image of the product, and its **behaviour**, written as a script. The product's **character** is the impression people form of who the product is when they play a behaviour with a form. You judge the character by playing; a script only gives it a name.
 
-A behaviour script reads like a screenplay. **Script excerpt**, from the example *Night light, night on ward 4*:
+A behaviour script reads like a screenplay. The shortest example, *Timer · Pasta*, complete:
 
 ```
-LIGHT: amber pulse dim
-Eva's message arrives. The device makes no sound.
-(pause 3)
-Joost notices the light and turns his head.
-JOOST (low): What is it?
-SCREEN: word Eva
-DEVICE (quietly): A message from Eva.
-SCREEN: choice Eva's message | Show text | Later
-TOUCH: Show text
+---
+character: Timer
+note: Pasta
+voice: Mira
+people: Tom (cooking, voice low)
+---
+# A kitchen, early evening. Tom set the timer for ten minutes of pasta and is chopping herbs.
+The pasta boils. Tom chops herbs at the counter.
+SOUND: chime
+LIGHT: green pulse
+SCREEN: choice Pasta: time's up | Stop | Another minute
+DEVICE: The pasta timer is done.
+Tom tastes a piece. Still a little hard.
+TOUCH: Another minute
+LIGHT: amber
+SCREEN: word 1:00
+DEVICE (quietly): One more minute.
+TOM: Good.
 ```
 
-Plain lines say what happens. A name in capitals speaks, with its manner in brackets; `DEVICE` is the product. `LIGHT`, `SCREEN` and `SOUND` are the product's light signals, screen content and sound effects; `TOUCH` is someone tapping the screen; `(pause 3)` is three seconds of silence. A complete script also starts with a few facts: the character's name, its voice and the people present. The notation is in [system/SCREENPLAY.md](system/SCREENPLAY.md); the available screen components, lights, sounds and voices are in [system/VOCABULARY.md](system/VOCABULARY.md).
+Plain lines say what happens. A name in capitals speaks, with its manner in brackets; `DEVICE` is the product. `LIGHT`, `SCREEN` and `SOUND` are the product's light signals, screen content and sound effects; `TOUCH` is someone tapping the screen; `(pause 3)` is three seconds of silence. The lines between `---` are facts: the character's name, a note of your own, its voice and the people present; `#` lines describe the scene. The notation is in [system/SCREENPLAY.md](system/SCREENPLAY.md); the available screen components, lights, sounds and voices are in [system/VOCABULARY.md](system/VOCABULARY.md).
 
 A form is an image of the product: a drawing or a rendered image, as PNG, JPG, WebP or SVG. A rough drawing can be enough to judge an interaction. [system/FORM.md](system/FORM.md) describes a way to develop one from a paper sketch with an image-generation tool.
 
@@ -66,11 +75,13 @@ Your browser opens VoiceIt. Select an example in the list, choose a form below t
 
 | File | Character | Scene |
 | --- | --- | --- |
-| `host - night on ward 4.md` | **Host**: talkative and helpful; says everything aloud | Night on ward 4: Joost lies awake after hip surgery, a message from his daughter arrives, and he wants to know whether he may take more pain relief. |
-| `night light - night on ward 4.md` | **Night light**: few words, spoken quietly; works through its light and screen | The same night, the same people and events. |
-| `night light - visiting hour.md` | **Night light** | Visiting hour on ward 4: the same character in another scene. |
+| `1 timer - pasta.md` | **Timer**: a kitchen timer | The pasta timer is done; Tom asks for another minute. Twelve seconds: speech, a choice on the screen, a touch and the light. |
+| `2 lumo - call the nurse.md` | **Lumo**: quiet and prompt | Ward 4, 14:00: Joost asks Lumo to call the nurse. Lumo stays quiet while Samira is with him, and answers when she asks it to note what she gave him. |
+| `3 night light - night on ward 4.md` | **Night light**: few words, spoken quietly; works through its light and screen | Night on ward 4: Joost lies awake after hip surgery, a message from his daughter arrives, and he wants to know whether he may take more pain relief. |
+| `4 host - night on ward 4.md` | **Host**: talkative and helpful; says everything aloud | The same night, the same people and events. |
+| `5 night light - visiting hour.md` | **Night light** | Visiting hour on ward 4: the same character in another scene. |
 
-Play the first two one after another to hear two characters in the same scene; play the second and third to see whether one character stays the same in two scenes.
+VoiceIt lists them in this order, simplest first. Play 3 and 4 one after another to hear two characters in the same scene; play 3 and 5 to see whether one character stays the same in two scenes.
 
 **Forms**, in [examples/forms/](examples/forms/): a hand sketch of an hourglass-shaped speaker, and a rendering made from that sketch with an image-generation tool. Either can serve as a form.
 
@@ -108,6 +119,6 @@ The [tutorial](TUTORIAL.md) takes you through one design session: setting up the
 
 ## Status and licence
 
-VoiceIt is in development, for the course IDEM307 at TU Delft. This is version 0.3.2, an early release; what changed from version to version is in [CHANGELOG.md](CHANGELOG.md). Report problems in [GitHub Issues](https://github.com/kortuem/voiceit/issues) (needs a GitHub account) or tell your teacher. For maintainers: `node --test system/test/voiceit.test.js` runs the tests.
+VoiceIt is in development, for the course IDEM307 at TU Delft. This is version 0.4.0, an early release; what changed from version to version is in [CHANGELOG.md](CHANGELOG.md). Report problems in [GitHub Issues](https://github.com/kortuem/voiceit/issues) (needs a GitHub account) or tell your teacher. For maintainers: `node --test system/test/voiceit.test.js` runs the tests.
 
 The code and the example files are under the [MIT licence](LICENSE). The smart speaker photo above is not part of the repository; it is shown from Wikimedia Commons under its own licence, CC BY-SA 4.0. Visual style after Vlak (vlak.dev) by Renn, Noord.

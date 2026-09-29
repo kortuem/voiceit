@@ -175,7 +175,7 @@ test('examples and your own behaviours are kept apart', () => {
 test('the examples pass the check', () => {
   const r = spawnSync(process.execPath, [path.join(root, 'system', 'bin', 'check'), 'examples'], {cwd:root, encoding:'utf8'});
   assert.strictEqual(r.status, 0, r.stdout);
-  assert.match(r.stdout, /Checked 3 behaviours: 0 errors, 0 warnings/);
+  assert.match(r.stdout, /Checked 5 behaviours: 0 errors, 0 warnings/);
 });
 
 test('the check fails on a file that does not exist', () => {

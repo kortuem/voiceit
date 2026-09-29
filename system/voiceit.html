@@ -691,7 +691,7 @@ async function run(single){
     const e=ev[idx]; await exec(e); if(my!==token) return; idx++;
     if(single && e.l.kind!=='screen' && e.l.kind!=='light' && e.l.kind!=='sound') break;
   }
-  if(my===token){ playing=false; stepping=false; setPlayBtn(); if(idx>=ev.length){ caption('end'); setHead(sched.total); } }
+  if(my===token){ playing=false; stepping=false; setPlayBtn(); if(idx>=ev.length){ caption('end'); /* the end, not where the last line's animation stopped */ cancelAnimationFrame(raf); setHead(sched.total); } }
 }
 function stop(){ token++; playing=false; stepping=false; cancelAnimationFrame(raf); try{ if(hasSpeech) speechSynthesis.cancel(); }catch(e){} setPlayBtn(); }
 function stateAt(i){ renderScreen(null); renderLight(null); for(let k=0;k<i;k++){ const l=sched.ev[k].l; if(l.kind==='screen') renderScreen(l); else if(l.kind==='light') renderLight(l); } }
@@ -794,8 +794,9 @@ window.addEventListener('hashchange',()=>{ readHash(); if(cur.w!==watching()) se
 
 // yours first, newest first (the behaviour the agent just wrote comes to the top); then the examples
 const byName=(A,B)=>(A.character+A.note).localeCompare(B.character+B.note);
+// your own scripts newest first; then the examples in the order of their file names (1 timer …, 2 lumo …)
 const order=()=>Object.keys(data.behaviours).sort((a,b)=>{ const A=data.behaviours[a], B=data.behaviours[b];
-  return (A.example?1:0)-(B.example?1:0) || (A.example ? byName(A,B) : ((B.mtime||0)-(A.mtime||0) || byName(A,B))); });
+  return (A.example?1:0)-(B.example?1:0) || (A.example ? a.localeCompare(b,undefined,{numeric:true}) : ((B.mtime||0)-(A.mtime||0) || byName(A,B))); });
 function ago(ms){
   if(!ms) return ''; const s=(Date.now()-ms)/1000;
   if(s<60) return 'just now'; if(s<3600) return `${Math.round(s/60)} min ago`; if(s<86400) return `${Math.round(s/3600)} h ago`;

@@ -9,7 +9,7 @@
 'use strict';
 
 // the version shown by the page and the preview; add a matching entry at the top of CHANGELOG.md
-const VERSION = '0.3.2';
+const VERSION = '0.4.0';
 const RESERVED = ['DEVICE', 'SCREEN', 'LIGHT', 'SOUND', 'TOUCH'];
 const KINDS = ['component', 'light', 'modifier', 'sound', 'voice', 'manner'];
 const NUMERIC = ['pitch', 'rate', 'volume'];
@@ -321,8 +321,9 @@ function buildDesign(files){
         character:meta.character || label(stem), note:meta.note || ''};
     }
   });
-  const sorted = (o, key) => Object.fromEntries(Object.keys(o).sort((a, b) => key(o[a]).localeCompare(key(o[b]))).map(k => [k, o[k]]));
-  return {forms:sorted(forms, f => f.name), behaviours:sorted(behaviours, b => b.character + ' ' + b.note), vocabulary};
+  const sorted = (o, key) => Object.fromEntries(Object.keys(o).sort((a, b) => key(o[a], a).localeCompare(key(o[b], b), undefined, {numeric:true})).map(k => [k, o[k]]));
+  // behaviours by file name, so numbered examples (1 timer …, 2 lumo …) keep their order
+  return {forms:sorted(forms, f => f.name), behaviours:sorted(behaviours, (b, k) => k), vocabulary};
 }
 
 return {VERSION, RESERVED, DEFAULT_VOICE, parseVocabulary, frontMatter, parseScript, cast, manner, speechDur, schedule,

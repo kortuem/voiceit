@@ -46,13 +46,17 @@ You need the **Claude desktop app** (its **Code** tab) or the **Codex** app, sig
    - **Mac:** System Settings › Accessibility › Spoken Content › System voice › Manage Voices…. Under English, download a few voices marked **Premium** or **Enhanced**, for example Jamie, Daniel, Serena, Karen and Ava (low and high voices both help). Restart the browser, then play the voices again.
    - **Windows:** use **Microsoft Edge**, which offers natural-sounding online voices (their names end in "Natural"). More voices can be added under Settings › Time & language › Speech › Manage voices; not every added voice is available to the browser. (Not yet tested on Windows.)
 
-## 2. Play an example
+## 2. Play the examples
 
-The example scene: **night on ward 4**, 23:10. Joost, 67, lies awake the day after hip surgery. Mr Bakker, his roommate, is asleep in the next bed. A voice message arrives from Eva, Joost's daughter: can she visit tomorrow at ten? Joost is in pain and does not know whether he may take more pain relief. Samira, the night nurse, is on duty.
+The examples are in the list on the left, under *Examples*, simplest first.
 
-1. In the list on the left, under *Examples*, click **Night light · Night on ward 4**. Below the stage, click the hourglass rendering.
-2. Press **Play**. The light pulses amber, without a sound. When Joost asks what it is, the screen shows *Eva* and the Night light says quietly: *"A message from Eva."* Joost taps *Show text*, and Eva's message appears on the screen. When he asks about a painkiller, it says it cannot advise and offers to call the nurse; while Samira is on her way, the light is dim blue.
-3. Now click **Host · Night on ward 4** and press **Play**. Same scene, same people, other character: the Host reads everything aloud (*"Joost, you have a new voice message from Eva. I'll play it for you."*), next to a sleeping roommate.
+1. **Timer · Pasta** is selected when VoiceIt opens. Below the stage, click the hourglass rendering, then press **Play**. A kitchen timer chimes, its light pulses green, and the screen asks *Stop* or *Another minute*. Tom taps *Another minute*; the light turns amber and the timer says quietly: *"One more minute."* Twelve seconds: speech, a choice on the screen, a touch and the light.
+2. Click **Lumo · Call the nurse** and press **Play**. Ward 4, 14:00: Joost asks Lumo to call the nurse. Lumo calls Samira and shows that she is on her way, stays quiet while she is with Joost, and answers when she asks it to note what she gave him.
+
+Then two characters in the same scene: **night on ward 4**, 23:10. Joost, 67, lies awake the day after hip surgery. Mr Bakker, his roommate, is asleep in the next bed. A voice message arrives from Eva, Joost's daughter: can she visit tomorrow at ten? Joost is in pain and does not know whether he may take more pain relief. Samira, the night nurse, is on duty.
+
+3. Click **Night light · Night on ward 4** and press **Play**. The light pulses amber, without a sound. When Joost asks what it is, the screen shows *Eva* and the Night light says quietly: *"A message from Eva."* Joost taps *Show text*, and Eva's message appears on the screen. When he asks about a painkiller, it says it cannot advise and offers to call the nurse; while Samira is on her way, the light is dim blue.
+4. Now click **Host · Night on ward 4** and press **Play**. Same scene, same people, other character: the Host reads everything aloud (*"Joost, you have a new voice message from Eva. I'll play it for you."*), next to a sleeping roommate.
 
 Play both and compare: the scene and the people are the same; only the product's behaviour differs.
 

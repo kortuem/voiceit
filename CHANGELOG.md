@@ -4,6 +4,13 @@ What changed from one version of VoiceIt to the next, newest first. Versions bel
 
 For maintainers: when releasing, set `VERSION` in `system/voiceit.js`, add an entry here with the same number, and tag the commit. The tests check that the two numbers match.
 
+## 0.4.0 (29 September 2026)
+
+- **Two simple examples first.** *Timer · Pasta* (twelve seconds in a kitchen: speech, a choice on the screen, a touch and the light) and *Lumo · Call the nurse* (one patient, one nurse: the product calls her, stays quiet while she is there, and answers when she asks it to note something). The example files are numbered, and VoiceIt lists them in that order, simplest first; the Timer is selected when VoiceIt opens. The three ward 4 scripts follow as before (renamed `3 night light - night on ward 4.md`, `4 host - …`, `5 night light - visiting hour.md`).
+- The tutorial starts with the two new examples; README and `SCREENPLAY.md` show the Timer as a complete script.
+- At the end of a script the clock shows its full length; it could stop a second short (0:11 / ≈ 0:12).
+- Writing a behaviour: the agent keeps the pace. The product answers promptly, a `(beat)` gives people time to listen, and waiting is kept short.
+
 ## 0.3.2 (29 September 2026)
 
 Fixes from an independent review of the code.

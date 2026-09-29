@@ -1,7 +1,7 @@
 # Procedure: write a behaviour
 
 **Purpose:** turn the group's description of their product into a script VoiceIt can play.
-**Reads:** the group's description; `BRIEF.md` for the setting and the people, if they refer to it; `system/SCREENPLAY.md`; `system/VOCABULARY.md`; the worked example in `examples/behaviours/` for tone and density.
+**Reads:** the group's description; `BRIEF.md` for the setting and the people, if they refer to it; `system/SCREENPLAY.md`; `system/VOCABULARY.md`; the worked examples in `examples/behaviours/` for tone and density (the ward 4 scripts; the timer is only a notation sample).
 **Writes:** one file in `design/behaviours/`, named after the character and a few words (`rex - visiting hour.md`).
 
 The group writes and directs; you write the script down. There is no separate character document: the group judges the product's character from its form and its behaviour in the scripts.
@@ -16,6 +16,7 @@ The group writes and directs; you write the script down. There is no separate ch
    - cues before the line they belong to; silence written as `(beat)` and `(pause n)`;
    - every TOUCH picks an option that is on the screen at that moment;
    - include every event the group specified, and let the people react to the product's behaviour as the group described it;
+   - pacing: the product answers promptly, with no pause before its reply unless hesitating is part of its character; a `(beat)` where people need a moment to take in what was said or shown; waiting kept short (`(pause 3)` can stand for minutes), so the scene never stands still for long;
    - roughly one to two minutes when played.
 4. **Write only from the group's description of this script.** Do not read the character's other behaviours unless the group asks you to: noticing whether the character stays the same is their work. If they ask for a coherence check afterwards, compare the scripts and say where they differ.
 5. **Check before overwriting.** If a file with that name exists, overwrite it only if the group has just asked for it to be written again and it has not changed since you wrote it in this conversation. Otherwise, show what is there and ask.

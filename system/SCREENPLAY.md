@@ -50,7 +50,30 @@ Reserved words: `DEVICE`, `SCREEN`, `LIGHT`, `SOUND`, `TOUCH`.
 
 VoiceIt estimates how long each spoken line takes from its length, its voice and its manner. Cues (SCREEN, LIGHT, SOUND) take no time; they change the product at the moment the next line begins. So write a cue **before** the line it belongs to: a SCREEN cue placed after the product speaks appears only when the next person starts talking. A `TOUCH` takes about a second. Silence is written, not implied: use `(beat)` and `(pause n)`.
 
-## An example
+## Examples
+
+A complete short script, the example *Timer · Pasta*: speech, a choice on the screen, a touch and the light.
+
+```
+---
+character: Timer
+note: Pasta
+voice: Mira
+people: Tom (cooking, voice low)
+---
+# A kitchen, early evening. Tom set the timer for ten minutes of pasta and is chopping herbs.
+The pasta boils. Tom chops herbs at the counter.
+SOUND: chime
+LIGHT: green pulse
+SCREEN: choice Pasta: time's up | Stop | Another minute
+DEVICE: The pasta timer is done.
+Tom tastes a piece. Still a little hard.
+TOUCH: Another minute
+LIGHT: amber
+SCREEN: word 1:00
+DEVICE (quietly): One more minute.
+TOM: Good.
+```
 
 The same moment with two characters in *Night on ward 4*. The Night light:
 
