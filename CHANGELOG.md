@@ -4,9 +4,10 @@ What changed from one version of VoiceIt to the next, newest first. Versions bel
 
 For maintainers: when releasing, set `VERSION` in `system/voiceit.js`, add an entry here with the same number, and tag the commit. The tests check that the two numbers match.
 
-## Unreleased
+## 0.2.4 (29 September 2026)
 
-- A short video tour (`media/voiceit-demo.mp4`, 1 min 26 s, with subtitles), linked from the README and the tutorial.
+- **New example forms**: a hand sketch of an hourglass-shaped speaker and a rendering made from it replace the two line drawings. Together they show the form loop: sketch, then render.
+- **A short video tour** (`media/voiceit-demo.mp4`, about 1.5 minutes, with subtitles), linked from the README and the tutorial.
 
 ## 0.2.3 (29 September 2026)
 

@@ -72,11 +72,11 @@ test('examples and your own behaviours are kept apart', () => {
   const d = VoiceIt.buildDesign([
     {path:'design/behaviours/a.md', text:head + 'DEVICE: One.\n'},
     {path:'examples/behaviours/a.md', text:head + 'DEVICE: Two.\n'},
-    {path:'examples/forms/lamp.svg', url:'x'},
+    {path:'examples/forms/hourglass-rendering.jpg', url:'x'},
     {path:'design/forms/process/sketch.png', url:'y'}]);
   assert.deepStrictEqual(Object.keys(d.behaviours).sort(), ['a', 'example: a']);
   assert.strictEqual(d.behaviours['example: a'].example, true);
-  assert.deepStrictEqual(Object.keys(d.forms), ['example: lamp']);   // process/ is not listed
+  assert.deepStrictEqual(Object.keys(d.forms), ['example: hourglass-rendering']);   // process/ is not listed
 });
 
 test('the examples pass the check', () => {

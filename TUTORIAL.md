@@ -50,7 +50,7 @@ You need the **Claude desktop app** (its **Code** tab) or the **Codex** app, sig
 
 The example scene: **night on ward 4**, 23:10. Joost, 67, lies awake the day after hip surgery. Mr Bakker, his roommate, is asleep in the next bed. A voice message arrives from Eva, Joost's daughter: can she visit tomorrow at ten? Joost is in pain and does not know whether he may take more pain relief. Samira, the night nurse, is on duty.
 
-1. In the list on the left, under *Examples*, click **Night light · Night on ward 4**. Below the stage, click the lamp.
+1. In the list on the left, under *Examples*, click **Night light · Night on ward 4**. Below the stage, click the hourglass rendering.
 2. Press **Play**. The light pulses amber, without a sound. When Joost asks what it is, the screen shows *Eva* and the Night light says quietly: *"A message from Eva."* Joost taps *Show text*, and Eva's message appears on the screen. When he asks about a painkiller, it says it cannot advise and offers to call the nurse; while Samira is on her way, the light is dim blue.
 3. Now click **Host · Night on ward 4** and press **Play**. Same scene, same people, other character: the Host reads everything aloud (*"Joost, you have a new voice message from Eva. I'll play it for you."*), next to a sleeping roommate.
 

@@ -18,7 +18,7 @@ A short tour, with sound (click the image to download it, 7 MB): start VoiceIt, 
 
 ![VoiceIt playing a behaviour script with a product image, its screen and its light side by side, above a timeline](voiceit.png)
 
-*VoiceIt playing the Night light example with the lamp form.*
+*VoiceIt playing the Night light example with the hourglass rendering as its form.*
 
 ## The VoiceIt interface
 
@@ -70,9 +70,9 @@ Your browser opens VoiceIt. Select an example in the list, choose a form below t
 
 Play the first two one after another to hear two characters in the same scene; play the second and third to see whether one character stays the same in two scenes.
 
-**Forms**, in [examples/forms/](examples/forms/): two simple line drawings, a bedside unit and a lamp.
+**Forms**, in [examples/forms/](examples/forms/): a hand sketch of an hourglass-shaped speaker, and a rendering made from that sketch with an image-generation tool. Either can serve as a form.
 
-<img src="examples/forms/bedside-unit.svg" width="220" alt="Bedside unit: a screen standing on a fabric-covered speaker base with a light strip"> <img src="examples/forms/lamp.svg" width="220" alt="Lamp: a low dome with a small screen in its front">
+<img src="examples/forms/hourglass-sketch.jpg" height="260" alt="Hand sketch of an hourglass-shaped speaker with a square screen, on lined paper"> <img src="examples/forms/hourglass-rendering.jpg" height="260" alt="Rendering of the same speaker: white, hourglass-shaped, with a dark screen and a green light line">
 
 ## Design your own
 
@@ -98,6 +98,6 @@ Without Node, open `system/voiceit.html` in your browser and choose the `voiceit
 
 ## Status and licence
 
-VoiceIt is in development, for the course IDEM307 at TU Delft. This is version 0.2.3, an early release; what changed from version to version is in [CHANGELOG.md](CHANGELOG.md). Report problems in [GitHub Issues](https://github.com/kortuem/voiceit/issues) (needs a GitHub account) or tell your teacher. For maintainers: `node --test system/test/voiceit.test.js` runs the tests.
+VoiceIt is in development, for the course IDEM307 at TU Delft. This is version 0.2.4, an early release; what changed from version to version is in [CHANGELOG.md](CHANGELOG.md). Report problems in [GitHub Issues](https://github.com/kortuem/voiceit/issues) (needs a GitHub account) or tell your teacher. For maintainers: `node --test system/test/voiceit.test.js` runs the tests.
 
 The code and the example files are under the [MIT licence](LICENSE). The smart speaker photo above is not part of the repository; it is shown from Wikimedia Commons under its own licence, CC BY-SA 4.0. Visual style after Vlak (vlak.dev) by Renn, Noord.

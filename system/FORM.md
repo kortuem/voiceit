@@ -9,7 +9,7 @@ The form is the product's body: what it looks like where it stands. You design i
 3. **Mark up** the render: print it or open it in any drawing app, and draw your changes over it in a strong colour, with short labels ("rounder", "screen lower", "fabric here").
 4. **Re-render** from the marked-up image. Repeat 3 and 4 until the form is yours.
 
-Save each form as one image in `design/forms/`, named after it (`lamp.png`, `bedside-unit.png`); VoiceIt shows each form as a small image under the form panel, and clicking one shows it with the behaviour script being played. Keep sketches and earlier renders in `design/forms/process/`; VoiceIt only lists the images directly in `design/forms/`.
+Save each form as one image in `design/forms/`, named after it (`juno.png`, `hourglass-rendering.jpg`); VoiceIt shows each form as a small image under the form panel, and clicking one shows it with the behaviour script being played. Keep sketches and earlier renders in `design/forms/process/`; VoiceIt only lists the images directly in `design/forms/`.
 
 ## Prompts
 
