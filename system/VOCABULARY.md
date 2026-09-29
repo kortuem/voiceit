@@ -110,7 +110,7 @@ effect: one short tick; confirms a touch
 
 ## Voices
 
-The product has one voice from this catalogue, named in the front matter of each behaviour (`voice: Ash`). People in the script get the other voices automatically. The catalogue describes each voice by its sound; any character can use any voice.
+The product has one voice from this catalogue, named in the front matter of each behaviour (`voice: Ash`). People in the script get the other voices. To choose a person's voice, end the brackets in the `people` line with `voice low`, `voice high` or a voice's name: `Joost (patient, voice low), Eva (his daughter, voice high), Samira (night nurse, voice Noor)`. `voice low` takes a free voice of range low or mid-low, `voice high` one of the others; when all of them are taken, a voice is shared, but never one from the other register. People without a voice get the free voices in the order they first speak. The catalogue describes each voice by its sound; any character can use any voice.
 
 `range` places the voice from low to high; `pitch` and `rate` are what VoiceIt uses with browser voices (1 is the browser's normal). Premium, Enhanced and Natural voices keep their own pitch, because shifting makes them sound artificial; for them only `rate` applies. `pitch` shifts only the basic voices.
 
@@ -128,6 +128,14 @@ sound: mid-low, brisk
 range: mid-low
 pitch: 1
 rate: 1.08
+```
+
+```voice
+name: Rowan
+sound: mid-low, warm
+range: mid-low
+pitch: 0.9
+rate: 0.97
 ```
 
 ```voice

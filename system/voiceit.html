@@ -217,6 +217,7 @@ body.watching .wprog:focus-visible{outline:2px solid var(--ink);outline-offset:2
 .smeta{font-size:13px;color:var(--gray);margin:0 0 var(--s2)}
 .smeta b{color:var(--ink);font-weight:600}
 .smeta p{margin:0 0 var(--s1)}
+.smeta .sv{color:var(--faint)}
 .smeta p.notes{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .transcript{list-style:none;margin:0;padding:0;font-family:var(--script);font-size:13px;line-height:1.45;letter-spacing:0}
 .transcript li{padding:3px var(--s2) 3px var(--s3);border-left:3px solid transparent;cursor:pointer}
@@ -246,6 +247,7 @@ body.watching .wprog:focus-visible{outline:2px solid var(--ink);outline-offset:2
 .vtable{width:100%;border-collapse:collapse;font-size:13px;margin:0 0 var(--s3)}
 .vtable th,.vtable td{text-align:left;vertical-align:top;padding:var(--s1) var(--s2) var(--s1) 0;border-bottom:1px solid var(--hairline-2)}
 .vtable th{font-weight:600;color:var(--gray)}
+.vtable select{font:inherit;font-size:13px;max-width:100%}
 .vtable code{font-family:var(--script);font-size:12.5px;letter-spacing:0}
 .swatch{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px;box-shadow:inset 0 0 0 1px var(--hairline)}
 .about .file{margin-top:var(--s1)}
@@ -468,9 +470,9 @@ body.watching .wprog:focus-visible{outline:2px solid var(--ink);outline-offset:2
       <h2>This laptop</h2>
       <ul id="setupChecks" class="checks"></ul>
       <h3>Voices</h3>
-      <p>VoiceIt uses the voices your laptop has. The six voices of the catalogue are matched to them as well as possible, so they sound different on every laptop. Play them to hear what yours can do. The sounds (chime, alert, click) are made by VoiceIt itself and sound the same everywhere.</p>
+      <p>VoiceIt uses the voices your laptop has. The voices of the catalogue are matched to them as well as possible, so they sound different on every laptop. Play them to hear what yours can do. VoiceIt guesses from their names which voices are low and which are high; if a voice does not fit its description (a man's voice for a high voice, say), choose another laptop voice for it in the table. This browser remembers the choice. The sounds (chime, alert, click) are made by VoiceIt itself and sound the same everywhere.</p>
       <p><b>Better voices (optional).</b> Mac: System Settings › Accessibility › Spoken Content › System voice › Manage Voices…, then download a few English voices marked Premium or Enhanced (for example Jamie, Serena, Karen, Ava, Daniel), and restart the browser. Windows: use Microsoft Edge, which offers natural-sounding voices (names ending in “Natural”); more voices can be added under Settings › Time &amp; language › Speech. VoiceIt uses the best voices it finds by itself.</p>
-      <p><button class="btn" id="voiceTest" type="button">Play the six voices</button> <button class="btn" id="soundTest" type="button">Play the sounds</button></p>
+      <p><button class="btn" id="voiceTest" type="button">Play the voices</button> <button class="btn" id="soundTest" type="button">Play the sounds</button></p>
       <table class="vtable" id="voiceMap"></table>
     </section>
   </section>
@@ -499,8 +501,8 @@ const lightColour = name => (vocab.light[name] || {}).colour || '#F4F4EF';
 // higher-pitched ones, so that the catalogue's range can be matched to what a laptop has.
 const hasSpeech = 'speechSynthesis' in window;
 let sysVoices = [];
-const LOWER_NAMES = /(daniel|alex\b|fred|aaron|arthur|\bmale\b|guy|ryan|thomas|oliver|george|david|mark|james|gordon|rishi|reed|eddy|ralph|bruce|tom\b|evan|nathan|lee\b|oskar|xander|jamie)/i;
-const HIGHER_NAMES = /(samantha|karen|moira|tessa|female|victoria|fiona|serena|zira|susan|hazel|kate|libby|sonia|aria|jenny|allison|ava|nicky|zoe|martha|catherine|emma|sandy|shelley|flo\b|kathy|joana|amelie|anna|claire|ellen|natasha|veena|salli|joanna|kimberly|ivy|amy|stephanie|isha|matilda|joelle|sangeeta|nora|leona)/i;
+const LOWER_NAMES = /\b(daniel|alex|fred|aaron|arthur|guy|ryan|thomas|oliver|george|david|davis|mark|james|gordon|rishi|reed|eddy|ralph|bruce|tom|evan|nathan|lee|oskar|xander|jamie|junior|rocko|grandpa|andrew|brian|christopher|eric|roger|steffan|william|liam|connor|mitchell|prabhat|jason|tony|brandon|elliot|luke|ken|darren|duncan|neil|ravi|hemant|sean|richard|noah|jacob|kai)\b/i;
+const HIGHER_NAMES = /\b(samantha|karen|moira|tessa|victoria|fiona|serena|zira|susan|hazel|kate|libby|sonia|aria|jenny|allison|ava|nicky|zoe|martha|catherine|emma|sandy|shelley|flo|kathy|joana|amelie|anna|claire|ellen|natasha|veena|salli|joanna|kimberly|ivy|amy|stephanie|isha|matilda|joelle|sangeeta|nora|leona|grandma|michelle|ana|maisie|clara|emily|molly|neerja|leah|luna|heera|linda|heather|eva|jane|nancy|sara|amber|ashley|cora|elizabeth|monica|jessa|abbi|bella|hollie|olivia|sonia|yan)\b/i;
 // macOS also lists novelty voices (Albert, Bubbles, Zarvox …): never use them for a person or the product
 const NOVELTY_NAMES = /^(albert|bad news|bahh|bells|boing|bubbles|cellos|deranged|good news|hysterical|jester|organ|pipe organ|superstar|trinoids|whisper|wobble|zarvox)\b/i;
 // better voices first: premium, natural (Edge) and enhanced voices, then the rest; the older, more robotic macOS voices last
@@ -517,14 +519,28 @@ const voiceOf = who => vocab.voice[castMap.get(who)] || vocab.voice[VoiceIt.DEFA
 // Premium, Natural and Enhanced voices keep their own pitch: shifting makes them sound artificial.
 // Only basic voices are shifted, which also helps tell them apart when a laptop has few voices.
 const pitchFor = (sys, p) => sys && voiceRank(sys) <= 1 ? 1 : Math.max(.1, Math.min(2, p));
+// A laptop voice's register: from "Male" or "Female" in its name, else from the lists of names; '' when not recognised.
+// Browsers give no gender or pitch, so this is a guess; the Setup tab lets each laptop correct it.
+const registerOf = v => /female/i.test(v.name) ? 'higher' : /male/i.test(v.name) ? 'lower'
+  : HIGHER_NAMES.test(v.name) || /^google us english$/i.test(v.name) ? 'higher' : LOWER_NAMES.test(v.name) ? 'lower' : '';
+// Laptop voices chosen by hand in the Setup tab (catalogue name -> laptop voice name), kept in this browser only.
+let voiceChoice = {};
+try{ voiceChoice = JSON.parse(localStorage.getItem('voiceit.voices') || '{}') || {}; }catch(e){ voiceChoice = {}; }
+function saveVoiceChoice(){ try{ localStorage.setItem('voiceit.voices', JSON.stringify(voiceChoice)); }catch(e){} }
 function sysVoiceFor(catName){
+  if(!sysVoices.length) return null;
+  const chosen = voiceChoice[catName] && sysVoices.find(v => v.name === voiceChoice[catName]);
+  return chosen || autoVoiceFor(catName);
+}
+// A free guess: a recognised voice of the same register; if the laptop has none, an unrecognised one, then any.
+function autoVoiceFor(catName){
   if(!sysVoices.length) return null;
   const c = vocab.voice[catName];
   const isLower = x => /^(low|mid-low)$/.test((x&&x.range)||''), lower = isLower(c);
   // position among the catalogue voices of the same register, so each register starts with the best voice
   const idx = Object.keys(vocab.voice).filter(k => isLower(vocab.voice[k]) === lower).indexOf(catName);
-  const pool = sysVoices.filter(v => lower ? LOWER_NAMES.test(v.name) : HIGHER_NAMES.test(v.name));
-  const list = pool.length ? pool : sysVoices;
+  const pool = sysVoices.filter(v => registerOf(v) === (lower ? 'lower' : 'higher')), unknown = sysVoices.filter(v => !registerOf(v));
+  const list = pool.length ? pool : unknown.length ? unknown : sysVoices;
   return list[Math.max(0,idx) % list.length];
 }
 
@@ -790,7 +806,7 @@ function summarise(){
   summary={};
   Object.entries(data.behaviours).forEach(([k,b])=>{
     const r=VoiceIt.validateBehaviour(b.text, vocab);
-    const s=VoiceIt.schedule(r.parsed.lines, VoiceIt.cast(r.parsed.lines, r.parsed.meta.voice, vocab), vocab);
+    const s=VoiceIt.schedule(r.parsed.lines, VoiceIt.cast(r.parsed.lines, r.parsed.meta.voice, vocab, VoiceIt.parsePeople(r.parsed.meta.people)), vocab);
     summary[k]={r, s:r.parsed.lines.length?s:{ev:[],total:1}};
   });
 }
@@ -846,7 +862,7 @@ function reparse(){
   stop();
   const b=current(), text=b?b.text:'';
   const r = VoiceIt.validateBehaviour(text, vocab);
-  castMap = VoiceIt.cast(r.parsed.lines, r.parsed.meta.voice, vocab);
+  castMap = VoiceIt.cast(r.parsed.lines, r.parsed.meta.voice, vocab, VoiceIt.parsePeople(r.parsed.meta.people));
   sched = VoiceIt.schedule(r.parsed.lines, castMap, vocab);
   if(!r.parsed.lines.length) sched = {ev:[], total:1};
   people = VoiceIt.parsePeople(r.parsed.meta.people);
@@ -867,13 +883,15 @@ $('#fstrip').addEventListener('click',e=>{ const c=e.target.closest('.fchip'); i
   document.querySelectorAll('.fchip').forEach(x=>x.setAttribute('aria-checked', x.dataset.f===cur.f)); writeHash(); });
 
 /* ---------- Script: the file as a transcript that follows playback ---------- */
+// a catalogue voice with the laptop voice that plays it: "Theo (Lee (Premium))"
+const voiceLabel = n => { const sv=sysVoiceFor(n); return esc(n)+(sv?` <span class="sv">(${esc(sv.name)})</span>`:''); };
 function renderTranscript(text, r){
   const b=current();
   if(!b){ $('#scriptMeta').innerHTML=''; $('#transcript').innerHTML=''; return; }
   const m=r.parsed.meta, ppl=VoiceIt.parsePeople(m.people);
   $('#scriptMeta').innerHTML =
-    `<p><b>${esc(m.character||b.character)}</b>${m.note?` · ${esc(m.note)}`:''}${m.voice?` · voice ${esc(m.voice)}`:''}</p>`+
-    (ppl.length?`<p>${ppl.map(p=>`${esc(p.name)}${p.role?` (${esc(p.role)})`:''}`).join(', ')}</p>`:'')+
+    `<p><b>${esc(m.character||b.character)}</b>${m.note?` · ${esc(m.note)}`:''}${m.voice?` · voice ${voiceLabel(castMap.get('DEVICE'))}`:''}</p>`+
+    (ppl.length?`<p>${ppl.map(p=>`${esc(p.name)}${p.role?` (${esc(p.role)})`:''}${castMap.get(p.key)?` · ${voiceLabel(castMap.get(p.key))}`:''}`).join(', ')}</p>`:'')+
     (b.notes?`<p class="notes" title="${esc(b.notes)}">${esc(b.notes)}</p>`:'');
   const probs={}; [...r.errors,...r.warnings].forEach(p=>{ (probs[p.ln] ||= []).push(p.msg); });
   const byLn={}; r.parsed.lines.forEach(l=>{ byLn[l.ln]=l; });
@@ -925,24 +943,35 @@ function renderVocab(){
 function drawSetup(){
   const ok=(yes,text,hint)=>`<li class="${yes?'ok':'no'}"><b>${yes?'Yes':'Not yet'}</b> · ${esc(text)}${!yes&&hint?`<br><span class="hint">${esc(hint)}</span>`:''}</li>`;
   const nb=Object.keys(data.behaviours).length, nf=Object.keys(data.forms).length;
+  const nLow=sysVoices.filter(x=>registerOf(x)==='lower').length, nHigh=sysVoices.filter(x=>registerOf(x)==='higher').length;
   $('#setupChecks').innerHTML =
     ok(live, 'VoiceIt was started with node system/bin/preview.', hosted ? 'This is VoiceIt online: fine for playing. Your agent needs Node to run the check (step 5).' : 'You opened the page directly. That works, but see step 5, or “Without Node”.')+
     ok(!!vocab, 'The vocabulary is loaded.', 'Start VoiceIt with the preview, or open the voiceit folder.')+
     ok(nb>0, `${plural(nb,'behaviour')} and ${plural(nf,'form')} found.`, 'No behaviours yet: start with the preview, or open the voiceit folder.')+
-    ok(hasSpeech && sysVoices.length>0, hasSpeech ? `${plural(sysVoices.length,'voice')} available in this browser.` : 'This browser cannot speak.', 'No voices found. Try another browser (Edge on Windows, Safari or Chrome on a Mac).');
+    ok(hasSpeech && sysVoices.length>0, hasSpeech ? `${plural(sysVoices.length,'voice')} available in this browser.` : 'This browser cannot speak.', 'No voices found. Try another browser (Edge on Windows, Safari or Chrome on a Mac).')+
+    (sysVoices.length ? ok(nLow>0 && nHigh>0, `${plural(nLow,'lower voice')} and ${plural(nHigh,'higher voice')} recognised.`, 'VoiceIt cannot tell all low from high voices here. Listen to each voice below and choose a fitting laptop voice where needed.') : '');
   if(!vocab){ $('#voiceMap').innerHTML=''; return; }
-  $('#voiceMap').innerHTML = '<thead><tr><th>Voice</th><th>Sound</th><th>Played with, on this laptop</th></tr></thead><tbody>'+
-    Object.values(vocab.voice).map(v=>{ const s=sysVoiceFor(v.name); return `<tr><td>${esc(v.name)}</td><td>${esc(v.sound||'')}</td><td>${s?esc(s.name):'(no voice)'}</td></tr>`; }).join('')+'</tbody>';
+  const groups=[['lower','Lower voices'],['higher','Higher voices'],['','Not recognised']];
+  $('#voiceMap').innerHTML = '<thead><tr><th>Voice</th><th>Sound</th><th>Played with, on this laptop</th><th></th></tr></thead><tbody>'+
+    Object.values(vocab.voice).map(v=>{ const a=autoVoiceFor(v.name), ch=sysVoices.some(x=>x.name===voiceChoice[v.name]) ? voiceChoice[v.name] : '';
+      const opt=(val,label)=>`<option value="${esc(val)}"${val===ch?' selected':''}>${esc(label)}</option>`;
+      const sel=sysVoices.length ? `<select data-cat="${esc(v.name)}" aria-label="Laptop voice for ${esc(v.name)}">${opt('', `Automatic: ${a?a.name:'none'}`)}`+
+        groups.map(([r,label])=>{ const vs=sysVoices.filter(x=>registerOf(x)===r); return vs.length?`<optgroup label="${label}">${vs.map(x=>opt(x.name,x.name)).join('')}</optgroup>`:''; }).join('')+'</select>' : '(no voice)';
+      return `<tr><td>${esc(v.name)}</td><td>${esc(v.sound||'')}</td><td>${sel}</td><td>${sysVoices.length?`<button class="btn small" type="button" data-hear="${esc(v.name)}" aria-label="Hear ${esc(v.name)}">▶</button>`:''}</td></tr>`; }).join('')+'</tbody>';
 }
+$('#voiceMap').addEventListener('change',e=>{ const c=e.target.dataset.cat; if(!c) return;
+  if(e.target.value) voiceChoice[c]=e.target.value; else delete voiceChoice[c];
+  saveVoiceChoice(); drawSetup(); if(current()) reparse(); hearVoice(c); });
+$('#voiceMap').addEventListener('click',e=>{ const b=e.target.closest('[data-hear]'); if(b){ stop(); speechSynthesis.cancel(); hearVoice(b.dataset.hear); } });
+function hearVoice(name){ const v=vocab && vocab.voice[name]; if(!v||!hasSpeech) return Promise.resolve();
+  return new Promise(res=>{ const u=new SpeechSynthesisUtterance(`This is ${v.name}. ${v.sound}.`); const s=sysVoiceFor(v.name); if(s) u.voice=s;
+    u.pitch=pitchFor(s, v.pitch); u.rate=v.rate; let done=false; const fin=()=>{ if(!done){ done=true; res(); } };
+    u.onend=fin; u.onerror=fin; setTimeout(fin,6000); try{ speechSynthesis.speak(u); }catch(e){ fin(); } }); }
 if(hasSpeech){ try{ speechSynthesis.addEventListener('voiceschanged',()=>{ if(cur.tab==='setup') drawSetup(); }); }catch(e){} }
 $('#voiceTest').addEventListener('click',async()=>{
   if(!vocab||!hasSpeech) return;
   stop(); const btn=$('#voiceTest'); btn.disabled=true;
-  for(const v of Object.values(vocab.voice)){
-    await new Promise(res=>{ const u=new SpeechSynthesisUtterance(`This is ${v.name}. ${v.sound}.`); const s=sysVoiceFor(v.name); if(s) u.voice=s;
-      u.pitch=pitchFor(s, v.pitch); u.rate=v.rate; let done=false; const fin=()=>{ if(!done){ done=true; res(); } };
-      u.onend=fin; u.onerror=fin; setTimeout(fin,6000); try{ speechSynthesis.speak(u); }catch(e){ fin(); } });
-  }
+  for(const v of Object.values(vocab.voice)) await hearVoice(v.name);
   btn.disabled=false;
 });
 

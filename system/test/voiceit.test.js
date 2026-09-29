@@ -58,8 +58,54 @@ test('a touch must hit an option on the screen', () => {
 test('people: roles are read, and unlisted speakers are reported', () => {
   const r = VoiceIt.validateBehaviour('---\ncharacter: X\nvoice: Ash\npeople: Anna (patient), Daan (her son, 45)\n---\nANNA: Hi.\nBOB: Hello.\n', vocab);
   assert.deepStrictEqual(VoiceIt.parsePeople(r.parsed.meta.people), [
-    {key:'ANNA', name:'Anna', role:'patient'}, {key:'DAAN', name:'Daan', role:'her son, 45'}]);
+    {key:'ANNA', name:'Anna', role:'patient', voice:''}, {key:'DAAN', name:'Daan', role:'her son, 45', voice:''}]);
   assert.strictEqual(lines(r), 'W7');
+});
+
+const low = n => /^(low|mid-low)$/.test(vocab.voice[n].range);
+const castOf = (people, script, voice = 'Ash') => {
+  const r = VoiceIt.validateBehaviour(`---\ncharacter: X\nvoice: ${voice}\npeople: ${people}\n---\n${script}`, vocab);
+  return {r, map: VoiceIt.cast(r.parsed.lines, r.parsed.meta.voice, vocab, VoiceIt.parsePeople(r.parsed.meta.people))};
+};
+
+test('people: a voice at the end of the brackets is read', () => {
+  assert.deepStrictEqual(VoiceIt.parsePeople('Lotte (her granddaughter, 8, voice Wren), Joost (voice low), Eva'), [
+    {key:'LOTTE', name:'Lotte', role:'her granddaughter, 8', voice:'Wren'},
+    {key:'JOOST', name:'Joost', role:'', voice:'low'}, {key:'EVA', name:'Eva', role:'', voice:''}]);
+});
+
+test('voice low and voice high keep to their register, also when voices run out', () => {
+  const men = ['A', 'B', 'C', 'D'], women = ['E', 'F', 'G', 'H', 'I'];
+  const people = men.map(n => `${n} (voice low)`).concat(women.map(n => `${n} (voice high)`)).join(', ');
+  const {r, map} = castOf(people, men.concat(women).map(n => `${n}: Hello.`).join('\n') + '\n');
+  assert.deepStrictEqual(r.errors, []);
+  men.forEach(n => assert.ok(low(map.get(n)), `${n} got ${map.get(n)}`));
+  women.forEach(n => assert.ok(!low(map.get(n)), `${n} got ${map.get(n)}`));
+  // the first two men get the two free low voices, not the product's
+  assert.deepStrictEqual([map.get('A'), map.get('B')].sort(), ['Rowan', 'Theo']);
+});
+
+test('a named voice is used; a silent person uses up no voice', () => {
+  const {map} = castOf('Lotte (voice Wren), Mia (voice high), Bea (voice high)', 'MIA: Hi.\nLOTTE: Hi.\n');
+  assert.strictEqual(map.get('LOTTE'), 'Wren');
+  assert.ok(!map.has('BEA'));
+  assert.ok(!low(map.get('MIA')) && map.get('MIA') !== 'Wren');
+});
+
+test('in the examples, every low or high person gets a voice of that register', () => {
+  const dir = path.join(root, 'examples', 'behaviours');
+  for (const f of fs.readdirSync(dir)) {
+    const p = VoiceIt.parseScript(fs.readFileSync(path.join(dir, f), "utf8"), vocab);
+    const people = VoiceIt.parsePeople(p.meta.people), map = VoiceIt.cast(p.lines, p.meta.voice, vocab, people);
+    people.filter(x => /^(low|high)$/.test(x.voice) && map.has(x.key))
+      .forEach(x => assert.strictEqual(low(map.get(x.key)), x.voice === 'low', `${f}: ${x.name} got ${map.get(x.key)}`));
+  }
+});
+
+test('an unknown voice in the people line is an error on that line', () => {
+  const {r} = castOf('Anna (patient, voice deep)', 'ANNA: Hi.\n');
+  assert.strictEqual(lines(r), 'E4');
+  assert.match(r.errors[0].msg, /voice deep.*Anna.*voice low, voice high/);
 });
 
 test('the product may speak under its character name', () => {

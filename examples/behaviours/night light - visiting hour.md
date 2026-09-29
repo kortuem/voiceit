@@ -2,7 +2,7 @@
 character: Night light
 note: Visiting hour on ward 4
 voice: Ash
-people: Anna (patient), Daan (her son), Lotte (her granddaughter, 8), De Wit (roommate), Okafor (doctor)
+people: Anna (patient, voice high), Daan (her son, voice low), Lotte (her granddaughter, 8, voice Wren), De Wit (roommate, voice high), Okafor (doctor, voice high)
 ---
 # Visiting hour on ward 4. 15:00. Anna Visser, 74, is recovering from pneumonia in a two-bed room.
 # Mrs de Wit in the other bed is resting. Anna's son Daan and granddaughter Lotte, 8, visit.

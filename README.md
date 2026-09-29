@@ -84,7 +84,7 @@ The [tutorial](TUTORIAL.md) takes you through one design session: setting up the
 
 ## Voices and timing
 
-- Voices come from your browser and operating system, so they sound different on every laptop; durations (≈) are estimates. For much better voices, download Premium or Enhanced voices on a Mac, or use Edge on Windows: see step 7 of the [tutorial](TUTORIAL.md#1-set-up).
+- Voices come from your browser and operating system, so they sound different on every laptop; durations (≈) are estimates. A script says only `voice low`, `voice high` or a catalogue voice for each person, so it plays on any laptop. VoiceIt guesses from the names of a laptop's voices which are low and which are high; where it guesses wrong, choose the laptop voice in the Setup tab. For much better voices, download Premium or Enhanced voices on a Mac, or use Edge on Windows: see step 7 of the [tutorial](TUTORIAL.md#1-set-up).
 - Browsers: tested in Chrome on macOS. Not yet tested: Edge, Safari, Firefox, and anything on Windows.
 
 ## Documentation
@@ -108,6 +108,6 @@ The [tutorial](TUTORIAL.md) takes you through one design session: setting up the
 
 ## Status and licence
 
-VoiceIt is in development, for the course IDEM307 at TU Delft. This is version 0.2.9, an early release; what changed from version to version is in [CHANGELOG.md](CHANGELOG.md). Report problems in [GitHub Issues](https://github.com/kortuem/voiceit/issues) (needs a GitHub account) or tell your teacher. For maintainers: `node --test system/test/voiceit.test.js` runs the tests.
+VoiceIt is in development, for the course IDEM307 at TU Delft. This is version 0.3.0, an early release; what changed from version to version is in [CHANGELOG.md](CHANGELOG.md). Report problems in [GitHub Issues](https://github.com/kortuem/voiceit/issues) (needs a GitHub account) or tell your teacher. For maintainers: `node --test system/test/voiceit.test.js` runs the tests.
 
 The code and the example files are under the [MIT licence](LICENSE). The smart speaker photo above is not part of the repository; it is shown from Wikimedia Commons under its own licence, CC BY-SA 4.0. Visual style after Vlak (vlak.dev) by Renn, Noord.

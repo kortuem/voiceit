@@ -41,9 +41,9 @@ You need the **Claude desktop app** (its **Code** tab) or the **Codex** app, sig
    - **Windows:** open the `voiceit` folder in File Explorer, click the address bar, type `cmd`, press Enter.
 
    </details>
-6. **Check the sound.** Open VoiceIt's **Setup** tab and press *Play the six voices*. You hear up to six voices (fewer different ones if your laptop has only a few), and the checks in the same tab all say *Yes*.
+6. **Check the sound.** Open VoiceIt's **Setup** tab and press *Play the voices*. You hear each voice of the catalogue as your laptop plays it (fewer different ones if your laptop has only a few), and the checks in the same tab all say *Yes*. If a voice sounds wrong for its description, a man's voice for a high voice for example, choose another laptop voice for it in the table below the button.
 7. **Better voices (optional, takes a few minutes).** The standard voices sound robotic; better ones make the scripts much easier to judge. VoiceIt picks the best voices it finds by itself.
-   - **Mac:** System Settings › Accessibility › Spoken Content › System voice › Manage Voices…. Under English, download a few voices marked **Premium** or **Enhanced**, for example Jamie, Daniel, Serena, Karen and Ava (low and high voices both help). Restart the browser, then play the six voices again.
+   - **Mac:** System Settings › Accessibility › Spoken Content › System voice › Manage Voices…. Under English, download a few voices marked **Premium** or **Enhanced**, for example Jamie, Daniel, Serena, Karen and Ava (low and high voices both help). Restart the browser, then play the voices again.
    - **Windows:** use **Microsoft Edge**, which offers natural-sounding online voices (their names end in "Natural"). More voices can be added under Settings › Time & language › Speech › Manage voices; not every added voice is available to the browser. (Not yet tested on Windows.)
 
 ## 2. Play an example
@@ -113,7 +113,7 @@ The script column (9) shows the script as it plays. The file itself, which you c
 character: Night light
 note: Night on ward 4
 voice: Ash
-people: Joost (patient), Eva (his daughter, by voice message), Samira (night nurse), Bakker (roommate)
+people: Joost (patient, voice low), Eva (his daughter, by voice message, voice high), Samira (night nurse, voice high), Bakker (roommate, voice low)
 ---
 # Night on ward 4. 23:10. Joost de Vries, 67, lies awake the day after hip surgery, in a two-bed room.
 # Mr Bakker in the next bed is asleep. A voice message from his daughter Eva arrives: can she visit tomorrow at ten?
@@ -129,7 +129,7 @@ SCREEN: word Eva
 DEVICE (quietly): A message from Eva.
 ```
 
-The lines between `---` are facts: the character's name, its voice, a note of your own shown in the list, and the people present. The `#` lines are comments for the reader; they are not played. Then the script: what happens, who says what (the product speaks as `DEVICE`, or under its character's name), and what the product shows (`SCREEN`), lights (`LIGHT`) and sounds (`SOUND`). The notation is in [system/SCREENPLAY.md](system/SCREENPLAY.md); the screen components, light colours, sounds and voices are in [system/VOCABULARY.md](system/VOCABULARY.md) and in VoiceIt's About tab.
+The lines between `---` are facts: the character's name, its voice, a note of your own shown in the list, and the people present, each with a voice (`voice low`, `voice high` or a voice's name; without one, VoiceIt picks a free voice). The `#` lines are comments for the reader; they are not played. Then the script: what happens, who says what (the product speaks as `DEVICE`, or under its character's name), and what the product shows (`SCREEN`), lights (`LIGHT`) and sounds (`SOUND`). The notation is in [system/SCREENPLAY.md](system/SCREENPLAY.md); the screen components, light colours, sounds and voices are in [system/VOCABULARY.md](system/VOCABULARY.md) and in VoiceIt's About tab.
 
 Read your script while it plays. Did the agent add anything you did not ask for? Its report names the decisions it made itself.
 

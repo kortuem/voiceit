@@ -11,7 +11,7 @@ A behaviour lives in `design/behaviours/`, one file each, named after the charac
 character: Night light
 note: Visiting hour on ward 4
 voice: Ash
-people: Anna (patient), Daan (her son), Lotte (her granddaughter, 8), De Wit (roommate), Okafor (doctor)
+people: Anna (patient, voice high), Daan (her son, voice low), Lotte (her granddaughter, 8, voice Wren), De Wit (roommate, voice high), Okafor (doctor, voice high)
 ---
 # Visiting hour on ward 4. 15:00. Anna, 74, is recovering from pneumonia in a two-bed room.
 # Her son Daan and granddaughter Lotte visit. Dr Okafor comes by on her round.
@@ -23,7 +23,7 @@ LIGHT: white dim
 - `character` (required): the character's name. The script's lines, timing, screen, light and sound define how the product behaves; people judge its character when they play the script with a form.
 - `voice` (required): one name from the voice catalogue in `VOCABULARY.md` (Ash, Theo, Sam, Noor, Mira, Wren).
 - `note` (optional): one line of your own, shown under the character's name in VoiceIt's list, for example the scene or the variation being tested. VoiceIt does nothing else with it.
-- `people` (optional but recommended): everyone present, each with their role in brackets. The name is the one used in the script, so `Anna` speaks as `ANNA:`. VoiceIt shows the role next to the name, and gives everyone a lane on the timeline, also those who stay silent. The check warns when someone speaks who is not listed.
+- `people` (optional but recommended): everyone present, each with their role in brackets. The name is the one used in the script, so `Anna` speaks as `ANNA:`. VoiceIt shows the role next to the name, and gives everyone a lane on the timeline, also those who stay silent. The check warns when someone speaks who is not listed. To choose a person's voice, end the brackets with `voice low`, `voice high` or a voice from the catalogue (`voice Wren`); without it, VoiceIt picks a free voice, which may be low or high. See Voices in `VOCABULARY.md`.
 - `#` lines right after the front matter are comments for the reader: the scene and who is present. VoiceIt shows them above the script; they are not played.
 
 ## Lines
@@ -81,7 +81,7 @@ Both scripts use the same scene and the same vocabulary. They differ in what the
 
 `node system/bin/check` reports, with line numbers:
 
-- **errors**: missing front matter, character or voice; a voice that is not in the catalogue; a screen component, light colour or sound that is not in the vocabulary; a pause without a proper number of seconds, such as `(pause)` or `(pause 2,5)` (not played);
+- **errors**: missing front matter, character or voice; a voice that is not in the catalogue, also in the `people` line; a screen component, light colour or sound that is not in the vocabulary; a pause without a proper number of seconds, such as `(pause)` or `(pause 2,5)` (not played);
 - **warnings**: someone who speaks but is not in the `people` line; a line that looks like a speaker but is not in capitals; a TOUCH on an option that is not on the screen at that moment; a choice without options; words after LIGHT that VoiceIt ignores; `(pause 0)`, a pause over 60 seconds, or `(beat)` with words in it; a script with no lines.
 
 Errors must be fixed. Warnings are worth reading: they usually mean the behaviour will not play as intended.

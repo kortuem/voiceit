@@ -9,7 +9,7 @@
 'use strict';
 
 // the version shown by the page and the preview; add a matching entry at the top of CHANGELOG.md
-const VERSION = '0.2.10';
+const VERSION = '0.3.0';
 const RESERVED = ['DEVICE', 'SCREEN', 'LIGHT', 'SOUND', 'TOUCH'];
 const KINDS = ['component', 'light', 'modifier', 'sound', 'voice', 'manner'];
 const NUMERIC = ['pitch', 'rate', 'volume'];
@@ -138,16 +138,30 @@ function parseScript(txt, vocab){
 }
 
 /* ---------- Casting and timing ---------- */
-// DEVICE gets the behaviour's voice; people get the other catalogue voices in order of appearance.
-function cast(lines, deviceVoice, vocab){
+// DEVICE gets the behaviour's voice. People get the voice named in the people line
+// ("voice low", "voice high" or a catalogue name); everyone else gets a free voice, in order of appearance.
+// A free voice of the right register is used first; only when none is left is one reused, never from the other register.
+const isLowVoice = v => !!v && /^(low|mid-low)$/.test(v.range || '');
+function cast(lines, deviceVoice, vocab, people){
   const names = Object.keys(vocab.voice);
   const dv = vocab.voice[deviceVoice] ? deviceVoice : (vocab.voice[DEFAULT_VOICE] ? DEFAULT_VOICE : names[0]);
   const map = new Map([['DEVICE', dv]]);
   const pool = names.filter(n => n !== dv);
+  const uses = n => [...map.values()].filter(x => x === n).length;
+  const pick = cands => cands.find(n => !uses(n)) || [...cands].sort((a, b) => uses(a) - uses(b))[0];
+  const speaks = new Set(lines.filter(l => l.kind === 'speech').map(l => l.who));
+  (people || []).forEach(p => {
+    const v = (p.voice || '').trim(); if (!v || !speaks.has(p.key) || p.key === 'DEVICE') return;
+    const named = names.find(n => n.toLowerCase() === v.toLowerCase());
+    if (named) { map.set(p.key, named); return; }
+    if (/^(low|high)$/i.test(v)) {
+      const low = /^low$/i.test(v), cands = pool.filter(n => isLowVoice(vocab.voice[n]) === low);
+      map.set(p.key, pick(cands.length ? cands : pool));
+    }
+  });
   lines.forEach(l => {
     if (l.kind !== 'speech' || map.has(l.who)) return;
-    const used = [...map.values()];
-    map.set(l.who, pool.find(n => !used.includes(n)) || pool[(map.size - 1) % pool.length]);
+    map.set(l.who, pick(pool));
   });
   return map;
 }
@@ -196,8 +210,9 @@ function comments(text){
   }
   return out.join(' ');
 }
-// people: Joost (patient), Eva (his daughter), Samira (night nurse)
-// Returns [{key:'JOOST', name:'Joost', role:'patient'}]; key is the name as written in the script.
+// people: Joost (patient, voice low), Eva (his daughter, voice high), Samira (night nurse)
+// Returns [{key:'JOOST', name:'Joost', role:'patient', voice:'low'}]; key is the name as written in the script.
+// The voice is the last part of the brackets when it starts with "voice": low, high or a catalogue name.
 function parsePeople(str){
   const out = []; let depth = 0, buf = '';
   // split on commas that are not inside brackets, so a role may contain a comma
@@ -207,7 +222,12 @@ function parsePeople(str){
     if (ch === ',' && !depth) { const t = buf.trim(); buf = '';
       if (!t) continue;
       const m = t.match(/^([^()]+?)\s*(?:\(([^)]*)\))?$/);
-      if (m) out.push({key:m[1].trim().toUpperCase(), name:m[1].trim(), role:(m[2] || '').trim()});
+      if (m) {
+        const parts = (m[2] || '').split(',').map(x => x.trim()).filter(Boolean);
+        const vm = parts.length ? parts[parts.length - 1].match(/^voice\s+(.+)$/i) : null;
+        if (vm) parts.pop();
+        out.push({key:m[1].trim().toUpperCase(), name:m[1].trim(), role:parts.join(', '), voice:vm ? vm[1].trim() : ''});
+      }
       continue; }
     buf += ch;
   }
@@ -224,6 +244,10 @@ function validateBehaviour(text, vocab){
     if (p.meta.voice && !vocab.voice[p.meta.voice]) errors.push({ln:metaLine(text, 'voice'), msg:`“${p.meta.voice}” is not in the voice catalogue. Choose one of ${orList(voices)}.`});
   }
   const people = parsePeople(p.meta.people);
+  people.forEach(x => {
+    if (x.voice && !/^(low|high)$/i.test(x.voice) && !voices.some(n => n.toLowerCase() === x.voice.toLowerCase()))
+      errors.push({ln:metaLine(text, 'people'), msg:`“voice ${x.voice}” for ${x.name}: write voice low, voice high, or a voice from the catalogue (${orList(voices)}).`});
+  });
   if (people.length) {
     const known = people.map(x => x.key), seen = new Set();
     p.lines.forEach(l => {

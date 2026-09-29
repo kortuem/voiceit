@@ -4,6 +4,13 @@ What changed from one version of VoiceIt to the next, newest first. Versions bel
 
 For maintainers: when releasing, set `VERSION` in `system/voiceit.js`, add an entry here with the same number, and tag the commit. The tests check that the two numbers match.
 
+## 0.3.0 (29 September 2026)
+
+- **Choose a person's voice:** end the brackets in the `people` line with `voice low`, `voice high` or a voice from the catalogue: `Joost (patient, voice low), Lotte (her granddaughter, 8, voice Wren)`. Before, people got the free voices in order, so a man could get a high voice and a woman a low one. `voice low` and `voice high` never cross into the other register, also when voices run out; people who never speak use up no voice. An unknown voice there is an error in the check. The examples now give every speaker a voice.
+- **A seventh voice, Rowan** (mid-low, warm), so that the product and two men can all have different low voices.
+- **Voices on any laptop:** VoiceIt recognises low and high voices by name on Mac, Windows (Edge's Natural voices) and Chrome, and by *Male* or *Female* in a voice's name. Voices it does not recognise are no longer used as a guess for a register when recognised ones exist. The Setup tab says how many low and high voices it recognised, and each catalogue voice now has a menu of this laptop's voices and a ▶ button: where the guess is wrong, choose another voice. The browser remembers the choice; nothing is sent anywhere.
+- The script column shows the voice of the product and of each person, with the laptop voice that plays it.
+
 ## 0.2.10 (29 September 2026)
 
 - **Sounds play in Safari:** the chime, alert and the click of a touch were silent in Safari (reported by a tester), while the voices played. Browsers start sound only from a click or key press, and VoiceIt started its sound engine only when the first sound came up in the script. Now the first click or key press on the page starts it.
