@@ -1,8 +1,10 @@
 # VoiceIt
 
-A rapid prototyping tool for products that listen and speak.
+VoiceIt is a rapid prototyping tool for exploring how products such as smart speakers and voice assistants interact with people. It lets designers write and play scenarios that demonstrate a product’s proposed behaviour before building a working device. A scenario can include conversations involving several people, accompanied by screen messages, light signals and sound effects.
 
-Smart speakers are the typical example: a small product on a table or a shelf that listens, answers, and often has a light and a small screen. Whether such a product works depends on timing, wording, voice and on who else is present. It might give useful advice but interrupt at the wrong moment, speak too formally, or address the wrong person. That is hard to judge on paper. VoiceIt plays such behaviour in the browser, with synthetic voices, screen content, light and sound, so that you can see and hear it.
+Designers describe the interaction they want to explore in everyday language, and an AI coding assistant helps turn it into a script that VoiceIt can play in the browser. They can listen to the dialogue, inspect the sequence of events and revise the wording, voices or timing. An image represents the proposed physical design, allowing the same behaviour to be tried with different forms. All interactions are scripted, so designers can explore specific situations without implementing speech recognition or a live conversational system.
+
+VoiceIt supports early design decisions that are difficult to assess through sketches alone. A smart speaker might offer useful advice but interrupt at the wrong moment, speak too formally or address the wrong person. Playing through these situations helps designers discuss how a product should respond and what role it should take. The tool makes it practical to try several alternatives, evaluate the relationship between appearance and behaviour, and refine a concept before investing in hardware and software development.
 
 ![Three smart speakers on a table: a Google Home, a Google Nest Hub with a screen, and a Google Home Mini](https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Google_Home_with_Home_Hub_and_Home_Mini_on_table.jpg/960px-Google_Home_with_Home_Hub_and_Home_Mini_on_table.jpg)
 
