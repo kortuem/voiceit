@@ -76,7 +76,7 @@ The [tutorial](TUTORIAL.md) takes you through one design session: setting up the
 
 ## Voices and timing
 
-- Voices come from your browser and operating system, so they sound different on every laptop. VoiceIt's **Setup** tab plays them.
+- Voices come from your browser and operating system, so they sound different on every laptop. VoiceIt's **Setup** tab plays them. For much better voices, download Premium or Enhanced voices on a Mac, or use Edge on Windows: see step 7 of the [tutorial](TUTORIAL.md#1-set-up).
 - Durations (≈) and the timeline are estimates; real speech may take a little longer.
 - A manner in brackets, such as `(quietly, hesitating)`, is written for a performer. Browser voices follow only words about volume, pitch and speed (quiet, low, loud, slow, fast; see [the vocabulary](system/VOCABULARY.md#manner)) and ignore the rest.
 - Browsers: tested in Chrome on macOS. Not yet tested: Edge, Safari, Firefox, and anything on Windows.
@@ -91,6 +91,6 @@ Without Node, open `system/voiceit.html` in your browser and choose the `voiceit
 
 ## Status and licence
 
-VoiceIt is in development, for the course IDEM307 at TU Delft. This is version 0.2.2, an early release; what changed from version to version is in [CHANGELOG.md](CHANGELOG.md). Report problems in [GitHub Issues](https://github.com/kortuem/voiceit/issues) (needs a GitHub account) or tell your teacher. For maintainers: `node --test system/test/voiceit.test.js` runs the tests.
+VoiceIt is in development, for the course IDEM307 at TU Delft. This is version 0.2.3, an early release; what changed from version to version is in [CHANGELOG.md](CHANGELOG.md). Report problems in [GitHub Issues](https://github.com/kortuem/voiceit/issues) (needs a GitHub account) or tell your teacher. For maintainers: `node --test system/test/voiceit.test.js` runs the tests.
 
 The code and the example files are under the [MIT licence](LICENSE). The smart speaker photo above is not part of the repository; it is shown from Wikimedia Commons under its own licence, CC BY-SA 4.0. Visual style after Vlak (vlak.dev) by Renn, Noord.

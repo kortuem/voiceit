@@ -466,6 +466,7 @@ body.watching .wprog:focus-visible{outline:2px solid var(--ink);outline-offset:2
       <ul id="setupChecks" class="checks"></ul>
       <h3>Voices</h3>
       <p>VoiceIt uses the voices your laptop has. The six voices of the catalogue are matched to them as well as possible, so they sound different on every laptop. Play them to hear what yours can do.</p>
+      <p><b>Better voices (optional).</b> Mac: System Settings › Accessibility › Spoken Content › System voice › Manage Voices…, then download a few English voices marked Premium or Enhanced (for example Jamie, Serena, Karen, Ava, Daniel), and restart the browser. Windows: use Microsoft Edge, which offers natural-sounding voices (names ending in “Natural”); more voices can be added under Settings › Time &amp; language › Speech. VoiceIt uses the best voices it finds by itself.</p>
       <p><button class="btn" id="voiceTest" type="button">Play the six voices</button></p>
       <table class="vtable" id="voiceMap"></table>
     </section>
@@ -499,8 +500,8 @@ const LOWER_NAMES = /(daniel|alex\b|fred|aaron|arthur|\bmale\b|guy|ryan|thomas|o
 const HIGHER_NAMES = /(samantha|karen|moira|tessa|female|victoria|fiona|serena|zira|susan|hazel|kate|libby|sonia|aria|jenny|allison|ava|nicky|zoe|martha|catherine|emma|sandy|shelley|flo\b|kathy|joana|amelie|anna|claire|ellen|natasha|veena|salli|joanna|kimberly|ivy|amy|stephanie)/i;
 // macOS also lists novelty voices (Albert, Bubbles, Zarvox …): never use them for a person or the product
 const NOVELTY_NAMES = /^(albert|bad news|bahh|bells|boing|bubbles|cellos|deranged|good news|hysterical|jester|organ|pipe organ|superstar|trinoids|whisper|wobble|zarvox)\b/i;
-// better voices first: premium and enhanced system voices, then the rest; the older, more robotic macOS voices last
-const voiceRank = v => /premium/i.test(v.name) ? 0 : /enhanced/i.test(v.name) ? 1
+// better voices first: premium, natural (Edge) and enhanced voices, then the rest; the older, more robotic macOS voices last
+const voiceRank = v => /premium|natural/i.test(v.name) ? 0 : /enhanced/i.test(v.name) ? 1
   : /^(eddy|flo|grandma|grandpa|reed|rocko|sandy|shelley)\b/i.test(v.name) ? 3 : /^(fred|junior|kathy|ralph)\b/i.test(v.name) ? 4 : 2;
 function loadVoices(){ try{
   const all=(speechSynthesis.getVoices()||[]).filter(v=>!NOVELTY_NAMES.test(v.name));

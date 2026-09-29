@@ -40,6 +40,9 @@ You need the **Claude desktop app** (its **Code** tab) or the **Codex** app, sig
 
    </details>
 6. **Check the sound.** Open VoiceIt's **Setup** tab and press *Play the six voices*. You hear up to six voices (fewer different ones if your laptop has only a few), and the checks in the same tab all say *Yes*.
+7. **Better voices (optional, takes a few minutes).** The standard voices sound robotic; better ones make the scripts much easier to judge. VoiceIt picks the best voices it finds by itself.
+   - **Mac:** System Settings › Accessibility › Spoken Content › System voice › Manage Voices…. Under English, download a few voices marked **Premium** or **Enhanced**, for example Jamie, Daniel, Serena, Karen and Ava (low and high voices both help). Restart the browser, then play the six voices again.
+   - **Windows:** use **Microsoft Edge**, which offers natural-sounding online voices (their names end in "Natural"). More voices can be added under Settings › Time & language › Speech › Manage voices; not every added voice is available to the browser. (Not yet tested on Windows.)
 
 ## 2. Play an example
 

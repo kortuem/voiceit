@@ -4,6 +4,11 @@ What changed from one version of VoiceIt to the next, newest first. Versions bel
 
 For maintainers: when releasing, set `VERSION` in `system/voiceit.js`, add an entry here with the same number, and tag the commit. The tests check that the two numbers match.
 
+## 0.2.3 (29 September 2026)
+
+- **Better voices, optional setup**: the tutorial (step 7), the README and the Setup tab explain how to get much better voices: Premium or Enhanced voices on a Mac, Edge's natural voices on Windows.
+- Edge's natural voices are preferred like premium ones.
+
 ## 0.2.2 (29 September 2026)
 
 - VoiceIt recognises two more Mac voices by their register: Jamie (low, about 99 Hz) and Stephanie (high, about 203 Hz), measured from their speech. With Jamie (Premium) installed, the product's low voice uses it.
