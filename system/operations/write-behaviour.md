@@ -19,7 +19,7 @@ The group writes and directs; you write the script down. There is no separate ch
    - roughly one to two minutes when played.
 4. **Write only from the group's description of this script.** Do not read the character's other behaviours unless the group asks you to: noticing whether the character stays the same is their work. If they ask for a coherence check afterwards, compare the scripts and say where they differ.
 5. **Check before overwriting.** If a file with that name exists, overwrite it only if the group has just asked for it to be written again and it has not changed since you wrote it in this conversation. Otherwise, show what is there and ask.
-6. **Run** `node system/bin/check "design/behaviours/<file>.md"` (with the quotes: file names contain spaces) and fix all errors. Read the warnings and fix them unless they are intended.
+6. **Run** `node system/bin/check "design/behaviours/<file>.md"` (with the quotes: file names contain spaces) and fix all errors. Read the warnings and fix them unless they are intended. A warning that people share a voice is the group's decision: do not drop people or change the product's voice on your own; name it in the report with the two options the warning gives.
 7. **Report** in two or three sentences: the check result and the playing time, the moment that most clearly expresses the intended character, and any decisions you made that the group did not specify. Remind them that the script appears at the top of VoiceIt's list within a few seconds, to click it and press Play (`node system/bin/preview` if VoiceIt is not running).
 
 ## Never

@@ -4,6 +4,11 @@ What changed from one version of VoiceIt to the next, newest first. Versions bel
 
 For maintainers: when releasing, set `VERSION` in `system/voiceit.js`, add an entry here with the same number, and tag the commit. The tests check that the two numbers match.
 
+## 0.3.1 (29 September 2026)
+
+- **When people share a voice, VoiceIt says why and what to do.** The check warns when two speakers have the same voice because the catalogue has too few (three low and four high voices, one of them the product's), and suggests letting fewer people speak or giving the product a voice of the other register. The agent reports this to the group instead of dropping people itself.
+- **When a laptop has too few voices,** the script column says which people sound alike on this laptop, and the Setup tab says how many low and high voices the laptop has against the catalogue's, with where to download more.
+
 ## 0.3.0 (29 September 2026)
 
 - **Choose a person's voice:** end the brackets in the `people` line with `voice low`, `voice high` or a voice from the catalogue: `Joost (patient, voice low), Lotte (her granddaughter, 8, voice Wren)`. Before, people got the free voices in order, so a man could get a high voice and a woman a low one. `voice low` and `voice high` never cross into the other register, also when voices run out; people who never speak use up no voice. An unknown voice there is an error in the check. The examples now give every speaker a voice.

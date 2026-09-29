@@ -102,6 +102,17 @@ test('in the examples, every low or high person gets a voice of that register', 
   }
 });
 
+test('people who share a voice get a warning that says how to resolve it', () => {
+  const three = castOf('Joost (voice low), Bakker (voice low), Piet (voice low)', 'JOOST: Hi.\nBAKKER: Hi.\nPIET: Hi.\n').r;
+  assert.strictEqual(lines(three), 'W4');
+  assert.match(three.warnings[0].msg, /share the voice .*only 2 low voices .*Let fewer people speak.*not low/);
+  const seven = castOf('', 'A: 1.\nB: 2.\nC: 3.\nD: 4.\nE: 5.\nF: 6.\nG: 7.\n').r;
+  assert.match(seven.warnings.map(w => w.msg).join(' '), /A and G share the voice .*catalogue has 7 voices/);
+  const product = castOf('Lotte (voice Ash)', 'DEVICE: Hi.\nLOTTE: Hi.\n').r;
+  assert.match(product.warnings[0].msg, /^The product and Lotte have the same voice, Ash.*Give Lotte another voice/);
+  assert.strictEqual(lines(castOf('Joost (voice low), Bakker (voice low)', 'JOOST: Hi.\nBAKKER: Hi.\n').r), '');
+});
+
 test('an unknown voice in the people line is an error on that line', () => {
   const {r} = castOf('Anna (patient, voice deep)', 'ANNA: Hi.\n');
   assert.strictEqual(lines(r), 'E4');

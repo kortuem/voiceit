@@ -9,7 +9,7 @@
 'use strict';
 
 // the version shown by the page and the preview; add a matching entry at the top of CHANGELOG.md
-const VERSION = '0.3.0';
+const VERSION = '0.3.1';
 const RESERVED = ['DEVICE', 'SCREEN', 'LIGHT', 'SOUND', 'TOUCH'];
 const KINDS = ['component', 'light', 'modifier', 'sound', 'voice', 'manner'];
 const NUMERIC = ['pitch', 'rate', 'volume'];
@@ -254,6 +254,28 @@ function validateBehaviour(text, vocab){
       if (l.kind !== 'speech' || l.device || known.includes(l.who) || seen.has(l.who)) return;
       seen.add(l.who);
       warnings.push({ln:l.ln, msg:`${l.who} speaks but is not in the people line (${people.map(x => x.name).join(', ')}).`});
+    });
+  }
+  // Two speakers with one voice: listeners cannot tell them apart. Say who, why, and what to do about it.
+  if (p.meta.voice && vocab.voice[p.meta.voice]) {
+    const castMap = cast(p.lines, p.meta.voice, vocab, people), product = castMap.get('DEVICE'), byVoice = new Map();
+    castMap.forEach((v, who) => byVoice.set(v, (byVoice.get(v) || []).concat(who)));
+    const nameOf = who => who === 'DEVICE' ? 'the product' : (people.find(x => x.key === who) || {name:who}).name;
+    const lineOf = who => p.meta.people ? metaLine(text, 'people') : (p.lines.find(l => l.kind === 'speech' && l.who === who) || {ln:1}).ln;
+    byVoice.forEach((whos, v) => {
+      if (whos.length < 2) return;
+      const names = whos.map(nameOf), list = names.slice(0, -1).join(', ') + ' and ' + names[names.length - 1];
+      const low = isLowVoice(vocab.voice[v]), reg = low ? 'low' : 'high';
+      const free = voices.filter(n => n !== product && isLowVoice(vocab.voice[n]) === low).length;
+      const named = whos.filter(w => people.some(x => x.key === w && x.voice.toLowerCase() === v.toLowerCase()));
+      const hinted = whos.every(w => people.some(x => x.key === w && /^(low|high)$/i.test(x.voice)));
+      const fewer = 'Let fewer people speak (a small part can be a plain line, such as “The nurse says she is on her way.”)';
+      const msg = named.length > 1 || whos.includes('DEVICE')
+        ? `${list} have the same voice, ${v}, so listeners cannot tell them apart. Give ${whos.includes('DEVICE') ? names[1] : names[names.length - 1]} another voice in the people line.`
+        : hinted
+        ? `${list} share the voice ${v}: with the product on ${product}, only ${free} ${reg} ${free === 1 ? 'voice is' : 'voices are'} left for people. ${fewer}, or give the product a voice that is not ${reg}.`
+        : `${list} share the voice ${v}: the catalogue has ${voices.length} voices, and the product uses one. ${fewer}.`;
+      warnings.push({ln:lineOf(whos[whos.length - 1]), msg:msg[0].toUpperCase() + msg.slice(1)});
     });
   }
   if (!p.lines.length) warnings.push({ln:1, msg:'The script has no lines yet.'});

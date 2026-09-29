@@ -218,6 +218,7 @@ body.watching .wprog:focus-visible{outline:2px solid var(--ink);outline-offset:2
 .smeta b{color:var(--ink);font-weight:600}
 .smeta p{margin:0 0 var(--s1)}
 .smeta .sv{color:var(--faint)}
+.smeta p.alike{color:var(--ink)}
 .smeta p.notes{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .transcript{list-style:none;margin:0;padding:0;font-family:var(--script);font-size:13px;line-height:1.45;letter-spacing:0}
 .transcript li{padding:3px var(--s2) 3px var(--s3);border-left:3px solid transparent;cursor:pointer}
@@ -885,12 +886,23 @@ $('#fstrip').addEventListener('click',e=>{ const c=e.target.closest('.fchip'); i
 /* ---------- Script: the file as a transcript that follows playback ---------- */
 // a catalogue voice with the laptop voice that plays it: "Theo (Lee (Premium))"
 const voiceLabel = n => { const sv=sysVoiceFor(n); return esc(n)+(sv?` <span class="sv">(${esc(sv.name)})</span>`:''); };
+// People the script tells apart, but this laptop plays with one voice: it has too few voices.
+function alike(){
+  const byLaptop=new Map(), names=VoiceIt.parsePeople(current()&&current().meta.people);
+  castMap.forEach((cat,who)=>{ const s=sysVoiceFor(cat); if(!s) return; const e=byLaptop.get(s.name)||{cats:new Set(),who:[]}; e.cats.add(cat);
+    e.who.push(who==='DEVICE'?'the product':((names.find(x=>x.key===who)||{}).name||who)); byLaptop.set(s.name,e); });
+  const same=[...byLaptop].filter(([,e])=>e.cats.size>1);
+  if(!same.length) return '';
+  const [lap,e]=same[0], list=e.who.slice(0,-1).join(', ')+' and '+e.who[e.who.length-1];
+  return `<p class="alike">On this laptop, ${esc(list)} ${e.who.length===2?'both':'all'} sound like ${esc(lap)}: it has too few voices. Download more voices, or choose voices in the <a href="#setup">Setup tab</a>.</p>`;
+}
 function renderTranscript(text, r){
   const b=current();
   if(!b){ $('#scriptMeta').innerHTML=''; $('#transcript').innerHTML=''; return; }
   const m=r.parsed.meta, ppl=VoiceIt.parsePeople(m.people);
   $('#scriptMeta').innerHTML =
     `<p><b>${esc(m.character||b.character)}</b>${m.note?` · ${esc(m.note)}`:''}${m.voice?` · voice ${voiceLabel(castMap.get('DEVICE'))}`:''}</p>`+
+    alike()+
     (ppl.length?`<p>${ppl.map(p=>`${esc(p.name)}${p.role?` (${esc(p.role)})`:''}${castMap.get(p.key)?` · ${voiceLabel(castMap.get(p.key))}`:''}`).join(', ')}</p>`:'')+
     (b.notes?`<p class="notes" title="${esc(b.notes)}">${esc(b.notes)}</p>`:'');
   const probs={}; [...r.errors,...r.warnings].forEach(p=>{ (probs[p.ln] ||= []).push(p.msg); });
@@ -944,12 +956,15 @@ function drawSetup(){
   const ok=(yes,text,hint)=>`<li class="${yes?'ok':'no'}"><b>${yes?'Yes':'Not yet'}</b> · ${esc(text)}${!yes&&hint?`<br><span class="hint">${esc(hint)}</span>`:''}</li>`;
   const nb=Object.keys(data.behaviours).length, nf=Object.keys(data.forms).length;
   const nLow=sysVoices.filter(x=>registerOf(x)==='lower').length, nHigh=sysVoices.filter(x=>registerOf(x)==='higher').length;
+  const catLow=vocab?Object.values(vocab.voice).filter(v=>/^(low|mid-low)$/.test(v.range||'')).length:0, catHigh=vocab?Object.keys(vocab.voice).length-catLow:0;
   $('#setupChecks').innerHTML =
     ok(live, 'VoiceIt was started with node system/bin/preview.', hosted ? 'This is VoiceIt online: fine for playing. Your agent needs Node to run the check (step 5).' : 'You opened the page directly. That works, but see step 5, or “Without Node”.')+
     ok(!!vocab, 'The vocabulary is loaded.', 'Start VoiceIt with the preview, or open the voiceit folder.')+
     ok(nb>0, `${plural(nb,'behaviour')} and ${plural(nf,'form')} found.`, 'No behaviours yet: start with the preview, or open the voiceit folder.')+
     ok(hasSpeech && sysVoices.length>0, hasSpeech ? `${plural(sysVoices.length,'voice')} available in this browser.` : 'This browser cannot speak.', 'No voices found. Try another browser (Edge on Windows, Safari or Chrome on a Mac).')+
-    (sysVoices.length ? ok(nLow>0 && nHigh>0, `${plural(nLow,'lower voice')} and ${plural(nHigh,'higher voice')} recognised.`, 'VoiceIt cannot tell all low from high voices here. Listen to each voice below and choose a fitting laptop voice where needed.') : '');
+    (sysVoices.length ? ok(nLow>=catLow && nHigh>=catHigh, `${plural(nLow,'lower voice')} and ${plural(nHigh,'higher voice')} recognised.`,
+      nLow+nHigh===0 ? 'VoiceIt cannot tell low from high voices here. Listen to each voice below and choose a fitting laptop voice for it.'
+      : `The catalogue has ${catLow} low and ${catHigh} high voices, so some will sound alike here. Download more voices (Better voices, below), or listen and choose voices in the table.`) : '');
   if(!vocab){ $('#voiceMap').innerHTML=''; return; }
   const groups=[['lower','Lower voices'],['higher','Higher voices'],['','Not recognised']];
   $('#voiceMap').innerHTML = '<thead><tr><th>Voice</th><th>Sound</th><th>Played with, on this laptop</th><th></th></tr></thead><tbody>'+

@@ -82,6 +82,6 @@ Both scripts use the same scene and the same vocabulary. They differ in what the
 `node system/bin/check` reports, with line numbers:
 
 - **errors**: missing front matter, character or voice; a voice that is not in the catalogue, also in the `people` line; a screen component, light colour or sound that is not in the vocabulary; a pause without a proper number of seconds, such as `(pause)` or `(pause 2,5)` (not played);
-- **warnings**: someone who speaks but is not in the `people` line; a line that looks like a speaker but is not in capitals; a TOUCH on an option that is not on the screen at that moment; a choice without options; words after LIGHT that VoiceIt ignores; `(pause 0)`, a pause over 60 seconds, or `(beat)` with words in it; a script with no lines.
+- **warnings**: someone who speaks but is not in the `people` line; two speakers who share a voice because the catalogue has too few (the warning says how to resolve it); a line that looks like a speaker but is not in capitals; a TOUCH on an option that is not on the screen at that moment; a choice without options; words after LIGHT that VoiceIt ignores; `(pause 0)`, a pause over 60 seconds, or `(beat)` with words in it; a script with no lines.
 
 Errors must be fixed. Warnings are worth reading: they usually mean the behaviour will not play as intended.
