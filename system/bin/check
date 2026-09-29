@@ -52,7 +52,7 @@ for (const b of Object.values(design.behaviours)) {
     console.log(`${b.path}  plays for about ${VoiceIt.formatTime(sched.total)} (${r.parsed.lines.length} lines)`);
   }
 }
-if (!targets.length && !Object.values(design.forms).some(f => !f.example)) problems.push({file:'design/forms/', ln:0, level:'warning', msg:'No forms of your own yet: save an image of your thing in design/forms/.'});
+if (!targets.length && !Object.values(design.forms).some(f => !f.example)) problems.push({file:'design/forms/', ln:0, level:'warning', msg:'No forms of your own yet: save an image of your product in design/forms/.'});
 
 problems.sort((a, b) => a.file.localeCompare(b.file) || a.ln - b.ln);
 problems.forEach(p => console.log(`${p.file}${p.ln ? ':' + p.ln : ''}  ${p.level.padEnd(7)}  ${p.msg}`));

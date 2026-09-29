@@ -1,6 +1,6 @@
 # Vocabulary
 
-Everything a thing can show, light, sound and say with. A behaviour may use only what is listed here. This file is the single source: the check script and VoiceIt read the entries below, so what you read here is exactly what VoiceIt accepts.
+Everything a product can show, light, sound and say with. A behaviour may use only what is listed here. This file is the single source: the check script and VoiceIt read the entries below, so what you read here is exactly what VoiceIt accepts.
 
 Each entry is one fenced block. Its first word (`component`, `light`, `modifier`, `sound`, `voice`, `manner`) says what kind of entry it is; the lines inside are `key: value`. Do not change entries during the session. Adding a new one is a later exercise.
 
@@ -110,7 +110,7 @@ effect: one short tick; confirms a touch
 
 ## Voices
 
-The thing has one voice from this catalogue, named in the front matter of each behaviour (`voice: Ash`). People in the script get the other voices automatically. The catalogue describes how a voice sounds, not who it belongs to.
+The product has one voice from this catalogue, named in the front matter of each behaviour (`voice: Ash`). People in the script get the other voices automatically. The catalogue describes how a voice sounds, not who it belongs to.
 
 `range` places the voice from low to high; `pitch` and `rate` are what VoiceIt uses with browser voices (1 is the browser's normal). On the stage the same names are mapped to expressive synthesis voices.
 

@@ -1,15 +1,15 @@
 # Screenplay notation
 
-A behaviour is a script: how the thing acts in one situation, one event per line, read from top to bottom. The notation borrows from film and theatre scripts.
+A behaviour is a script: how the product acts in one scene, one event per line, read from top to bottom. The notation borrows from film and theatre scripts.
 
 ## The file
 
-A behaviour lives in `design/behaviours/`, one file each, named `<character> - <situation>.md` (`night light - visiting hour.md`). It starts with a few facts, then a few lines about the situation, then the script:
+A behaviour lives in `design/behaviours/`, one file each, named after the character and a few words of your own (`night light - visiting hour.md`). It starts with a few facts, then a few comment lines on what is going on, then the script:
 
 ```
 ---
 character: Night light
-situation: Visiting hour on ward 4
+note: Visiting hour on ward 4
 voice: Ash
 people: Anna (patient), Daan (her son), Lotte (her granddaughter, 8), De Wit (roommate), Okafor (doctor)
 ---
@@ -22,9 +22,9 @@ LIGHT: white dim
 
 - `character` (required): the name of the character this script explores. It names the character; it does not describe it. The character itself is what comes across when the script is played.
 - `voice` (required): one name from the voice catalogue in `VOCABULARY.md` (Ash, Theo, Sam, Noor, Mira, Wren).
-- `situation` (optional): a short title, shown next to the character in VoiceIt's list.
-- `people` (optional but recommended): everyone in the situation, each with their role in brackets. The name is the one used in the script, so `Anna` speaks as `ANNA:`. VoiceIt shows the role next to the name, and gives everyone a lane on the timeline, also those who stay silent. The check warns when someone speaks who is not listed.
-- `#` lines right after the front matter describe the situation. VoiceIt shows them above the script; they are not played.
+- `note` (optional): one line of your own, shown under the character's name in VoiceIt's list, for example where it takes place or what this version tries out. VoiceIt does nothing else with it.
+- `people` (optional but recommended): everyone present, each with their role in brackets. The name is the one used in the script, so `Anna` speaks as `ANNA:`. VoiceIt shows the role next to the name, and gives everyone a lane on the timeline, also those who stay silent. The check warns when someone speaks who is not listed.
+- `#` lines right after the front matter are comments: what is going on and who is there, for the reader. VoiceIt shows them above the script; they are not played.
 
 ## Lines
 
@@ -33,7 +33,7 @@ Blank lines and lines starting with `#` are ignored.
 | Line | Meaning |
 | --- | --- |
 | `JOOST: I can't sleep.` | A person speaks. Names in capitals; any name except the reserved words below. |
-| `DEVICE: Good evening.` | The thing speaks, in the voice named in the front matter. Its character's name works too (`REX:` in a script with `character: Rex`). |
+| `DEVICE: Good evening.` | The product speaks, in the voice named in the front matter. Its character's name works too (`REX:` in a script with `character: Rex`). |
 | `DEVICE (quietly, slowly): …` | A parenthetical gives the manner. The browser voices follow the words listed under Manner in `VOCABULARY.md`; the stage passes the whole direction to speech synthesis. |
 | `JOOST: I was going to--` | An em dash (`—`) or `--` at the end: the next line cuts in with no gap. |
 | `(beat)` | A pause of one second. |
@@ -48,7 +48,7 @@ Reserved words: `DEVICE`, `SCREEN`, `LIGHT`, `SOUND`, `TOUCH`.
 
 ## Timing
 
-VoiceIt estimates how long each spoken line takes from its length, its voice and its manner. Cues (SCREEN, LIGHT, SOUND) take no time; they change the thing at the moment the next line begins. So write a cue **before** the line it belongs to: a SCREEN cue placed after the thing speaks appears only when the next person starts talking. A `TOUCH` takes about a second. Silence is written, not implied: use `(beat)` and `(pause n)`.
+VoiceIt estimates how long each spoken line takes from its length, its voice and its manner. Cues (SCREEN, LIGHT, SOUND) take no time; they change the product at the moment the next line begins. So write a cue **before** the line it belongs to: a SCREEN cue placed after the product speaks appears only when the next person starts talking. A `TOUCH` takes about a second. Silence is written, not implied: use `(beat)` and `(pause n)`.
 
 ## An example
 
@@ -75,7 +75,7 @@ EVA (voice message, warm): Hi Dad, how are you feeling? Can I come by tomorrow a
 BAKKER (half asleep, low): Hm? Who's that?
 ```
 
-Same situation, same vocabulary: every difference is behaviour, and it adds up to a different character.
+Same scene, same vocabulary: every difference is behaviour, and it adds up to a different character.
 
 ## What the check looks for
 

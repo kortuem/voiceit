@@ -8,7 +8,7 @@
 
 1. **Say first what kind of note it is**, in one sentence, before changing anything:
    - **A note for this moment**: it changes lines in this script only ("here it should wait").
-   - **A note for the character**: it changes who the thing is ("it never interrupts a doctor"), so it may apply to its other behaviours too.
+   - **A note for the character**: it changes who the product is ("it never interrupts a doctor"), so it may apply to its other behaviours too.
    If you are not sure, ask which one they mean.
 2. **For a note for this moment:** change only the lines concerned. Keep the rest as it is, including the group's own edits.
 3. **For a note for the character:** change this behaviour. Then name the character's other behaviours the note would affect, and ask before changing any of them.

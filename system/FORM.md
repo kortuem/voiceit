@@ -1,10 +1,10 @@
 # Form
 
-The form is the thing's body: what it looks like where it stands. You design it by hand and render it with an image model, in four steps you can repeat as often as you like. VoiceIt shows the form beside the screen and the light, and any behaviour can be played with any form.
+The form is the product's body: what it looks like where it stands. You design it by hand and render it with an image model, in four steps you can repeat as often as you like. VoiceIt shows the form beside the screen and the light, and any behaviour can be played with any form.
 
 ## The loop
 
-1. **Sketch** on paper: a three-quarter view of the thing, with the screen and the light where you want them. Photograph the sketch.
+1. **Sketch** on paper: a three-quarter view of the product, with the screen and the light where you want them. Photograph the sketch.
 2. **Render** the photo into a product image with ChatGPT or Gemini (prompts below).
 3. **Mark up** the render: print it or open it in any drawing app, and draw your changes over it in a strong colour, with short labels ("rounder", "screen lower", "fabric here").
 4. **Re-render** from the marked-up image. Repeat 3 and 4 until the form is yours.
@@ -17,7 +17,7 @@ These work in ChatGPT (image generation) and Gemini (image editing). Upload the 
 
 **Sketch to render**
 
-> Render this sketch as a realistic product photo of [a small bedside device with a screen and one light]. Keep the proportions, the position of the screen and the light, and every detail drawn in the sketch. Material: [e.g. matte white plastic and grey fabric]. Plain light grey background, soft studio light, three-quarter view, the whole product in frame, no text, no people, no room.
+> Render this sketch as a realistic product photo of [a small bedside smart speaker with a screen and one light]. Keep the proportions, the position of the screen and the light, and every detail drawn in the sketch. Material: [e.g. matte white plastic and grey fabric]. Plain light grey background, soft studio light, three-quarter view, the whole product in frame, no text, no people, no room.
 
 **Marked-up render to new render**
 
@@ -25,7 +25,7 @@ These work in ChatGPT (image generation) and Gemini (image editing). Upload the 
 
 **Variations** (when you are stuck)
 
-> Show three variations of this device side by side that differ only in [e.g. how soft or hard the shape is]. Same background, light and view.
+> Show three variations of this product side by side that differ only in [e.g. how soft or hard the shape is]. Same background, light and view.
 
 Tips:
 

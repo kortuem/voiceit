@@ -35,8 +35,8 @@ test('a decimal comma in a pause gets its own message', () => {
   assert.match(r.errors[0].msg, /point, not a comma: \(pause 2\.5\)/);
 });
 
-test('character and voice are required; situation is not', () => {
-  const r = VoiceIt.validateBehaviour('---\nsituation: Somewhere\n---\nDEVICE: Hi.\n', vocab);
+test('character and voice are required; note is not', () => {
+  const r = VoiceIt.validateBehaviour('---\nnote: Somewhere\n---\nDEVICE: Hi.\n', vocab);
   assert.deepStrictEqual(r.errors.map(e => e.msg), ['The front matter has no character.', 'The front matter has no voice.']);
 });
 
@@ -62,7 +62,7 @@ test('people: roles are read, and unlisted speakers are reported', () => {
   assert.strictEqual(lines(r), 'W7');
 });
 
-test('the thing may speak under its character name', () => {
+test('the product may speak under its character name', () => {
   const r = VoiceIt.validateBehaviour('---\ncharacter: Rex\nvoice: Ash\npeople: Anna (patient)\n---\nREX (low): Hello.\nANNA: Hi.\n', vocab);
   assert.deepStrictEqual(r.parsed.lines.map(l => l.device), [true, false]);
   assert.strictEqual(lines(r), '');

@@ -1,6 +1,6 @@
 ---
 character: Night light
-situation: Visiting hour on ward 4
+note: Visiting hour on ward 4
 voice: Ash
 people: Anna (patient), Daan (her son), Lotte (her granddaughter, 8), De Wit (roommate), Okafor (doctor)
 ---

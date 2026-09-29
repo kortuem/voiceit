@@ -71,7 +71,7 @@ function parseScript(txt, vocab){
   const comps = Object.keys(vocab.component), lights = vocab.light, mods = Object.keys(vocab.modifier), sounds = Object.keys(vocab.sound);
   const {meta, body, offset} = frontMatter(txt);
   const lines = [], errors = [], warnings = [];
-  const self = (meta.character || '').trim().toUpperCase();   // the thing may also speak under its character's name
+  const self = (meta.character || '').trim().toUpperCase();   // the product may also speak under its character's name
   body.split('\n').forEach((raw, i) => {
     const s = raw.trim(), ln = i + 1 + offset;
     if (!s || s.startsWith('#')) return;
@@ -177,15 +177,15 @@ function schedule(lines, castMap, vocab){
 }
 
 /* ---------- Validation ---------- */
-const REQUIRED = ['character', 'voice'];   // situation and people are optional
+const REQUIRED = ['character', 'voice'];   // note and people are optional
 // line number of a front matter key, so messages point at the right line
 function metaLine(text, key){
   const lines = String(text || '').replace(/\r\n/g, '\n').split('\n');
   const i = lines.findIndex((l, k) => k > 0 && new RegExp('^\\s*' + key + '\\s*:', 'i').test(l));
   return i >= 0 ? i + 1 : 1;
 }
-// the # lines right after the front matter: what the situation is
-function situationNotes(text){
+// the # lines right after the front matter: comments on what is going on, not played
+function comments(text){
   const {body} = frontMatter(text); const out = [];
   for (const raw of body.split('\n')) {
     const l = raw.trim();
@@ -254,14 +254,14 @@ function buildDesign(files){
     if (dir === 'forms' && FORM_RE.test(name)) forms[key] = {name:label(stem), url:f.url, path:f.path, example};
     if (dir === 'behaviours' && /\.md$/i.test(name)) {
       const {meta} = frontMatter(f.text);
-      behaviours[key] = {meta, text:f.text, path:f.path, notes:situationNotes(f.text), mtime:f.mtime || 0, example,
-        character:meta.character || label(stem), situation:meta.situation || ''};
+      behaviours[key] = {meta, text:f.text, path:f.path, notes:comments(f.text), mtime:f.mtime || 0, example,
+        character:meta.character || label(stem), note:meta.note || ''};
     }
   });
   const sorted = (o, key) => Object.fromEntries(Object.keys(o).sort((a, b) => key(o[a]).localeCompare(key(o[b]))).map(k => [k, o[k]]));
-  return {forms:sorted(forms, f => f.name), behaviours:sorted(behaviours, b => b.character + ' ' + b.situation), vocabulary};
+  return {forms:sorted(forms, f => f.name), behaviours:sorted(behaviours, b => b.character + ' ' + b.note), vocabulary};
 }
 
 return {RESERVED, DEFAULT_VOICE, parseVocabulary, frontMatter, listItems, parseScript, cast, manner, speechDur, schedule,
-  situationNotes, parsePeople, validateBehaviour, buildDesign, formatTime, words, orList};
+  comments, parsePeople, validateBehaviour, buildDesign, formatTime, words, orList};
 });

@@ -2,14 +2,20 @@
 
 A rapid prototyping tool for designing products that listen and speak.
 
-VoiceIt supports the exploration and testing of physical products whose behaviour unfolds in spoken interaction with the people around them. Such behaviour is difficult to assess on paper: it depends on timing, wording, voice and on who else is present. VoiceIt makes it perceptible early. A product's behaviour in a given situation is written as a script and played back in the browser with synthetic speech, screen content, light and sound, before any working system exists.
+VoiceIt supports the exploration and testing of physical products whose behaviour unfolds in spoken interaction with the people around them. Smart speakers are the typical example: a small object on a table or a shelf that listens, answers, and often has a light and a small screen. What such a product says, when, to whom, and what it keeps to itself is hard to judge on paper: it depends on timing, wording, voice and on who else is present. VoiceIt makes it perceptible early. The product's behaviour is written as a script and played back in the browser with synthetic speech, screen content, light and sound, before any working system exists.
+
+![Three smart speakers on a table: a Google Home, a Google Nest Hub with a screen, and a Google Home Mini](https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Google_Home_with_Home_Hub_and_Home_Mini_on_table.jpg/960px-Google_Home_with_Home_Hub_and_Home_Mini_on_table.jpg)
+
+*Smart speakers: three forms, one kind of behaviour. Photo: Y2kcrazyjoker4, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), via [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Google_Home_with_Home_Hub_and_Home_Mini_on_table.jpg).*
 
 A prototype has two parts:
 
 - **Form**: the physical shape of the product, as an image. It is sketched on paper and rendered with an image model. One image in `design/forms/`.
-- **Behaviour**: how the product responds in a situation: what it says and when, what it shows on its screen, and what its light and sounds do. The designers describe it in their own words; an AI agent writes it as a script in VoiceIt's notation. One file in `design/behaviours/`.
+- **Behaviour**: how the product acts: what it says and when, what it shows on its screen, and what its light and sounds do. The designers describe it in their own words; an AI agent writes it as a **behaviour script** in VoiceIt's notation. One file in `design/behaviours/`.
 
-Forms and behaviours are independent: any behaviour can be played with any form. This makes it possible to test whether a behaviour suits a form, and to compare alternative designs side by side. All interaction is scripted; nothing is live. VoiceIt is intended for exploring many variations quickly, not for building a working product.
+Forms and behaviour scripts are independent: any script can be played with any form. This makes it possible to test whether a behaviour suits a form, and to compare alternative designs side by side. All interaction is scripted; nothing is live. VoiceIt is intended for exploring many variations quickly, not for building a working product.
+
+**How to use it:** the [guide](GUIDE.md) explains the screen, how to define a behaviour, and exactly what to say to your agent.
 
 ## What you need
 
@@ -42,11 +48,12 @@ Forms and behaviours are independent: any behaviour can be played with any form.
 
 ## Working with VoiceIt
 
-- **Say how your thing behaves.** Tell your agent who the thing is and how it should behave in a situation: *"Our first character is Rex: confident, a know-it-all, speaks first, talks to Daan and the doctor rather than to Anna. Deep voice."* It reads back what it understood, and writes the script when you say go.
-- **Play it.** Switch to the browser: the new behaviour appears at the top of the list. Pick a form under the stage; press **Watch** to see it large.
-- **Give notes.** *"It talks too much when the doctor is there."* The agent says whether that changes this moment or the character, and revises.
-- **Check.** *"Check our scripts."* The agent runs the check and explains every mistake, with its line, also after you edited a script yourself. VoiceIt marks problems in the script beside the stage too.
-- **Forms.** Sketch on paper, render (see `system/FORM.md`), and save the image in `design/forms/`.
+The [guide](GUIDE.md) has the details. In short:
+
+- **Say how your product behaves.** *"New behaviour script: Rex, visiting hour. Confident, a know-it-all, speaks first, talks to Daan and the doctor rather than to Anna. Deep voice."* Your agent reads back what it understood; say **Go** and it writes the script.
+- **Play it.** Within a few seconds the new script appears at the top of the list in VoiceIt. Click it, pick a form, press **Play**; press **Watch** to see it large.
+- **Give notes.** *"Note on Rex: it talks too much when the doctor is there."* The agent revises the script.
+- **Check.** After you edited a script yourself: *"Check our scripts."* The agent explains every problem, with its line.
 
 ## Git while you work (optional)
 

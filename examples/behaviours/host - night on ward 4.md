@@ -1,6 +1,6 @@
 ---
 character: Host
-situation: Night on ward 4
+note: Night on ward 4
 voice: Mira
 people: Joost (patient), Eva (his daughter, by voice message), Samira (night nurse), Bakker (roommate)
 ---

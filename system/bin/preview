@@ -73,8 +73,8 @@ server.on('listening', () => {
   console.log(`Forms (${forms.length}):`);
   forms.forEach(f => console.log(`  ${f.name}`));
   console.log(`Behaviours (${behaviours.length}):`);
-  behaviours.forEach(b => console.log(`  ${b.character} · ${b.situation || '(no situation)'}${b.meta.voice ? ' · voice ' + b.meta.voice : ''}`));
-  console.log('\nVoiceIt picks up changed files when you switch back to it. Stop with Ctrl+C.');
+  behaviours.forEach(b => console.log(`  ${b.character}${b.note ? ' · ' + b.note : ''}${b.meta.voice ? ' · voice ' + b.meta.voice : ''}`));
+  console.log('\nVoiceIt shows new and changed files within a few seconds. Stop with Ctrl+C.');
   if (!noOpen) openBrowser(url);
 });
 server.listen(port, '127.0.0.1');
