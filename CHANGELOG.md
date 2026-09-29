@@ -4,6 +4,11 @@ What changed from one version of VoiceIt to the next, newest first. Versions bel
 
 For maintainers: when releasing, set `VERSION` in `system/voiceit.js` and the `?v=` of `voiceit.js` in `system/voiceit.html`, add an entry here with the same number, and tag the commit. The tests check that the three numbers match.
 
+## 0.4.2 (29 September 2026)
+
+- **One set of set-up instructions.** The Setup tab now shows step 1 of the tutorial word for word (seven steps, including the two about voices), next to the voice buttons, with a link to the tutorial for what comes next. A test keeps the two identical. Gone from the tab: the shorter, slightly different steps, "While you work", the "Without Node" paragraph and its *Open folder…* button (the browser called it an upload; the button in the list remains where it is needed).
+- The checks are titled *Is this laptop ready?*
+
 ## 0.4.1 (29 September 2026)
 
 - **VoiceIt online after an update:** the web host lets browsers keep `voiceit.js` for up to four hours, but the page for only ten minutes, so a browser could combine a new page with an old script. The page now asks for the script by version (`voiceit.js?v=0.4.1`); a test keeps that number equal to the version.

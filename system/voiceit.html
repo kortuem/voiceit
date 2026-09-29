@@ -252,6 +252,9 @@ body.watching .wprog:focus-visible{outline:2px solid var(--ink);outline-offset:2
 .vtable code{font-family:var(--script);font-size:12.5px;letter-spacing:0}
 .swatch{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px;box-shadow:inset 0 0 0 1px var(--hairline)}
 .about .file{margin-top:var(--s1)}
+.about blockquote{margin:var(--s1) 0 var(--s2);padding-left:var(--s2);border-left:2px solid var(--hairline-2);font-style:italic}
+.about details{margin:var(--s1) 0 0}
+.about summary{cursor:pointer;color:var(--gray)}
 .checks{list-style:none;padding:0!important}
 .checks li{border-bottom:1px solid var(--hairline-2);padding:var(--s2) 0;margin:0}
 .checks li.no b{color:var(--ink);box-shadow:inset 0 -2px 0 var(--ink)}
@@ -441,38 +444,39 @@ body.watching .wprog:focus-visible{outline:2px solid var(--ink);outline-offset:2
   <section class="view about" id="view-setup" role="tabpanel" aria-labelledby="tab-setup" hidden>
     <section>
       <h2>Getting started</h2>
-      <p>You need the Claude desktop app (its <b>Code</b> tab) or the Codex app, <b>Git</b> and <b>Node.js</b> (18 or newer, the LTS installer from <a href="https://nodejs.org">nodejs.org</a>). The <a href="https://github.com/kortuem/voiceit/blob/main/TUTORIAL.md">tutorial</a> on GitHub has the same steps, and what to do next.</p>
+      <!-- a copy of step 1 of TUTORIAL.md; the tests check that both say the same -->
+      <div id="setupSteps">
+      <p>You need the <b>Claude desktop app</b> (its <b>Code</b> tab) or the <b>Codex</b> app, signed in; <b>Git</b> (check with <code>git --version</code> in a terminal; on a Mac the first <code>git</code> command offers to install it, on Windows install <a href="https://git-scm.com/download/win">Git for Windows</a>); and <b>Node.js 18 or newer</b> (<a href="https://nodejs.org">nodejs.org</a>, check with <code>node --version</code>).</p>
       <ol>
         <li><b>Make a folder for your course work</b>, for example <code>Documents/IDEM307</code>.</li>
-        <li><b>Get VoiceIt from GitHub into it.</b> Open your agent with a new session on that folder and type: <i>“Clone https://github.com/kortuem/voiceit.git into this folder.”</i> This makes a folder <code>voiceit</code>.</li>
-        <li><b>Start a new session on the <code>voiceit</code> folder itself.</b> In this folder the agent can read VoiceIt's instructions (<code>AGENTS.md</code>) and your design files.</li>
-        <li><b>To be sure, start every new session with</b> <i>“Read AGENTS.md and follow it.”</i> The folder carries its own instructions for the agent; Claude Code and Codex normally read them by themselves.</li>
-        <li><b>Start VoiceIt</b> from a terminal in the <code>voiceit</code> folder: <code>node system/bin/preview</code>. Your browser opens this page. Leave the terminal open while you work; <code>Ctrl+C</code> stops it.
+        <li><b>Get VoiceIt into it.</b> Open your agent with a new session on that folder (Claude: <i>Code</i> → new session → choose the folder; Codex: open the folder) and type:
+          <blockquote>Clone https://github.com/kortuem/voiceit.git into this folder.</blockquote>
+          A folder <code>voiceit</code> appears. (Already cloned it in a terminal, as in the README? Skip this step and open that folder in step 3.)</li>
+        <li><b>Start a new session on the <code>voiceit</code> folder itself.</b> The folder carries its own instructions for the agent, in <code>AGENTS.md</code>; Claude Code and Codex read them by themselves when they work in this folder.</li>
+        <li><b>To be sure, start every new session with:</b>
+          <blockquote>Read AGENTS.md and follow it.</blockquote>
+          The agent replies that it has read the instructions.</li>
+        <li><b>Start VoiceIt.</b> Open a terminal in the <code>voiceit</code> folder and type <code>node system/bin/preview</code>. Your browser opens VoiceIt. Leave the terminal open while you work; <code>Ctrl+C</code> stops it. (No Node? See <a href="https://github.com/kortuem/voiceit/blob/main/TUTORIAL.md#troubleshooting">Troubleshooting</a>: VoiceIt also runs online.)
+          <details><summary>Opening a terminal in the <code>voiceit</code> folder</summary>
+            <ul>
+              <li><b>Mac:</b> open Terminal, type <code>cd </code> (with a space), drag the <code>voiceit</code> folder onto the window, press Return.</li>
+              <li><b>Windows:</b> open the <code>voiceit</code> folder in File Explorer, click the address bar, type <code>cmd</code>, press Enter.</li>
+            </ul>
+          </details></li>
+        <li><b>Check the sound.</b> Open VoiceIt's <b>Setup</b> tab and press <i>Play the voices</i>. You hear each voice of the catalogue as your laptop plays it (fewer different ones if your laptop has only a few), and the checks in the same tab all say <i>Yes</i>. If a voice sounds wrong for its description, a man's voice for a high voice for example, choose another laptop voice for it in the table below the button.</li>
+        <li><b>Better voices (optional, takes a few minutes).</b> The standard voices sound robotic; better ones make the scripts much easier to judge. VoiceIt picks the best voices it finds by itself.
           <ul>
-            <li>Mac: open Terminal, type <code>cd </code> (with a space), drag the <code>voiceit</code> folder onto the window, press Return.</li>
-            <li>Windows: open the <code>voiceit</code> folder in File Explorer, click the address bar, type <code>cmd</code>, press Enter.</li>
-          </ul>
-        </li>
-        <li><b>Press Play</b> in the Play tab, and play the voices below. The checks on the right should all say Yes.</li>
+            <li><b>Mac:</b> System Settings › Accessibility › Spoken Content › System voice › Manage Voices…. Under English, download a few voices marked <b>Premium</b> or <b>Enhanced</b>, for example Jamie, Daniel, Serena, Karen and Ava (low and high voices both help). Restart the browser, then play the voices again.</li>
+            <li><b>Windows:</b> use <b>Microsoft Edge</b>, which offers natural-sounding online voices (their names end in "Natural"). More voices can be added under Settings › Time &amp; language › Speech › Manage voices; not every added voice is available to the browser. (Not yet tested on Windows.)</li>
+          </ul></li>
       </ol>
-      <h3>While you work</h3>
-      <ul>
-        <li><i>“New behaviour script: …”</i>: tell your agent how your product behaves; after its read-back say <i>“Go”</i>. Within a few seconds the new script is at the top of the list here; click it and press Play.</li>
-        <li>To revise a script, tell your agent what should change: <i>“Rex talks over the doctor; it should wait.”</i></li>
-        <li><i>“Check our scripts”</i>: the agent reports what the check finds, with line numbers, also after you edited a script yourself.</li>
-        <li><i>“Commit our work”</i> saves a version with Git; <i>“Pull the latest VoiceIt”</i> gets course updates.</li>
-      </ul>
-      <p>Tested in Chrome on a Mac. Not yet tested: Edge, Safari, Firefox, and anything on Windows. Voices differ between browsers and systems.</p>
-      <h3>Without Node</h3>
-      <p>Use <a href="https://kortuem.github.io/voiceit/">VoiceIt online</a>: the examples play at once, and <b>Open your voiceit folder</b> in the list plays your own scripts; the files stay on your laptop. Chrome and Edge follow the folder, so new scripts appear by themselves; in Safari and Firefox, open it again after a change. Your agent cannot run the check without Node; VoiceIt marks problems in the script column instead. You can also open <code>system/voiceit.html</code> by double-clicking it and choose the folder here.</p>
-      <label class="btn file">Open folder…<input type="file" webkitdirectory directory multiple data-folder></label>
+      </div>
+      <p><b>Next:</b> the <a href="https://github.com/kortuem/voiceit/blob/main/TUTORIAL.md">tutorial</a> continues with step 2, <i>Play the examples</i>, and has the phrases for your agent.</p>
     </section>
     <section>
-      <h2>This laptop</h2>
+      <h2>Is this laptop ready?</h2>
       <ul id="setupChecks" class="checks"></ul>
       <h3>Voices</h3>
-      <p>VoiceIt uses the voices your laptop has. The voices of the catalogue are matched to them as well as possible, so they sound different on every laptop. Play them to hear what yours can do. VoiceIt guesses from their names which voices are low and which are high; if a voice does not fit its description (a man's voice for a high voice, say), choose another laptop voice for it in the table. This browser remembers the choice. The sounds (chime, alert, click) are made by VoiceIt itself and sound the same everywhere.</p>
-      <p><b>Better voices (optional).</b> Mac: System Settings › Accessibility › Spoken Content › System voice › Manage Voices…, then download a few English voices marked Premium or Enhanced (for example Jamie, Serena, Karen, Ava, Daniel), and restart the browser. Windows: use Microsoft Edge, which offers natural-sounding voices (names ending in “Natural”); more voices can be added under Settings › Time &amp; language › Speech. VoiceIt uses the best voices it finds by itself.</p>
       <p><button class="btn" id="voiceTest" type="button">Play the voices</button> <button class="btn" id="soundTest" type="button">Play the sounds</button></p>
       <table class="vtable" id="voiceMap"></table>
     </section>
@@ -480,7 +484,7 @@ body.watching .wprog:focus-visible{outline:2px solid var(--ink);outline-offset:2
 </div>
 
 <!-- the version in the address: a browser that kept an older voiceit.js (the host caches scripts for hours) fetches this one -->
-<script src="voiceit.js?v=0.4.1"></script>
+<script src="voiceit.js?v=0.4.2"></script>
 <script>
 document.getElementById('version').textContent='version '+VoiceIt.VERSION;
 (() => {
@@ -1017,7 +1021,7 @@ async function fetchDesign(keep){
     if(!setVocab(vt)) return;
     loadData(JSON.parse(dt));
   }catch(e){
-    if(!keep) say('Could not load the design folder. Start VoiceIt with: node system/bin/preview, or use Open folder.');
+    if(!keep) say('Could not load the design folder. Start VoiceIt with: node system/bin/preview.');
   }
 }
 // VoiceIt online: the examples are listed in examples/index.json, because a web host cannot list a folder

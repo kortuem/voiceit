@@ -184,6 +184,16 @@ test('the check fails on a file that does not exist', () => {
   assert.match(r.stdout, /No such file or folder/);
 });
 
+test('the Setup tab says the same as step 1 of the tutorial, word for word', () => {
+  const md = fs.readFileSync(path.join(root, 'TUTORIAL.md'), 'utf8');
+  const tutorial = md.slice(md.indexOf('## 1. Set up') + '## 1. Set up'.length, md.indexOf('## 2. '));
+  const html = fs.readFileSync(path.join(root, 'system', 'voiceit.html'), 'utf8');
+  const start = html.indexOf('<div id="setupSteps">'), page = html.slice(start, html.indexOf('</div>', html.lastIndexOf('</ol>', html.indexOf('<b>Next:</b>'))));
+  const wordsOf = t => t.replace(/^\s*\d+\.\s/gm, ' ').replace(/\]\([^)]*\)/g, ']').replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').toLowerCase().match(/[a-z0-9]+/g);
+  assert.ok(start > 0, 'the Setup tab has <div id="setupSteps">');
+  assert.deepStrictEqual(wordsOf(page), wordsOf(tutorial), 'copy step 1 of TUTORIAL.md into the Setup tab (system/voiceit.html), or the other way round');
+});
+
 test('the page asks for voiceit.js by the current version (browsers may keep an old copy)', () => {
   const html = fs.readFileSync(path.join(root, 'system', 'voiceit.html'), 'utf8');
   assert.match(html, new RegExp(`<script src="voiceit\\.js\\?v=${VoiceIt.VERSION.replace(/\./g, '\\.')}"></script>`), 'set ?v= in voiceit.html to VERSION');
