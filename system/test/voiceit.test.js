@@ -30,6 +30,11 @@ test('a malformed pause is an error and is not played', () => {
   assert.strictEqual(lines(r), 'E5 E6 E7 W1');   // and nothing is left to play
 });
 
+test('a decimal comma in a pause gets its own message', () => {
+  const r = check('(pause 2,5)\n');
+  assert.match(r.errors[0].msg, /point, not a comma: \(pause 2\.5\)/);
+});
+
 test('character and voice are required; situation is not', () => {
   const r = VoiceIt.validateBehaviour('---\nsituation: Somewhere\n---\nDEVICE: Hi.\n', vocab);
   assert.deepStrictEqual(r.errors.map(e => e.msg), ['The front matter has no character.', 'The front matter has no voice.']);

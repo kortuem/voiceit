@@ -83,6 +83,7 @@ function parseScript(txt, vocab){
         if (arg) warnings.push({ln, msg:`(beat) is always one second; for “${arg}” write (pause n).`});
         lines.push({kind:'pause', secs:1, ln, text:'beat'}); return;
       }
+      if (/^\d+,\d+\s*s?$/.test(arg)) { errors.push({ln, msg:`“(pause ${arg})”: write the number with a point, not a comma: (pause ${arg.replace(',', '.').replace(/\s*s$/, '')}). Not played.`}); return; }
       if (!SECONDS_RE.test(arg)) { errors.push({ln, msg:`“(pause${arg ? ' ' + arg : ''})” needs a number of seconds, like (pause 3). Not played.`}); return; }
       const secs = parseFloat(arg);
       if (secs === 0) warnings.push({ln, msg:'(pause 0) adds no silence.'});
