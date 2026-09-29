@@ -19,7 +19,7 @@ The first two are constructed on purpose. Build them from what you know of how p
 ## For each character
 
 - **A form**: sketch it on paper, render it, correct it (`system/FORM.md`). Save it in `design/forms/`.
-- **A behaviour in visiting hour**: tell your agent who the product is and how it should behave; it writes the script into `design/behaviours/`. Play it, give notes, and repeat until it is right.
+- **A behaviour in visiting hour**: tell your agent who the product is and how it should behave; it writes the script into `design/behaviours/`. Play it, revise it, and repeat until it is right.
 - **Judge it**: does the behaviour fit the form? Play it in the other forms too. If you have time, ask for the same character somewhere else (at night, at mealtime) and see whether it is still the same character.
 
 Give each character a name that does not give away which one it is: the class will try to guess. Write down in `design/notes.md` which is which, and what you noticed while making them.

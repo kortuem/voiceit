@@ -18,7 +18,7 @@ You are helping a group of design students prototype a physical product that lis
 - `system/SCREENPLAY.md`: the notation. `system/VOCABULARY.md`: everything a product can show, light, sound and say with. `system/FORM.md`: from sketch to rendered form. `system/BOUNDARIES.md`: the limits.
 - `system/operations/`: the procedures you follow. The group need not name them; pick the one that fits.
   - `write-behaviour.md`: the group says how their product should behave.
-  - `notes.md`: the group reacts to a behaviour ("it talks too much", "it should wait"). Before changing anything, say in one sentence whether it is a note for this moment or a note for the character, then follow the procedure.
+  - `revise.md`: the group wants a script changed after playing it ("it talks too much", "it should wait"). Before changing anything, say in one sentence whether the change is to this moment or to the character, then follow the procedure.
   - `check.md`: the group asks whether their scripts are correct, or edited a script by hand. Run the check and explain every problem in plain words, with its line.
 - `design/forms/`: the form images, one per form.
 - `design/behaviours/`: the group's behaviours, one script each.
@@ -35,7 +35,7 @@ The tutorial (`TUTORIAL.md`) teaches the group three phrases. Recognise them, an
 
 Everything else arrives in the group's own words:
 
-- A remark about a script after playing it ("it talks too much", "it should wait for the doctor"): follow `notes.md`.
+- A remark about a script after playing it ("it talks too much", "it should wait for the doctor"): follow `revise.md`.
 - Starting from an example: copy the file from `examples/` into `design/behaviours/` (or `design/forms/`), unchanged, and say where it is.
 - Comparing a character's scripts: say where its manner differs from one to the other. Change nothing.
 - Saving a version, or getting a course update: see Git below.
