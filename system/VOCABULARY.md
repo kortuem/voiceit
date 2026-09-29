@@ -112,7 +112,7 @@ effect: one short tick; confirms a touch
 
 The product has one voice from this catalogue, named in the front matter of each behaviour (`voice: Ash`). People in the script get the other voices automatically. The catalogue describes each voice by its sound; any character can use any voice.
 
-`range` places the voice from low to high; `pitch` and `rate` are what VoiceIt uses with browser voices (1 is the browser's normal).
+`range` places the voice from low to high; `pitch` and `rate` are what VoiceIt uses with browser voices (1 is the browser's normal). Premium, Enhanced and Natural voices keep their own pitch, because shifting makes them sound artificial; for them only `rate` applies. `pitch` shifts only the basic voices.
 
 ```voice
 name: Ash

@@ -108,6 +108,6 @@ The [tutorial](TUTORIAL.md) takes you through one design session: setting up the
 
 ## Status and licence
 
-VoiceIt is in development, for the course IDEM307 at TU Delft. This is version 0.2.8, an early release; what changed from version to version is in [CHANGELOG.md](CHANGELOG.md). Report problems in [GitHub Issues](https://github.com/kortuem/voiceit/issues) (needs a GitHub account) or tell your teacher. For maintainers: `node --test system/test/voiceit.test.js` runs the tests.
+VoiceIt is in development, for the course IDEM307 at TU Delft. This is version 0.2.9, an early release; what changed from version to version is in [CHANGELOG.md](CHANGELOG.md). Report problems in [GitHub Issues](https://github.com/kortuem/voiceit/issues) (needs a GitHub account) or tell your teacher. For maintainers: `node --test system/test/voiceit.test.js` runs the tests.
 
 The code and the example files are under the [MIT licence](LICENSE). The smart speaker photo above is not part of the repository; it is shown from Wikimedia Commons under its own licence, CC BY-SA 4.0. Visual style after Vlak (vlak.dev) by Renn, Noord.

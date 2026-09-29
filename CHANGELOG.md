@@ -4,6 +4,10 @@ What changed from one version of VoiceIt to the next, newest first. Versions bel
 
 For maintainers: when releasing, set `VERSION` in `system/voiceit.js`, add an entry here with the same number, and tag the commit. The tests check that the two numbers match.
 
+## 0.2.9 (29 September 2026)
+
+- **Better sound with good voices:** Premium, Enhanced and Natural voices now keep their own pitch. VoiceIt used to lower or raise the pitch of every voice (Ash to 0.82, Wren to 1.3, "low" further), which made the best voices sound artificial; heard side by side, the unaltered voices sounded clearly better. Speed and volume still follow the catalogue and directions such as *quietly*. Basic voices are still pitch-shifted.
+
 ## 0.2.8 (29 September 2026)
 
 - VoiceIt recognises more Mac voices as higher voices: Isha, Matilda, Joelle and Sangeeta (measured, 186–258 Hz), and Nora and Leona (female in Apple's voice catalogue). With enough Premium voices installed, all six catalogue voices now use Premium voices.

@@ -514,6 +514,9 @@ function loadVoices(){ try{
 if(hasSpeech){ loadVoices(); try{ speechSynthesis.addEventListener('voiceschanged',loadVoices); }catch(e){} }
 let castMap = new Map();   // speaker -> catalogue name
 const voiceOf = who => vocab.voice[castMap.get(who)] || vocab.voice[VoiceIt.DEFAULT_VOICE];
+// Premium, Natural and Enhanced voices keep their own pitch: shifting makes them sound artificial.
+// Only basic voices are shifted, which also helps tell them apart when a laptop has few voices.
+const pitchFor = (sys, p) => sys && voiceRank(sys) <= 1 ? 1 : Math.max(.1, Math.min(2, p));
 function sysVoiceFor(catName){
   if(!sysVoices.length) return null;
   const c = vocab.voice[catName];
@@ -642,7 +645,7 @@ function speak(l){
     if(!audioOn||!hasSpeech){ setTimeout(res,dur); return; }
     const md=VoiceIt.manner(l.manner,vocab);
     const u=new SpeechSynthesisUtterance(text); const v=sysVoiceFor(castMap.get(l.who)); if(v) u.voice=v;
-    u.pitch=Math.max(.1,Math.min(2,cat.pitch*md.pitch)); u.rate=cat.rate*md.rate; u.volume=md.volume;
+    u.pitch=pitchFor(v, cat.pitch*md.pitch); u.rate=cat.rate*md.rate; u.volume=md.volume;
     let done=false, to=null; const fin=()=>{ if(done) return; done=true; clearTimeout(to); res(); };
     to=setTimeout(fin,dur*2.4+2000); u.onend=fin; u.onerror=fin;
     try{ speechSynthesis.speak(u); }catch(e){ clearTimeout(to); setTimeout(fin,dur); }
@@ -932,7 +935,7 @@ $('#voiceTest').addEventListener('click',async()=>{
   stop(); const btn=$('#voiceTest'); btn.disabled=true;
   for(const v of Object.values(vocab.voice)){
     await new Promise(res=>{ const u=new SpeechSynthesisUtterance(`This is ${v.name}. ${v.sound}.`); const s=sysVoiceFor(v.name); if(s) u.voice=s;
-      u.pitch=Math.max(.1,Math.min(2,v.pitch)); u.rate=v.rate; let done=false; const fin=()=>{ if(!done){ done=true; res(); } };
+      u.pitch=pitchFor(s, v.pitch); u.rate=v.rate; let done=false; const fin=()=>{ if(!done){ done=true; res(); } };
       u.onend=fin; u.onerror=fin; setTimeout(fin,6000); try{ speechSynthesis.speak(u); }catch(e){ fin(); } });
   }
   btn.disabled=false;
