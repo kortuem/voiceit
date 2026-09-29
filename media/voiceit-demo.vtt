@@ -1,0 +1,53 @@
+WEBVTT
+
+1
+00:00:00.900 --> 00:00:06.998
+VoiceIt is a rapid prototyping tool for products that listen and speak, like smart speakers.
+
+2
+00:00:07.333 --> 00:00:15.196
+Such a product is hard to judge on paper. How does it feel to talk to it? Are its answers appropriate, and do they come at the right moment?
+
+3
+00:00:15.567 --> 00:00:19.110
+VoiceIt lets you hear and see it, before anything is built.
+
+4
+00:00:20.367 --> 00:00:23.910
+Start it from your voiceit folder. It opens in your browser.
+
+5
+00:00:25.033 --> 00:00:31.271
+On the left are your behaviour scripts. Pick one, then pick a form: an image of the product.
+
+6
+00:00:32.133 --> 00:00:36.884
+Press Play. The scene is performed: voices, screen and light.
+
+7
+00:00:43.600 --> 00:00:45.240
+Pause at any moment.
+
+8
+00:00:45.133 --> 00:00:47.470
+Click the timeline to jump to a moment.
+
+9
+00:00:48.000 --> 00:00:50.429
+Then step through it, line by line.
+
+10
+00:00:57.600 --> 00:00:59.333
+The script follows along.
+
+11
+00:01:00.800 --> 00:01:06.851
+A script is plain text. Change what the product says, or the colour of its light, and save.
+
+12
+00:01:08.667 --> 00:01:12.117
+Back in VoiceIt, the change is already there. Play it again.
+
+13
+00:01:20.300 --> 00:01:23.101
+Describe it, play it, judge it, revise it.

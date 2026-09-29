@@ -91,7 +91,7 @@ VoiceIt lists them in this order, simplest first. Play 3 and 4 one after another
 
 To write your own behaviour scripts you also need an AI coding assistant: the **Claude desktop app** (its **Code** tab) or **Codex**. It writes and revises the scripts in the `voiceit` folder with you and checks them. For product images, an image-generation tool such as ChatGPT or Gemini helps turn sketches into renders.
 
-The [tutorial](TUTORIAL.md) takes you through one design session: setting up the assistant, playing an example, inspecting a conversation, writing a behaviour, revising it and adding a product image.
+The [tutorial](TUTORIAL.md) takes you step by step: setting up, playing a short example, bringing in your product images, planning a scene on paper, letting your agent write and revise the scripts, judging them, and changing VoiceIt itself.
 
 ## Voices and timing
 
@@ -100,8 +100,7 @@ The [tutorial](TUTORIAL.md) takes you through one design session: setting up the
 
 ## Documentation
 
-- [TUTORIAL.md](TUTORIAL.md): one design session, step by step, and a reference.
-- [BRIEF.md](BRIEF.md): the current assignment.
+- [TUTORIAL.md](TUTORIAL.md): from set-up to your own scripts and a change to VoiceIt, step by step, and a reference.
 - [system/SCREENPLAY.md](system/SCREENPLAY.md): the script notation and the checks.
 - [system/VOCABULARY.md](system/VOCABULARY.md): screen components, lights, sounds, voices and manner.
 - [system/FORM.md](system/FORM.md): from sketch to rendered form.
@@ -115,10 +114,10 @@ The [tutorial](TUTORIAL.md) takes you through one design session: setting up the
 - [media/](media/) holds the video tour.
 - [system/](system/) is the tool: notation, vocabulary, procedures for the AI coding assistant, and VoiceIt itself.
 
-**No Node, or it will not start?** Use **VoiceIt online**, [kortuem.github.io/voiceit](https://kortuem.github.io/voiceit/): the examples play at once. Click **Open your voiceit folder** in the list to play your own scripts; the files stay on your laptop. In Chrome and Edge, new and changed scripts then appear by themselves; in Safari and Firefox, open the folder again after a change. Your agent cannot run the check without Node; VoiceIt marks problems in the script column instead.
+**No Node, or it will not start?** Use **VoiceIt online**, [kortuem.github.io/voiceit](https://kortuem.github.io/voiceit/): the examples play at once. Click **Open your voiceit folder** in the list to play your own scripts; the files stay on your laptop. In Chrome and Edge, new and changed scripts then appear by themselves; in Safari and Firefox, open the folder again after a change. Your agent cannot run the check without Node; VoiceIt marks problems in the script column instead. Changes to VoiceIt itself run only with Node, in `node system/bin/preview`.
 
 ## Status and licence
 
-VoiceIt is in development, for the course IDEM307 at TU Delft. This is version 0.4.2, an early release; what changed from version to version is in [CHANGELOG.md](CHANGELOG.md). Report problems in [GitHub Issues](https://github.com/kortuem/voiceit/issues) (needs a GitHub account) or tell your teacher. For maintainers: `node --test system/test/voiceit.test.js` runs the tests.
+VoiceIt is in development, for the course IDEM307 at TU Delft. This is version 0.5.0, an early release; what changed from version to version is in [CHANGELOG.md](CHANGELOG.md). Report problems in [GitHub Issues](https://github.com/kortuem/voiceit/issues) (needs a GitHub account) or tell your teacher. For maintainers: `node --test system/test/voiceit.test.js` runs the tests.
 
 The code and the example files are under the [MIT licence](LICENSE). The smart speaker photo above is not part of the repository; it is shown from Wikimedia Commons under its own licence, CC BY-SA 4.0. Visual style after Vlak (vlak.dev) by Renn, Noord.

@@ -4,6 +4,17 @@ What changed from one version of VoiceIt to the next, newest first. Versions bel
 
 For maintainers: when releasing, set `VERSION` in `system/voiceit.js` and the `?v=` of `voiceit.js` in `system/voiceit.html`, add an entry here with the same number, and tag the commit. The tests check that the three numbers match.
 
+## 0.5.0 (29 September 2026)
+
+After a review of the tutorial. The repository is now about the tool only: assignments live with the course, not here.
+
+- **`BRIEF.md` removed**, and every reference to an assignment with it (tutorial, README, `AGENTS.md`, the agent's procedures, `BOUNDARIES.md`).
+- **Tutorial**, ten steps with a short route at the top: set up → a short example (Timer, Lumo; the longer examples are optional) → the screen, tried on Lumo → bring in your product images → plan a scene on paper → let the agent write the scripts from the plan → review → revise → pair, judge and demonstrate → change the tool (commit first, ask explicitly, run the tests, play your scripts again).
+- **Agent:** the group's paper plan leads (its people, events and order; nothing added without asking); the length follows the plan. New in `AGENTS.md`: how to handle a requested change to VoiceIt itself.
+- **Groups work on one laptop** and commit there; the instructions to fork and clone a second copy are gone.
+- VoiceIt online plays and shows scripts; changes to VoiceIt itself need Node (tutorial, README).
+- **The tour video** plays in the About tab (it loads only when played, with subtitles). The preview serves video, also to Safari.
+
 ## 0.4.2 (29 September 2026)
 
 - **One set of set-up instructions.** The Setup tab now shows step 1 of the tutorial word for word (seven steps, including the two about voices), next to the voice buttons, with a link to the tutorial for what comes next. A test keeps the two identical. Gone from the tab: the shorter, slightly different steps, "While you work", the "Without Node" paragraph and its *Open folder…* button (the browser called it an upload; the button in the list remains where it is needed).

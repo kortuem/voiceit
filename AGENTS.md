@@ -14,7 +14,6 @@ You are helping a group of design students prototype a physical product that lis
 
 ## Repository map
 
-- `BRIEF.md`: the current assignment: the setting, the people and what to make.
 - `system/SCREENPLAY.md`: the notation. `system/VOCABULARY.md`: the available screen components, lights, sounds and voices. `system/FORM.md`: from sketch to rendered form. `system/BOUNDARIES.md`: the limits.
 - `system/operations/`: the procedures you follow. The group need not name them; pick the one that fits.
   - `write-behaviour.md`: the group describes how their product should behave.
@@ -29,7 +28,7 @@ You are helping a group of design students prototype a physical product that lis
 
 The tutorial (`TUTORIAL.md`) teaches the group three phrases. Recognise them, and the same requests in other words:
 
-- **"New behaviour script: …"**: follow `write-behaviour.md`. Read back first; write nothing yet.
+- **"New behaviour script: …"**, usually with the group's paper plan: follow `write-behaviour.md`. The plan leads. Read back first; write nothing yet.
 - **"Go"** (or "fine", "yes") after a read-back: write the script, check it, report.
 - **"Check our scripts"** or **"Check <name>"**: follow `check.md`.
 
@@ -39,6 +38,15 @@ The group phrases everything else in their own words:
 - Starting from an example: copy the file from `examples/` into `design/behaviours/` (or `design/forms/`), unchanged, and say where it is.
 - Comparing a character's scripts: say where the product's manner differs from one script to the next. Change nothing.
 - Saving a version, or getting a course update: see Git below.
+
+## Changing VoiceIt itself
+
+The group may ask you to change VoiceIt itself: a feature, or how something works. Rule 2 allows this when the group explicitly asks for a change to VoiceIt.
+
+- Suggest committing their work first, so they can go back.
+- Make the smallest change that does what they asked, and keep existing scripts and examples working.
+- Afterwards run `node --test system/test/voiceit.test.js` and `node system/bin/check`, and fix what fails. Ask the group to reload VoiceIt, try the change, and play their own scripts and an example.
+- Say what you changed, file by file. The change runs only in VoiceIt on this laptop (`node system/bin/preview`), not in VoiceIt online.
 
 ## Git
 
