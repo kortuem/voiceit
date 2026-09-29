@@ -91,6 +91,6 @@ Without Node, open `system/voiceit.html` in your browser and choose the `voiceit
 
 ## Status and licence
 
-VoiceIt is in development, for the course IDEM307 at TU Delft. Report problems in [GitHub Issues](https://github.com/kortuem/voiceit/issues) (needs a GitHub account) or tell your teacher.
+VoiceIt is in development, for the course IDEM307 at TU Delft. Report problems in [GitHub Issues](https://github.com/kortuem/voiceit/issues) (needs a GitHub account) or tell your teacher. For maintainers: `node --test system/test/voiceit.test.js` runs the tests.
 
 The code and the example files are under the [MIT licence](LICENSE). The smart speaker photo above is not part of the repository; it is shown from Wikimedia Commons under its own licence, CC BY-SA 4.0. Visual style after Vlak (vlak.dev) by Renn, Noord.
