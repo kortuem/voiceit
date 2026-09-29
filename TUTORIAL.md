@@ -2,6 +2,8 @@
 
 This tutorial takes you through one design session: from playing an example to a behaviour of your own, revised and paired with a product image. The [README](README.md) says what VoiceIt is for.
 
+Quick reference: [what to say to your agent](#what-to-say-to-your-agent), [commands](#commands) for the terminal, and the script notation in [system/SCREENPLAY.md](system/SCREENPLAY.md).
+
 ## Words used here
 
 | Term | Meaning |
@@ -170,6 +172,34 @@ These phrases work reliably. You can phrase things differently, but starting a r
 | **Compare** *name*'s **scripts** | When a character has several scripts. | The agent says where its manner differs. It changes nothing. |
 | **Commit our work:** *what changed.* | Optional: to save a version (below). | The agent makes a Git commit. |
 | **Pull the latest VoiceIt** | When the teacher announces an update. | The agent brings in the update. |
+
+## Commands
+
+Type these in a terminal in the `voiceit` folder. Your agent runs the same commands for you when you ask.
+
+| Command | What it does |
+| --- | --- |
+| `node system/bin/preview` | Starts VoiceIt and opens it in your browser. Leave it running; `Ctrl+C` stops it. |
+| `node system/bin/preview --port 4400` | The same, on another port, if the usual one is taken. |
+| `node system/bin/check` | Checks every behaviour script in `design/behaviours/` and the examples. |
+| `node system/bin/check "design/behaviours/juno - visiting hour.md"` | Checks one script. Keep the quotes: file names contain spaces. |
+| `git pull --no-rebase` | Brings in a course update (see below). |
+
+The check prints one line per problem: the file, the line number, *error* or *warning*, and what to do. For example, after a few hand edits:
+
+```
+design/behaviours/juno - visiting hour.md:1  error    The front matter has no voice.
+design/behaviours/juno - visiting hour.md:7  error    “pink” is not a light colour. LIGHT needs a colour: white, amber, blue, green, red, violet, or off.
+design/behaviours/juno - visiting hour.md:9  warning  “Juno:” looks like a speaker. Names are written in capitals; this line is read as an action.
+design/behaviours/juno - visiting hour.md:12  error    “(pause 2,5)”: write the number with a point, not a comma: (pause 2.5). Not played.
+design/behaviours/juno - visiting hour.md:13  error    “choise” is not a screen component. Use word, statement, choice, image or blank. Shown as a statement.
+design/behaviours/juno - visiting hour.md:16  error    “ding” is not a sound. Use chime, alert or click.
+design/behaviours/juno - visiting hour.md:17  warning  OKAFOR speaks but is not in the people line (Anna, Daan, Lotte).
+
+Checked 1 behaviour: 5 errors, 2 warnings.
+```
+
+Errors stop a line from playing as written; fix them. Warnings are worth reading; they usually mean the script will not play as you intended. VoiceIt marks the same problems on their lines in the script column. The full list of what the check looks for is at the end of [system/SCREENPLAY.md](system/SCREENPLAY.md#what-the-check-looks-for).
 
 ## Saving versions with Git (optional)
 

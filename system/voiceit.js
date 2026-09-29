@@ -101,7 +101,7 @@ function parseScript(txt, vocab){
         const toks = rest.toLowerCase().split(/[\s,]+/).filter(Boolean);
         if (toks[0] === 'off') { lines.push({kind:'light', off:true, ln}); return; }
         const colour = toks.find(t => lights[t]);
-        if (!colour) { errors.push({ln, msg:`LIGHT needs a colour: ${Object.keys(lights).join(', ')}, or off.`}); return; }
+        if (!colour) { errors.push({ln, msg:(toks.length ? `“${toks[0]}” is not a light colour. ` : '') + `LIGHT needs a colour: ${Object.keys(lights).join(', ')}, or off.`}); return; }
         const extra = toks.filter(t => t !== colour && !mods.includes(t));
         if (extra.length) warnings.push({ln, msg:`LIGHT ignores “${extra.join(' ')}”. It knows a colour, then ${andList(mods)}.`});
         lines.push({kind:'light', colour, pulse:toks.includes('pulse'), dim:toks.includes('dim'), ln}); return;
