@@ -10,7 +10,7 @@ VoiceIt is a rapid prototyping tool for physical products that listen and speak.
 
 *Photo: Y2kcrazyjoker4, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), via [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Google_Home_with_Home_Hub_and_Home_Mini_on_table.jpg).*
 
-You design such a product by defining how it behaves when people are around it: what it says, when, to whom, what it shows on its screen, what its light does. You describe that behaviour in your own words; your AI agent turns the description into a **behaviour script**; VoiceIt plays the script back, with synthetic voices, screen content, light and sound, so that you can see and hear the behaviour, judge it, and change it. Repeating this cycle many times, quickly, is the point: you explore alternatives before anything is built.
+You design such a product by defining how it behaves when people are around it: what it says, when, to whom, what it shows on its screen, what its light does. Behaviours are written as **behaviour scripts**: your AI agent writes them from what you tell it, and VoiceIt plays them back with synthetic voices, screen content, light and sound, so that you can see and hear the behaviour, judge it, and change it.
 
 ## Terms
 

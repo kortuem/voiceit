@@ -1,8 +1,8 @@
 # VoiceIt
 
-A rapid prototyping tool for designing products that listen and speak.
+A rapid prototyping tool for products that listen and speak.
 
-VoiceIt supports the exploration and testing of physical products whose behaviour unfolds in spoken interaction with the people around them. Smart speakers are the typical example: a small object on a table or a shelf that listens, answers, and often has a light and a small screen. What such a product says, when, to whom, and what it keeps to itself is hard to judge on paper: it depends on timing, wording, voice and on who else is present. VoiceIt makes it perceptible early. The product's behaviour is written as a script and played back in the browser with synthetic speech, screen content, light and sound, before any working system exists.
+Smart speakers are the typical example: a small product on a table or a shelf that listens, answers, and often has a light and a small screen. Whether such a product works depends on timing, wording, voice and on who else is present. It might give useful advice but interrupt at the wrong moment, speak too formally, or address the wrong person. That is hard to judge on paper; VoiceIt lets you see and hear it.
 
 ![Three smart speakers on a table: a Google Home, a Google Nest Hub with a screen, and a Google Home Mini](https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Google_Home_with_Home_Hub_and_Home_Mini_on_table.jpg/960px-Google_Home_with_Home_Hub_and_Home_Mini_on_table.jpg)
 
@@ -10,10 +10,26 @@ VoiceIt supports the exploration and testing of physical products whose behaviou
 
 A prototype has two parts:
 
-- **Form**: the physical shape of the product, as an image. It is sketched on paper and rendered with an image model. One image in `design/forms/`.
-- **Behaviour**: how the product acts: what it says and when, what it shows on its screen, and what its light and sounds do. The designers describe it in their own words; an AI agent writes it as a **behaviour script** in VoiceIt's notation. One file in `design/behaviours/`.
+- **Form**: the physical shape of the product, sketched on paper and rendered with an image model. One image in `design/forms/`.
+- **Behaviour**: what the product says and when, what it shows on its screen, and what its light and sounds do, in a scene with several people. Behaviours are written as scripts, one file each in `design/behaviours/`. VoiceIt plays them back with synthetic voices, screen content, light and sound.
 
-Forms and behaviour scripts are independent: any script can be played with any form. This makes it possible to test whether a behaviour suits a form, and to compare alternative designs side by side. All interaction is scripted; nothing is live. VoiceIt is intended for exploring many variations quickly, not for building a working product.
+A behaviour script reads like a screenplay. An excerpt from the example *Night light, night on ward 4*:
+
+```
+LIGHT: amber pulse dim
+Eva's message arrives. The device makes no sound.
+(pause 3)
+Joost notices the light and turns his head.
+JOOST (low): What is it?
+SCREEN: word Eva
+DEVICE (quietly): A message from Eva.
+SCREEN: choice Eva's message | Show text | Later
+TOUCH: Show text
+```
+
+Plain lines say what happens. A name in capitals speaks, with its manner in brackets; `DEVICE` is the product. `LIGHT`, `SCREEN` and `SOUND` are what the product lights, shows and sounds; `TOUCH` is someone tapping the screen; `(pause 3)` is three seconds of silence. The full notation is in `system/SCREENPLAY.md`.
+
+Any script can be played with any form, to judge whether appearance and behaviour fit, and to compare alternatives side by side.
 
 **How to use it:** the [guide](GUIDE.md) explains the screen, how to define a behaviour, and exactly what to say to your agent.
 
