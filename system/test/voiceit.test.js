@@ -196,7 +196,7 @@ test('the Setup tab says the same as step 1 of the tutorial, word for word', () 
 
 test('the page asks for voiceit.js by the current version (browsers may keep an old copy)', () => {
   const html = fs.readFileSync(path.join(root, 'system', 'voiceit.html'), 'utf8');
-  assert.match(html, new RegExp(`<script src="voiceit\\.js\\?v=${VoiceIt.VERSION.replace(/\./g, '\\.')}"></script>`), 'set ?v= in voiceit.html to VERSION');
+  assert.match(html, new RegExp(`<script src="voiceit\\.js\\?v=${VoiceIt.VERSION.replace(/\./g, '\\.')}(?:-[0-9a-f]{7,40})?"></script>`), 'set ?v= in voiceit.html to VERSION, optionally followed by a commit suffix');
 });
 
 test('the version matches the newest entry in CHANGELOG.md', () => {
