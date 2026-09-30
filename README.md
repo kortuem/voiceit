@@ -118,6 +118,8 @@ The [tutorial](TUTORIAL.md) takes you step by step: setting up, playing a short 
 
 ## Status and licence
 
+Created by Gerd Kortuem · TU Delft. For IDEM307 — Generative AI and Design. Developed with OpenAI Codex and Anthropic Claude. Tour video produced with Claude; AI narration: ElevenLabs (elevenlabs.io).
+
 VoiceIt is in development, for the course IDEM307 at TU Delft. This is version 0.5.1, an early release; what changed from version to version is in [CHANGELOG.md](CHANGELOG.md). Report problems in [GitHub Issues](https://github.com/kortuem/voiceit/issues) (needs a GitHub account) or tell your teacher. For maintainers: `node --test system/test/voiceit.test.js` runs the tests.
 
 The code and the example files are under the [MIT licence](LICENSE). The smart speaker photo above is not part of the repository; it is shown from Wikimedia Commons under its own licence, CC BY-SA 4.0. Visual style after Vlak (vlak.dev) by Renn, Noord.

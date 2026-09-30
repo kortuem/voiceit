@@ -17,7 +17,7 @@ Repairs from the final review of 0.5.0, each with a regression test; a simpler t
   - VoiceIt online reminds you to open your folder again after a reload, and says so when it loses access to a followed folder.
   - A stopped preview is reported, and its return too, instead of silently showing the old state.
 - **Tutorial:** eight steps; "check the fit" is now part of revising, and changing VoiceIt itself is an optional last step.
-- **About:** two sentences reworded.
+- **About:** two sentences reworded, and credits added (also in the README).
 - **Tour video:** the new version, narration generated on a paid ElevenLabs plan (voice River), with a shared end card and credits.
 
 ## 0.5.0 (29 September 2026)
