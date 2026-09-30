@@ -9,7 +9,7 @@
 'use strict';
 
 // the version shown by the page and the preview; add a matching entry at the top of CHANGELOG.md
-const VERSION = '0.5.0';
+const VERSION = '0.5.1';
 const RESERVED = ['DEVICE', 'SCREEN', 'LIGHT', 'SOUND', 'TOUCH'];
 const KINDS = ['component', 'light', 'modifier', 'sound', 'voice', 'manner'];
 const NUMERIC = ['pitch', 'rate', 'volume'];
@@ -34,6 +34,8 @@ function parseVocabulary(md){
     const e = {};
     m[2].split('\n').forEach(l => { const i = l.indexOf(':'); if (i > 0) e[l.slice(0, i).trim().toLowerCase()] = l.slice(i + 1).trim(); });
     if (!e.name) { v.problems.push({ln, msg:`A ${kind} entry has no name.`}); continue; }
+    // names end up in the page and in scripts: plain words only
+    if (!SAFE_NAME.test(e.name)) { v.problems.push({ln, msg:`“${e.name}”: a name may contain only letters, digits, spaces and hyphens.`}); continue; }
     NUMERIC.forEach(k => {
       if (!(k in e)) return;
       const n = parseFloat(e[k]);
@@ -41,7 +43,10 @@ function parseVocabulary(md){
     });
     if (kind === 'voice' && (typeof e.pitch !== 'number' || typeof e.rate !== 'number')) v.problems.push({ln, msg:`Voice ${e.name} needs pitch and rate.`});
     if (kind === 'light' && !/^#[0-9a-f]{6}$/i.test(e.colour || '')) v.problems.push({ln, msg:`Light ${e.name} needs a colour like #FFB547.`});
-    if (kind === 'manner') e.words = (e.words || e.name).split(',').map(w => w.trim().toLowerCase()).filter(Boolean);
+    if (kind === 'manner') {
+      e.words = (e.words || e.name).split(',').map(w => w.trim().toLowerCase()).filter(Boolean);
+      if (e.words.some(w => !SAFE_NAME.test(w))) { v.problems.push({ln, msg:`${e.name}: manner words may contain only letters, digits, spaces and hyphens.`}); continue; }
+    }
     const key = kind === 'voice' ? e.name : e.name.toLowerCase();
     if (v[kind][key]) v.problems.push({ln, msg:`${kind} ${e.name} is defined twice.`});
     v[kind][key] = e;
@@ -66,6 +71,8 @@ function frontMatter(txt){
 const PAUSE_RE = /^\(\s*(beat|pause)\b([^)]*)\)$/i;   // (beat), (pause 3); the number is checked below
 const SECONDS_RE = /^\d+(\.\d+)?\s*(s|secs?|seconds?)?$/i;
 const LONG_PAUSE = 60;
+const MAX_PAUSE = 3600, MAX_PAUSES = 3600;   // an hour: anything longer cannot be a scene, and would stall the timeline
+const SAFE_NAME = /^[A-Za-z0-9](?:[A-Za-z0-9 -]{0,38}[A-Za-z0-9])?$/;
 const CUE_RE = /^(SCREEN|LIGHT|SOUND|TOUCH)\s*:\s*(.*)$/i;
 const SPEECH_RE = /^(\p{Lu}[\p{Lu}\p{N} .'’-]*?)\s*(?:\(([^)]*)\))?\s*:\s*(.+)$/u;
 const LOOKS_NAME_RE = /^(\p{L}[\p{L}\p{N}_ .'’-]{0,30}?)\s*(?:\([^)]*\))?\s*:\s*\S/u;
@@ -92,6 +99,7 @@ function parseScript(txt, vocab){
       if (/^\d+,\d+\s*(s|secs?|seconds?)?$/i.test(arg)) { errors.push({ln, msg:`“(pause ${arg})”: write the number with a point, not a comma: (pause ${arg.replace(',', '.').replace(/\s*[a-z]+$/i, '')}). Not played.`}); return; }
       if (!SECONDS_RE.test(arg)) { errors.push({ln, msg:`“(pause${arg ? ' ' + arg : ''})” needs a number of seconds, like (pause 3). Not played.`}); return; }
       const secs = parseFloat(arg);
+      if (!Number.isFinite(secs) || secs > MAX_PAUSE) { errors.push({ln, msg:`“(pause ${arg})” is too long: a pause can last at most an hour (3600 seconds). Not played.`}); return; }
       if (secs === 0) warnings.push({ln, msg:'(pause 0) adds no silence.'});
       if (secs > LONG_PAUSE) warnings.push({ln, msg:`A pause of ${secs} seconds is very long. Is that intended?`});
       lines.push({kind:'pause', secs, ln, text:`${secs} seconds`}); return;
@@ -294,6 +302,8 @@ function validateBehaviour(text, vocab){
       warnings.push({ln:lineOf(whos[whos.length - 1]), msg:msg[0].toUpperCase() + msg.slice(1)});
     });
   }
+  const paused = p.lines.filter(l => l.kind === 'pause').reduce((a, l) => a + l.secs, 0);
+  if (paused > MAX_PAUSES) errors.push({ln:1, msg:`The pauses add up to ${Math.round(paused / 60)} minutes; a script can pause at most an hour in total.`});
   if (!p.lines.length) warnings.push({ln:1, msg:'The script has no lines yet.'});
   const byLine = (a, b) => a.ln - b.ln;
   return {parsed:p, errors:errors.sort(byLine), warnings:warnings.sort(byLine)};

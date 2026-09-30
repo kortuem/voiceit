@@ -335,7 +335,7 @@ body.watching .wprog:focus-visible{outline:2px solid var(--ink);outline-offset:2
       <div id="scriptMeta" class="smeta"></div>
       <div class="check" id="check"></div>
       <ol class="transcript" id="transcript"></ol>
-      <p class="note">To change the script, ask your agent or edit the file. VoiceIt shows the change within a few seconds.</p>
+      <p class="note" id="scriptNote">To change the script, ask your agent or edit the file. VoiceIt shows the change within a few seconds.</p>
     </aside>
   </main>
 
@@ -351,7 +351,7 @@ body.watching .wprog:focus-visible{outline:2px solid var(--ink);outline-offset:2
         <figcaption>A tour of VoiceIt, about one and a half minutes, with sound. It shows an earlier version; the steps are the same.</figcaption>
       </figure>
       <p>VoiceIt is a rapid prototyping tool for products that listen and speak, such as smart speakers. People's experience of such a product depends on its timing, wording and voice, and on who else is present. It might give useful advice but interrupt at the wrong moment, speak too formally, or address the wrong person. That is hard to judge on paper. In VoiceIt, you write the behaviour as a script and play it back with synthetic voices, screen content, light and sound.</p>
-      <p>A prototype has two parts. The <b>form</b> is the physical shape of the product: one image. The <b>behaviour</b> is a script of how the product acts: what it says and when, what it shows on its screen, and what its light and sounds do. Any behaviour can be played with any form, to test whether the two suit each other and to compare alternatives.</p>
+      <p>A prototype combines a form and a behaviour. The <b>form</b> is the physical shape of the product: one image. The <b>behaviour</b> is a script of how the product acts: what it says and when, what it shows on its screen, and what its light and sounds do. Any behaviour can be played with any form, to test whether the two suit each other and to compare alternatives.</p>
       <p>The <b>character</b> is the impression people form of who the product is when they play a behaviour with a form, and it is what you judge. A script gives the character a name (<code>character: Night light</code>); its lines, timing, screen content, light and sound define how the product behaves.</p>
       <h3>Workflow</h3>
       <ol>
@@ -371,7 +371,7 @@ body.watching .wprog:focus-visible{outline:2px solid var(--ink);outline-offset:2
     </section>
     <section>
       <h2>Vocabulary</h2>
-      <p>A script uses only these. The list is read from <code>system/VOCABULARY.md</code>; the notation is in <code>system/SCREENPLAY.md</code>.</p>
+      <p>Scripts can use the screen components, lights, sounds, voices and manner words listed here, and nothing else. The list comes from <code>system/VOCABULARY.md</code>; the notation is in <code>system/SCREENPLAY.md</code>.</p>
       <div id="vocabRef"></div>
     </section>
     <section>
@@ -473,7 +473,7 @@ body.watching .wprog:focus-visible{outline:2px solid var(--ink);outline-offset:2
               <li><b>Windows:</b> open the <code>voiceit</code> folder in File Explorer, click the address bar, type <code>cmd</code>, press Enter.</li>
             </ul>
           </details></li>
-        <li><b>Check the sound.</b> Open VoiceIt's <b>Setup</b> tab and press <i>Play the voices</i>. You hear each voice of the catalogue as your laptop plays it (fewer different ones if your laptop has only a few), and the checks in the same tab all say <i>Yes</i>. If a voice sounds wrong for its description, a man's voice for a high voice for example, choose another laptop voice for it in the table below the button.</li>
+        <li><b>Check the sound.</b> Open VoiceIt's <b>Setup</b> tab and press <i>Play the voices</i>. You hear each voice of the catalogue as your laptop plays it (fewer different ones if your laptop has only a few), and the checks under <i>Needed to play</i> say <i>Yes</i>. If a voice sounds wrong for its description, a man's voice for a high voice for example, choose another laptop voice for it in the table below the button.</li>
         <li><b>Better voices (optional, takes a few minutes).</b> The standard voices sound robotic; better ones make the scripts much easier to judge. VoiceIt picks the best voices it finds by itself.
           <ul>
             <li><b>Mac:</b> System Settings › Accessibility › Spoken Content › System voice › Manage Voices…. Under English, download a few voices marked <b>Premium</b> or <b>Enhanced</b>, for example Jamie, Daniel, Serena, Karen and Ava (low and high voices both help). Restart the browser, then play the voices again.</li>
@@ -485,7 +485,10 @@ body.watching .wprog:focus-visible{outline:2px solid var(--ink);outline-offset:2
     </section>
     <section>
       <h2>Is this laptop ready?</h2>
+      <h3>Needed to play</h3>
       <ul id="setupChecks" class="checks"></ul>
+      <h3>Also useful</h3>
+      <ul id="setupExtra" class="checks"></ul>
       <h3>Voices</h3>
       <p><button class="btn" id="voiceTest" type="button">Play the voices</button> <button class="btn" id="soundTest" type="button">Play the sounds</button></p>
       <table class="vtable" id="voiceMap"></table>
@@ -494,7 +497,7 @@ body.watching .wprog:focus-visible{outline:2px solid var(--ink);outline-offset:2
 </div>
 
 <!-- the version in the address: a browser that kept an older voiceit.js (the host caches scripts for hours) fetches this one -->
-<script src="voiceit.js?v=0.5.0"></script>
+<script src="voiceit.js?v=0.5.1"></script>
 <script>
 document.getElementById('version').textContent='version '+VoiceIt.VERSION;
 (() => {
@@ -638,19 +641,20 @@ function buildLanes(ev, total, pct, opts){
     }
     else if(l.kind==='action'||l.kind==='pause') act+=`<div class="seg action" style="${w(e.start,e.end)}" title="${esc(l.text)}"></div>`;
     else if(l.kind==='touch') act+=`<div class="seg touch" style="${w(e.start,e.end)}" title="taps ${esc(l.target)}">tap</div>`;
-    else if(l.kind==='sound') snd+=`<div class="mark" style="left:${pct(e.start)}" title="${l.sound}"></div>`;
+    else if(l.kind==='sound') snd+=`<div class="mark" style="left:${pct(e.start)}" title="${esc(l.sound)}"></div>`;
   });
   // screen and light hold from one cue to the next
   const spans=kind=>{ const out=[]; let prev=null; ev.forEach(e=>{ if(e.l.kind===kind){ if(prev) prev.end=e.start; prev={start:e.start,end:total,l:e.l}; out.push(prev);} }); return out; };
   spans('screen').forEach(s=>{ const blank=s.l.comp==='blank'; const txt=blank?'blank':`${s.l.comp}: ${s.l.parts.filter(Boolean).join(' | ')}`; if(s.end>s.start) scr+=`<div class="seg screen${blank?' blank':''}" style="${w(s.start,s.end)}" title="${esc(txt)}">${esc(txt)}</div>`; });
-  spans('light').forEach(s=>{ if(s.l.off||s.end<=s.start) return; const c=lightColour(s.l.colour); const bg=s.l.pulse?`repeating-linear-gradient(90deg,${c} 0 10px,transparent 10px 16px)`:c; lig+=`<div class="seg light" style="${w(s.start,s.end)};background:${bg};opacity:${s.l.dim?.45:1}" title="${[s.l.colour,s.l.pulse&&'pulse',s.l.dim&&'dim'].filter(Boolean).join(' ')}"></div>`; });
+  spans('light').forEach(s=>{ if(s.l.off||s.end<=s.start) return; const c=lightColour(s.l.colour); const bg=s.l.pulse?`repeating-linear-gradient(90deg,${c} 0 10px,transparent 10px 16px)`:c; lig+=`<div class="seg light" style="${w(s.start,s.end)};background:${bg};opacity:${s.l.dim?.45:1}" title="${esc([s.l.colour,s.l.pulse&&'pulse',s.l.dim&&'dim'].filter(Boolean).join(' '))}"></div>`; });
   const lanes = [{name:'Action',html:act}, ...who.map(n=>({name:nameOf(n),role:roleOf(n),html:per[n],cls:'who'})), {name:opts.name,html:dev,cls:'dev'}, {name:'Screen',html:scr,split:true}, {name:'Light',html:lig}, {name:'Sound',html:snd}];
   return {
     names:'<div class="tl-name ruler"></div>'+lanes.map(l=>`<div class="tl-name ${l.cls||''}" title="${esc(l.name)}${l.role?' · '+esc(l.role):''}">${esc(l.name)}${l.role?`<span class="role"> ${esc(l.role)}</span>`:''}</div>`).join(''),
     lanes:lanes.map(l=>`<div class="lane${l.split?' split':''}">${l.html}</div>`).join('')
   };
 }
-function ruler(total, pct){ const step = total>120?20: total>60?10:5; let r=''; for(let t=0;t<=total;t+=step) r+=`<span class="tick" style="left:${pct(t)}">${fmt(t)}</span>`; return r; }
+function ruler(total, pct){ if(!Number.isFinite(total)) return '';
+  const step=[5,10,20,30,60,120,300,600,1200,1800,3600].find(s=>total/s<=40)||Math.ceil(total/40); let r=''; for(let t=0;t<=total;t+=step) r+=`<span class="tick" style="left:${pct(t)}">${fmt(t)}</span>`; return r; }
 
 /* ---------- Play: the timeline and playback ---------- */
 const track=$('#track'), head=$('#head');
@@ -835,7 +839,7 @@ function renderList(){
     : `<div class="blist-empty">None of your own yet. Tell your agent how your product should behave; it writes the script into <code>design/behaviours/</code>. Or ask it to copy an example there to start from.</div>`;
   const ctl = live ? '' : `<div class="bopen">${folderControl()}</div>`;
   $('#blist').innerHTML=`<p class="bgroup">Yours</p>`+ctl+(own.length?own.map(row).join(''):empty)+(ex.length?`<p class="bgroup">Examples</p>`+ex.map(row).join(''):'');
-  bindFolderInputs(); document.querySelectorAll('[data-pick]').forEach(b=>{ b.onclick=pickFolder; });
+  bindFolderInputs(); document.querySelectorAll('[data-pick]').forEach(b=>{ b.onclick=pickFolder; }); updateNote();
   function row(k){
     const b=data.behaviours[k], {r,s}=summary[k];
     const segs=s.ev.filter(e=>e.l.kind==='speech').map(e=>`<i class="${e.l.device?'d':''}" style="left:${e.start/max*100}%;width:${Math.max(.4,(e.end-e.start)/max*100)}%"></i>`).join('');
@@ -888,6 +892,7 @@ function reparse(){
   else { check.className='check'; check.textContent=`Reads cleanly · ${r.parsed.lines.length} lines · about ${fmt(sched.total)}`; }
   renderTranscript(text, r);
   drawTimeline(); seekIndex(0);
+  if(serverDown) say(STOPPED);   // the stopped preview stays reported while you switch scripts or tabs
 }
 $('#blist').addEventListener('click',e=>{ const row=e.target.closest('.brow'); if(!row) return; cur.b=row.dataset.k; select(); });
 $('#blist').addEventListener('keydown',e=>{
@@ -974,10 +979,12 @@ function drawSetup(){
   const nLow=sysVoices.filter(x=>registerOf(x)==='lower').length, nHigh=sysVoices.filter(x=>registerOf(x)==='higher').length;
   const catLow=vocab?Object.values(vocab.voice).filter(v=>/^(low|mid-low)$/.test(v.range||'')).length:0, catHigh=vocab?Object.keys(vocab.voice).length-catLow:0;
   $('#setupChecks').innerHTML =
-    ok(live, 'VoiceIt was started with node system/bin/preview.', hosted ? 'This is VoiceIt online: fine for playing. Your agent needs Node to run the check (step 5).' : 'You opened the page directly. That works, but see step 5, or “Without Node”.')+
     ok(!!vocab, 'The vocabulary is loaded.', 'Start VoiceIt with the preview, or open the voiceit folder.')+
     ok(nb>0, `${plural(nb,'behaviour')} and ${plural(nf,'form')} found.`, 'No behaviours yet: start with the preview, or open the voiceit folder.')+
-    ok(hasSpeech && sysVoices.length>0, hasSpeech ? `${plural(sysVoices.length,'voice')} available in this browser.` : 'This browser cannot speak.', 'No voices found. Try another browser (Edge on Windows, Safari or Chrome on a Mac).')+
+    ok(hasSpeech && sysVoices.length>0, hasSpeech ? `${plural(sysVoices.length,'voice')} available in this browser.` : 'This browser cannot speak.', 'No voices found. Try another browser (Edge on Windows, Safari or Chrome on a Mac).');
+  $('#setupExtra').innerHTML =
+    ok(live && !serverDown, 'VoiceIt was started with node system/bin/preview. Your agent needs it to check scripts, and changes to VoiceIt itself run only there.',
+      serverDown ? 'VoiceIt on this laptop has stopped. Start it again in the terminal: node system/bin/preview' : hosted ? 'This is VoiceIt online: fine for playing and for your own folder.' : 'You opened the page directly. That works for playing; see step 5.')+
     (sysVoices.length ? ok(nLow>=catLow && nHigh>=catHigh, `${plural(nLow,'lower voice')} and ${plural(nHigh,'higher voice')} recognised.`,
       nLow+nHigh===0 ? 'VoiceIt cannot tell low from high voices here. Listen to each voice below and choose a fitting laptop voice for it.'
       : `The catalogue has ${catLow} low and ${catHigh} high voices, so some will sound alike here. Download more voices (Better voices, below), or listen and choose voices in the table.`) : '');
@@ -1017,7 +1024,15 @@ $('#soundTest').addEventListener('click',async()=>{
 // Three ways in: the preview on this laptop (live: the design folder is followed by itself); VoiceIt online
 // (hosted: the examples come with the page, your own folder is opened in the browser); or the file opened directly.
 const httpPage = /^https?:$/.test(location.protocol);
-let live=false, hosted=false;
+let live=false, hosted=false, serverDown=false;
+const STOPPED = 'VoiceIt on this laptop has stopped, so changes no longer appear. Start it again in the terminal: node system/bin/preview';
+// what the script note can honestly promise: new versions appear by themselves only where VoiceIt can follow the folder
+function updateNote(){
+  const n=document.getElementById('scriptNote'); if(!n) return;
+  n.textContent = live || dirHandle ? 'To change the script, ask your agent or edit the file. VoiceIt shows the change within a few seconds.'
+    : openedByHand ? 'To change the script, ask your agent or edit the file, then open the folder again to see the change.'
+    : 'The examples cannot be changed here. To play your own scripts, open your voiceit folder in the list.';
+}
 let lastJSON='', lastVocab='';
 let openedByHand=false;            // a folder was opened in the browser
 async function fetchDesign(keep){
@@ -1026,12 +1041,14 @@ async function fetchDesign(keep){
     const [vr, dr] = await Promise.all([fetch('VOCABULARY.md',{cache:'no-store'}), fetch('../design.json',{cache:'no-store'})]);
     if(!vr.ok || !dr.ok) throw new Error('not served by bin/preview');
     const vt=await vr.text(), dt=await dr.text();
+    if(serverDown){ serverDown=false; say('VoiceIt on this laptop is running again.'); if(cur.tab==='setup') drawSetup(); }
     if(vt===lastVocab && dt===lastJSON) return;
     lastVocab=vt; lastJSON=dt;
     if(!setVocab(vt)) return;
     loadData(JSON.parse(dt));
   }catch(e){
     if(!keep) say('Could not load the design folder. Start VoiceIt with: node system/bin/preview.');
+    else if(live && !serverDown){ serverDown=true; say(STOPPED); if(cur.tab==='setup') drawSetup(); }
   }
 }
 // VoiceIt online: the examples are listed in examples/index.json, because a web host cannot list a folder
@@ -1046,7 +1063,9 @@ async function startHosted(){
     const md=async n=>({path:'examples/behaviours/'+n, text:await (await fetch('../examples/behaviours/'+encodeURIComponent(n),{cache:'no-store'})).text()});
     exampleFiles=[...await Promise.all(idx.behaviours.map(md)), ...idx.forms.map(n=>({path:'examples/forms/'+n, url:'../examples/forms/'+encodeURIComponent(n)}))];
     combine();
-    say('This is VoiceIt online: the examples play here. To play your own scripts, open your voiceit folder in the list; the files stay on your laptop.');
+    let reopened=false; try{ reopened=!!sessionStorage.getItem('voiceit.folder'); }catch(e){}
+    say(reopened ? 'The browser forgets an opened folder when the page is reloaded. Open your voiceit folder again in the list.'
+      : 'This is VoiceIt online: the examples play here. To play your own scripts, open your voiceit folder in the list; the files stay on your laptop.');
   }catch(e){ say('Could not load VoiceIt online. Check the internet connection, or start VoiceIt on this laptop with: node system/bin/preview'); }
 }
 // a folder opened in Chrome or Edge is followed like the preview does: new and changed files appear by themselves
@@ -1086,7 +1105,9 @@ async function readPicked(quiet){
       else if(/\.(md|png|jpe?g|webp|svg)$/i.test(name)) found.push({p:prefix+'/'+name, f:await e.getFile()});
     }
   }
-  try{ await walk(dirHandle, dirHandle.name, 0); }catch(err){ if(!quiet) say('Could not read that folder. Choose it again.'); return; }
+  try{ await walk(dirHandle, dirHandle.name, 0); }catch(err){
+    if(!quiet){ say('Could not read that folder. Choose it again.'); return; }
+    dirHandle=null; say('VoiceIt can no longer read your folder. Open your voiceit folder again in the list.'); renderList(); return; }
   const sig=found.map(x=>x.p+':'+x.f.lastModified+':'+x.f.size).join('|');
   if(sig===folderSig) return;
   folderSig=sig;
@@ -1106,6 +1127,7 @@ function useFolder(list, quiet){
   const own=Object.values(d.behaviours).some(b=>!b.example) || Object.values(d.forms).some(f=>!f.example);
   if(!own && !Object.keys(d.behaviours).length && !quiet){ say('No scripts or forms found in that folder. Choose the voiceit folder (the one with design/ inside).'); setTab('play'); return; }
   folderFiles=list; openedByHand=true;
+  try{ sessionStorage.setItem('voiceit.folder', '1'); }catch(e){}   // after a reload the browser forgets the folder: see startHosted
   if(hosted) combine(); else loadData(d);
 }
 function bindFolderInputs(){ document.querySelectorAll('input[data-folder]:not([data-bound])').forEach(inp=>{ inp.dataset.bound='1'; inp.addEventListener('change',onFolder); }); }

@@ -4,6 +4,22 @@ What changed from one version of VoiceIt to the next, newest first. Versions bel
 
 For maintainers: when releasing, set `VERSION` in `system/voiceit.js` and the `?v=` of `voiceit.js` in `system/voiceit.html`, add an entry here with the same number, and tag the commit. The tests check that the three numbers match.
 
+## 0.5.1 (30 September 2026)
+
+Repairs from the final review of 0.5.0, each with a regression test; a simpler tutorial; the new tour video.
+
+- **Preview file boundary:** the preview served and listed files through symbolic links, also ones pointing outside the project or at hidden files. It now follows a link only when its real target lies inside the project and is not hidden, for serving and for the file list alike.
+- **Timeline markup:** a sound or light name from a vocabulary reached the timeline unescaped. Every imported field is now escaped, and vocabulary names may contain only letters, digits, spaces and hyphens (anything else is a problem in `VOCABULARY.md`).
+- **Durations:** a pause is at most an hour, and all pauses together at most an hour; a pause such as 310 nines was accepted and froze the timeline. The ruler shows at most about 40 marks for any length.
+- **Setup and refresh:**
+  - The checks are split into *Needed to play* and *Also useful*, and the tutorial now says that the first group should say Yes; the old "all say Yes" was impossible online.
+  - The note under the script says what really happens: automatic updates only where VoiceIt can follow the folder, otherwise "open the folder again".
+  - VoiceIt online reminds you to open your folder again after a reload, and says so when it loses access to a followed folder.
+  - A stopped preview is reported, and its return too, instead of silently showing the old state.
+- **Tutorial:** eight steps; "check the fit" is now part of revising, and changing VoiceIt itself is an optional last step.
+- **About:** two sentences reworded.
+- **Tour video:** the new version, narration generated on a paid ElevenLabs plan (voice River), with a shared end card and credits.
+
 ## 0.5.0 (29 September 2026)
 
 After a review of the tutorial. The repository is now about the tool only: assignments live with the course, not here.

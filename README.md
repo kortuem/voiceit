@@ -8,9 +8,9 @@ With VoiceIt, designers can make early design decisions that are difficult to as
 
 ## Watch the tour
 
-[![Watch the tour: VoiceIt in 1 minute 26 seconds](media/voiceit-demo-poster.jpg)](https://github.com/kortuem/voiceit/raw/main/media/voiceit-demo.mp4)
+[![Watch the tour: VoiceIt in 1 minute 32 seconds](media/voiceit-demo-poster.jpg)](https://github.com/kortuem/voiceit/raw/main/media/voiceit-demo.mp4)
 
-A short tour, with sound (click the image to download it, 7 MB): start VoiceIt, pick a script and a form, play it, inspect a moment, edit the script and play it again. The video is also in your copy of the repository, in `media/`, with subtitles (`voiceit-demo.srt`).
+A short tour, with sound (click the image to download it, 7.5 MB): start VoiceIt, pick a script and a form, play it, inspect a moment, edit the script and play it again. The video is also in your copy of the repository, in `media/`, with subtitles (`voiceit-demo.srt`). Narration: ElevenLabs (elevenlabs.io), voice River.
 
 ![Three smart speakers on a table: a Google Home, a Google Nest Hub with a screen, and a Google Home Mini](https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Google_Home_with_Home_Hub_and_Home_Mini_on_table.jpg/960px-Google_Home_with_Home_Hub_and_Home_Mini_on_table.jpg)
 
@@ -118,6 +118,6 @@ The [tutorial](TUTORIAL.md) takes you step by step: setting up, playing a short 
 
 ## Status and licence
 
-VoiceIt is in development, for the course IDEM307 at TU Delft. This is version 0.5.0, an early release; what changed from version to version is in [CHANGELOG.md](CHANGELOG.md). Report problems in [GitHub Issues](https://github.com/kortuem/voiceit/issues) (needs a GitHub account) or tell your teacher. For maintainers: `node --test system/test/voiceit.test.js` runs the tests.
+VoiceIt is in development, for the course IDEM307 at TU Delft. This is version 0.5.1, an early release; what changed from version to version is in [CHANGELOG.md](CHANGELOG.md). Report problems in [GitHub Issues](https://github.com/kortuem/voiceit/issues) (needs a GitHub account) or tell your teacher. For maintainers: `node --test system/test/voiceit.test.js` runs the tests.
 
 The code and the example files are under the [MIT licence](LICENSE). The smart speaker photo above is not part of the repository; it is shown from Wikimedia Commons under its own licence, CC BY-SA 4.0. Visual style after Vlak (vlak.dev) by Renn, Noord.

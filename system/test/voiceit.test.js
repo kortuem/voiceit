@@ -211,3 +211,59 @@ test('examples/index.json lists exactly the example files (VoiceIt online reads 
   assert.deepStrictEqual(idx.behaviours, list('behaviours', /\.md$/i), 'update examples/index.json after adding or removing an example');
   assert.deepStrictEqual(idx.forms, list('forms', /\.(png|jpe?g|webp|svg)$/i), 'update examples/index.json after adding or removing an example form');
 });
+
+test('a pause must be a finite number of at most an hour, and all pauses together at most an hour', () => {
+  assert.strictEqual(lines(check(`(pause ${'9'.repeat(310)})\nDEVICE: Hi.\n`)), 'E5');
+  assert.strictEqual(lines(check('(pause 4000)\nDEVICE: Hi.\n')), 'E5');
+  const many = Array.from({length: 3}, () => '(pause 1500)').join('\n') + '\n';
+  const r = check(many);
+  assert.ok(r.errors.some(e => /pauses add up/.test(e.msg)), 'aggregate');
+  assert.ok(r.parsed.lines.every(l => l.kind !== 'pause' || Number.isFinite(l.secs)));
+});
+
+test('vocabulary names are plain words, so they cannot carry markup into the page', () => {
+  const md = fs.readFileSync(path.join(root, 'system', 'VOCABULARY.md'), 'utf8');
+  const bad = VoiceIt.parseVocabulary(md.replace('name: chime', 'name: x"><svg/onload=window.__voiceitqa=1>'));
+  assert.ok(bad.problems.some(p => /only letters, digits, spaces and hyphens/.test(p.msg)));
+  assert.ok(!Object.keys(bad.sound).some(n => /[<>"]/.test(n)));
+});
+
+test('the timeline escapes every imported field, and its ruler stays short for any length', () => {
+  const html = fs.readFileSync(path.join(root, 'system', 'voiceit.html'), 'utf8');
+  const lanes = html.slice(html.indexOf('function buildLanes'), html.indexOf('function ruler'));
+  assert.doesNotMatch(lanes, /title="\$\{(?!esc\(|tip\})/, 'a title attribute without esc()');   // tip is built with esc() just before
+  const src = html.slice(html.indexOf('function ruler'), html.indexOf('\n', html.indexOf('return r; }', html.indexOf('function ruler'))));
+  const ruler = new Function('fmt', `${src}; return ruler;`)(t => String(t));
+  for (const total of [30, 900, 3600 * 5, 1e7]) assert.ok((ruler(total, t => '0%').match(/class="tick"/g) || []).length <= 41, `ticks for ${total}`);
+  assert.strictEqual(ruler(Infinity, () => '0%'), '');
+});
+
+test('the preview serves and lists only real paths inside the project, never through links out or to hidden files', async () => {
+  const os = require('os'), http = require('http');
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'voiceit-boundary-')), proj = path.join(tmp, 'voiceit'), out = path.join(tmp, 'outside');
+  for (const f of ['voiceit.js', 'voiceit.html', 'VOCABULARY.md', 'bin/preview']) { fs.mkdirSync(path.dirname(path.join(proj, 'system', f)), {recursive: true}); fs.copyFileSync(path.join(root, 'system', f), path.join(proj, 'system', f)); }
+  const beh = path.join(proj, 'design', 'behaviours'); fs.mkdirSync(beh, {recursive: true}); fs.mkdirSync(path.join(out, 'dir'), {recursive: true});
+  const script = '---\ncharacter: X\nvoice: Ash\n---\nDEVICE: Hi.\n';
+  fs.writeFileSync(path.join(beh, 'own.md'), script); fs.writeFileSync(path.join(proj, 'design', 'kept.md'), script);
+  fs.writeFileSync(path.join(out, 'x.md'), script); fs.writeFileSync(path.join(out, 'secret.txt'), 'SECRET'); fs.writeFileSync(path.join(out, 'dir', 'y.md'), script);
+  fs.writeFileSync(path.join(proj, '.hidden-note.txt'), 'HIDDEN');
+  fs.symlinkSync(path.join(out, 'x.md'), path.join(beh, 'leak.md'));                 // an outside behaviour
+  fs.symlinkSync(path.join(out, 'secret.txt'), path.join(proj, 'design', 'secret.txt')); // an outside file
+  fs.symlinkSync(path.join(out, 'dir'), path.join(beh, 'outdir'));                    // an outside folder
+  fs.symlinkSync(path.join(proj, '.hidden-note.txt'), path.join(proj, 'design', 'alias.txt')); // a hidden target
+  fs.symlinkSync(path.join(proj, 'design', 'kept.md'), path.join(beh, 'inside.md'));  // a link that stays inside: allowed
+  const port = 4600 + Math.floor(Math.random() * 300);
+  const srv = require('child_process').spawn(process.execPath, [path.join(proj, 'system', 'bin', 'preview'), '--port', String(port), '--no-open'], {stdio: ['ignore', 'pipe', 'pipe']});
+  try {
+    // the preview moves to the next free port if this one is taken: read the one it reports
+    const at = await new Promise((res, rej) => { let o = ''; srv.stdout.on('data', d => { o += d; const m = o.match(/127\.0\.0\.1:(\d+)/); if (m) res(+m[1]); }); setTimeout(() => rej(new Error('preview did not start')), 5000); });
+    const get = p => new Promise((res, rej) => http.get({host: '127.0.0.1', port: at, path: p}, r => { let b = ''; r.on('data', d => b += d); r.on('end', () => res({code: r.statusCode, body: b})); }).on('error', rej));
+    for (const p of ['/design/secret.txt', '/design/alias.txt', '/design/behaviours/leak.md', '/design/behaviours/outdir/y.md', '/design/..%2f..%2foutside/secret.txt', '/.hidden-note.txt'])
+      assert.strictEqual((await get(p)).code, 404, p);
+    assert.strictEqual((await get('/design/behaviours/own.md')).code, 200);
+    assert.strictEqual((await get('/design/behaviours/inside.md')).code, 200);
+    const d = JSON.parse((await get('/design.json')).body), keys = Object.keys(d.behaviours);
+    assert.ok(keys.includes('own') && keys.includes('inside'), keys.join());
+    assert.ok(!keys.includes('leak') && !keys.includes('y'), keys.join());
+  } finally { srv.kill(); fs.rmSync(tmp, {recursive: true, force: true}); }
+});

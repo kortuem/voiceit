@@ -2,9 +2,9 @@
 
 This tutorial takes you from setting up VoiceIt to behaviour scripts of your own, which you play, judge and demonstrate, and on to a change to VoiceIt itself. The ten steps come first; a [reference](#reference) for later follows. Background on VoiceIt is in the [README](README.md).
 
-**In short:** set up (1) → play a short example (2, 3) → bring in your product images (4) → plan a scene on paper (5) → let your agent write the scripts (6) → review and revise (7, 8) → pair, judge and demonstrate (9) → change the tool (10).
+**In short:** set up (1) → play a short example (2, 3) → bring in your product images (4) → plan a scene on paper (5) → let your agent write the scripts (6) → review and revise (7, 8) → optionally, change VoiceIt itself (9).
 
-New to VoiceIt? [Watch the tour](https://github.com/kortuem/voiceit/raw/main/media/voiceit-demo.mp4) first (1 min 26 s, with sound; a 7 MB download, also in `media/` in your copy).
+New to VoiceIt? [Watch the tour](https://github.com/kortuem/voiceit/raw/main/media/voiceit-demo.mp4) first (1 min 32 s, with sound; a 7.5 MB download, also in `media/` in your copy).
 
 Quick reference: [phrases for the agent](#phrases-for-the-agent), [commands](#commands), [troubleshooting](#troubleshooting), and the script notation in [system/SCREENPLAY.md](system/SCREENPLAY.md).
 
@@ -43,7 +43,7 @@ You need the **Claude desktop app** (its **Code** tab) or the **Codex** app, sig
    - **Windows:** open the `voiceit` folder in File Explorer, click the address bar, type `cmd`, press Enter.
 
    </details>
-6. **Check the sound.** Open VoiceIt's **Setup** tab and press *Play the voices*. You hear each voice of the catalogue as your laptop plays it (fewer different ones if your laptop has only a few), and the checks in the same tab all say *Yes*. If a voice sounds wrong for its description, a man's voice for a high voice for example, choose another laptop voice for it in the table below the button.
+6. **Check the sound.** Open VoiceIt's **Setup** tab and press *Play the voices*. You hear each voice of the catalogue as your laptop plays it (fewer different ones if your laptop has only a few), and the checks under *Needed to play* say *Yes*. If a voice sounds wrong for its description, a man's voice for a high voice for example, choose another laptop voice for it in the table below the button.
 7. **Better voices (optional, takes a few minutes).** The standard voices sound robotic; better ones make the scripts much easier to judge. VoiceIt picks the best voices it finds by itself.
    - **Mac:** System Settings › Accessibility › Spoken Content › System voice › Manage Voices…. Under English, download a few voices marked **Premium** or **Enhanced**, for example Jamie, Daniel, Serena, Karen and Ava (low and high voices both help). Restart the browser, then play the voices again.
    - **Windows:** use **Microsoft Edge**, which offers natural-sounding online voices (their names end in "Natural"). More voices can be added under Settings › Time & language › Speech › Manage voices; not every added voice is available to the browser. (Not yet tested on Windows.)
@@ -111,7 +111,7 @@ You can also attach a photo of your paper plan; then check the read-back especia
 2. Say **Go**. The agent writes the script into `design/behaviours/`, checks it, and tells you how long it plays and which decisions it made itself.
 3. Within a few seconds the script appears at the top of the list in VoiceIt, marked *just now*. You do not need to reload the page. Click it and press **Play**.
 
-A second product plays the same scene and plan with its own behaviour:
+To compare two products, a second one can play the same scene and plan with its own behaviour:
 
 > New behaviour script: Rex, night on ward 2. The same people and plan as Juno, but Rex answers aloud, in a brisk voice, and tells Joost what the nurse will do.
 
@@ -158,19 +158,11 @@ The agent changes the script, checks it, and says what it changed. If your remar
 
 The agent runs the check and explains what it finds, with line numbers, in plain words, and asks before fixing anything. Problems are also marked on their line in the script column (9).
 
-## 9. Pair, judge and demonstrate
+**Check the fit.** Click a script, then an image among the form images (3): does this behaviour suit this appearance? Play it with other images too, and play your scripts one after another or compare their rhythm strips in the list. Look at the details: when does the product speak first, and when does it wait? How much does it say? Whom does it address? What does it keep off the loudspeaker? Change the form or the behaviour and play it again. To show a script to others, press **Watch**: form, screen and light fill the window; *Space* plays and pauses, *Escape* brings you back.
 
-Click a script, then its product's image among the form images (3): VoiceIt plays the behaviour with that appearance.
+## 9. Optional: change VoiceIt itself
 
-- **Fit:** does this behaviour suit this appearance? Play each script with another image too.
-- **Contrast:** play your scripts one after another, or compare their rhythm strips in the list.
-- **Details:** when does it speak first, and when does it wait? How much does it say? Whom does it address? What does it keep off the loudspeaker? How does it handle not knowing something?
-
-Change the form or the behaviour and try again. To demonstrate, select a script and its image and press **Watch**: form, screen and light fill the window; *Space* plays and pauses, *Escape* brings you back.
-
-## 10. Change the tool
-
-Your agent can also change VoiceIt itself: add a feature, or change how something works. Changes like this run only in VoiceIt on your laptop (`node system/bin/preview`); VoiceIt online cannot run them.
+If you want to go further, your agent can also change VoiceIt itself: add a feature, or change how something works. Changes like this run only in VoiceIt on your laptop (`node system/bin/preview`); VoiceIt online cannot run them.
 
 1. **Save a version first:** *"Commit our work."* Then you can always go back.
 2. **Ask for the change explicitly, as a change to VoiceIt:**
@@ -196,7 +188,7 @@ Four phrases cover the whole cycle. For everything else, say what you want in yo
 | **Go** | When the read-back is right. | The agent writes the script, checks it and reports. |
 | **Check our scripts** | After you edited a script yourself, or when something does not play as expected. | The agent runs the check, explains what it finds with line numbers, and asks before fixing. |
 
-To revise a script, just say what should change (step 8). To change VoiceIt itself, say so explicitly (step 10). The agent can also copy an example for you to start from, or compare a character's scripts, if you ask. Saving versions and course updates are under Git, below.
+To revise a script, just say what should change (step 8). To change VoiceIt itself, say so explicitly (step 9). The agent can also copy an example for you to start from, or compare a character's scripts, if you ask. Saving versions and course updates are under Git, below.
 
 ## Commands
 
@@ -208,7 +200,7 @@ Type these in a terminal in the `voiceit` folder. Your agent runs the same comma
 | `node system/bin/preview --port 4400` | The same, on another port, if the usual one is taken. |
 | `node system/bin/check` | Checks every behaviour script in `design/behaviours/` and the examples. |
 | `node system/bin/check "design/behaviours/juno - visiting hour.md"` | Checks one script. Keep the quotes: file names contain spaces. |
-| `node --test system/test/voiceit.test.js` | Runs VoiceIt's own tests, after a change to VoiceIt (step 10). |
+| `node --test system/test/voiceit.test.js` | Runs VoiceIt's own tests, after a change to VoiceIt (step 9). |
 | `git pull --no-rebase` | Brings in a course update (see below). |
 
 The check prints one line per problem: the file, the line number, *error* or *warning*, and what to do. For example, after a few hand edits:
@@ -247,5 +239,5 @@ You do not need any of this to use VoiceIt. Your agent can do each step for you 
 - **Two people sound the same:** if the script column says so, your laptop has too few voices: download more (set-up step 7), or choose voices in the Setup tab. If the check warns that people share a voice, the script has more speakers than the catalogue has voices: let fewer people speak, as the warning says.
 - **No sound:** is *Sound on* (6)? Test the voices and the sounds in the Setup tab; voices differ between browsers and systems. If the voices play but the sounds do not, reload the page (VoiceIt 0.2.10 or later is needed in Safari).
 - **`node` is not found** right after installing Node.js: close the terminal and open a new one.
-- **Node will not install, or VoiceIt will not start:** use [VoiceIt online](https://kortuem.github.io/voiceit/) as a backup. Click **Open your voiceit folder** in the list and choose your `voiceit` folder; the files stay on your laptop. Chrome and Edge follow the folder, so new scripts appear by themselves; in Safari and Firefox, open the folder again after a change. Your agent cannot run the check without Node, so read the problems VoiceIt marks in the script column. This is enough to write and play scripts; changing VoiceIt itself (step 10) needs Node.
+- **Node will not install, or VoiceIt will not start:** use [VoiceIt online](https://kortuem.github.io/voiceit/) as a backup. Click **Open your voiceit folder** in the list and choose your `voiceit` folder; the files stay on your laptop. Chrome and Edge follow the folder, so new scripts appear by themselves; in Safari and Firefox, open the folder again after a change. Your agent cannot run the check without Node, so read the problems VoiceIt marks in the script column. This is enough to write and play scripts; changing VoiceIt itself (step 9) needs Node.
 - **The agent does not seem to know VoiceIt:** is the session on the `voiceit` folder itself? Say: *"Read AGENTS.md and follow it."*
