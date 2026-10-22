@@ -1,8 +1,8 @@
 # VoiceIt tutorial
 
-This tutorial takes you from setting up VoiceIt to behaviour scripts of your own, which you play, judge and demonstrate, and on to a change to VoiceIt itself. The ten steps come first; a [reference](#reference) for later follows. Background on VoiceIt is in the [README](README.md).
+This tutorial takes you from setting up VoiceIt to behaviour scripts of your own, which you play, judge and demonstrate. It works for an individual designer or a team, with or without an AI coding assistant. The nine steps come first; changing the tool in step 9 is optional. A [reference](#reference) for later follows. Background on VoiceIt is in the [README](README.md); teaching activities are in the separate [classroom guide](CLASSROOM.md).
 
-**In short:** set up (1) → play a short example (2, 3) → bring in your product images (4) → plan a scene on paper (5) → let your agent write the scripts (6) → review and revise (7, 8) → optionally, change VoiceIt itself (9).
+**In short:** set up (1) → play a short example (2, 3) → bring in your product images (4) → plan a scene on paper (5) → write a script, yourself or with an agent (6) → review and revise (7, 8) → optionally, change VoiceIt itself (9).
 
 New to VoiceIt? [Watch the tour](https://github.com/kortuem/voiceit/raw/main/media/voiceit-demo.mp4) first (1 min 32 s, with sound; a 7.5 MB download, also in `media/` in your copy).
 
@@ -16,25 +16,21 @@ Quick reference: [phrases for the agent](#phrases-for-the-agent), [commands](#co
 | **Form** | An image of the product: a drawing or a render. One file in `design/forms/`. |
 | **Behaviour script** | How the product behaves in one scene: who says what, when, and what the product shows, lights and sounds. One file in `design/behaviours/`. "Script" for short. |
 | **Character** | The impression of who the product is, formed by its form and its behaviour together. You do not write the character down: you judge it by playing a behaviour script with a form. A script only gives it a name (`character: Juno`). |
-| **Agent** | Your AI coding assistant, Claude Code or Codex, in a session on your `voiceit` folder. It writes, revises and checks behaviour scripts with you. |
+| **Agent** | An optional AI coding assistant, such as Claude Code or Codex, in a session on your `voiceit` folder. It writes, revises and checks behaviour scripts with you. It is not the simulated product. |
 | **VoiceIt** | The page in your browser that plays behaviour scripts. |
 
 ## 1. Set up
 
-You need the **Claude desktop app** (its **Code** tab) or the **Codex** app, signed in; **Git** (check with `git --version` in a terminal; on a Mac the first `git` command offers to install it, on Windows install [Git for Windows](https://git-scm.com/download/win)); and **Node.js 18 or newer** ([nodejs.org](https://nodejs.org), check with `node --version`).
+For the local version, you need **Node.js 18 or newer** ([nodejs.org](https://nodejs.org), check with `node --version`), a browser and a text editor. **Git** is useful for downloading updates and saving versions, but you can download a ZIP instead. An AI coding assistant is optional; playback needs no AI account or API key.
 
-1. **Make a folder for your course work**, for example `Documents/IDEM307`.
-2. **Get VoiceIt into it.** Open your agent with a new session on that folder (Claude: *Code* → new session → choose the folder; Codex: open the folder) and type:
-
-   > Clone https://github.com/kortuem/voiceit.git into this folder.
-
-   A folder `voiceit` appears. (Already cloned it in a terminal, as in the README? Skip this step and open that folder in step 3.)
-3. **Start a new session on the `voiceit` folder itself.** The folder carries its own instructions for the agent, in `AGENTS.md`; Claude Code and Codex read them by themselves when they work in this folder.
-4. **To be sure, start every new session with:**
+1. **Make a folder for your design work**, for example `Documents/Design`.
+2. **Get VoiceIt into it.** In a terminal in that folder, run `git clone https://github.com/kortuem/voiceit.git`. If you do not use Git, open the [repository](https://github.com/kortuem/voiceit), choose **Code → Download ZIP**, extract it and rename the extracted folder to `voiceit`. Already have a copy? Use that folder.
+3. **If using an AI assistant**, open a session on the `voiceit` folder itself, not its parent. Claude Code and Codex can use the repository's instructions; a text editor needs no agent setup.
+4. **For each new agent session, ask:**
 
    > Read AGENTS.md and follow it.
 
-   The agent replies that it has read the instructions.
+   Ask it to confirm that it has read the instructions. Skip this step if you are writing scripts yourself.
 5. **Start VoiceIt.** Open a terminal in the `voiceit` folder and type `node system/bin/preview`. Your browser opens VoiceIt. Leave the terminal open while you work; `Ctrl+C` stops it. (No Node? See [Troubleshooting](#troubleshooting): VoiceIt also runs online.)
 
    <details><summary>Opening a terminal in the <code>voiceit</code> folder</summary>
@@ -43,7 +39,7 @@ You need the **Claude desktop app** (its **Code** tab) or the **Codex** app, sig
    - **Windows:** open the `voiceit` folder in File Explorer, click the address bar, type `cmd`, press Enter.
 
    </details>
-6. **Check the sound.** Open VoiceIt's **Setup** tab and press *Play the voices*. You hear each voice of the catalogue as your laptop plays it (fewer different ones if your laptop has only a few), and the checks under *Needed to play* say *Yes*. If a voice sounds wrong for its description, a man's voice for a high voice for example, choose another laptop voice for it in the table below the button.
+6. **Check the sound.** Open VoiceIt's **Setup** tab and press *Play the voices*. You hear each voice of the catalogue as your laptop plays it (fewer different ones if your laptop has only a few), and the checks under *Needed to play* say *Yes*. If a voice does not suit the part, choose another laptop voice for it in the table below the button. Speech may use a local or online voice service, depending on your browser and selected voice.
 7. **Better voices (optional, takes a few minutes).** The standard voices sound robotic; better ones make the scripts much easier to judge. VoiceIt picks the best voices it finds by itself.
    - **Mac:** System Settings › Accessibility › Spoken Content › System voice › Manage Voices…. Under English, download a few voices marked **Premium** or **Enhanced**, for example Jamie, Daniel, Serena, Karen and Ava (low and high voices both help). Restart the browser, then play the voices again.
    - **Windows:** use **Microsoft Edge**, which offers natural-sounding online voices (their names end in "Natural"). More voices can be added under Settings › Time & language › Speech › Manage voices; not every added voice is available to the browser. (Not yet tested on Windows.)
@@ -90,18 +86,20 @@ Save your product images in `design/forms/`, one file for each product, named af
 
 ## 5. Plan the scene on paper
 
-Plan the scene before you ask your agent. To compare products, plan it once and let each product play it.
+Plan the scene before writing a script or asking an agent to write it. Choose a setting relevant to your design. The hospital examples illustrate one setting; you do not have to use it. To compare products, plan a shared scene and let each product play it.
 
-- **Who is there:** the patient and one or two others, each with a role, and whether each voice is low or high.
+- **Who is there:** the people involved, each with a role and a suitable voice.
 - **What happens, in order:** a handful of events.
 - **Who says what, when and how:** the key lines, and how they are said (quietly, briskly).
-- **What each product does** at each event: what it says, what it only shows on the screen, what its light does, and when it stays silent. This is where your two products differ.
+- **What the product does** at each event: what it says, what it only shows on the screen, what its light does, and when it stays silent. If comparing alternatives, decide where their responses differ.
 
 Keep it small: a scene of a minute or two is enough to judge a product's behaviour.
 
 ## 6. Let your agent write the scripts
 
-Give your agent the plan, one product at a time. Start with **New behaviour script:**, then the product's name and the scene, then your plan. Ask it to keep to the plan:
+**Without an agent:** copy an example from `examples/behaviours/` into `design/behaviours/` with a new filename. Edit the copy in a text editor, following [SCREENPLAY.md](system/SCREENPLAY.md) and [VOCABULARY.md](system/VOCABULARY.md). Keep the original example unchanged. Save, run `node system/bin/check`, fix errors and play the result. If you have no Node, read the problems marked in VoiceIt's script column instead. Continue with step 7.
+
+**With an agent:** give it the plan, one product at a time. Start with **New behaviour script:**, then the product's name and the scene, then your plan. The following example uses the hospital setting; substitute your own setting and events. Ask it to keep to the plan:
 
 > New behaviour script: Juno, night on ward 2. People: Joost (patient, voice low), Samira (night nurse, voice high). Plan: 1. Joost cannot sleep and asks Juno for the time. 2. Juno shows the time on the screen and says nothing. 3. Joost asks for the nurse. 4. Juno calls Samira quietly; its light pulses blue until she comes in. 5. While Samira is in the room, Juno is silent. Keep our events and their order; ask before adding anything.
 
@@ -142,7 +140,7 @@ DEVICE (quietly): She's on her way. About two minutes.
 
 The lines between `---` are facts: the character's name, its voice, a note of your own shown in the list, and the people present, each with a voice (`voice low`, `voice high` or a voice's name; without one, VoiceIt picks a free voice). The `#` lines are comments for the reader; they are not played. Then the script: what happens, who says what (the product speaks as `DEVICE`, or under its character's name), and what the product shows (`SCREEN`), lights (`LIGHT`) and sounds (`SOUND`). The notation is in [system/SCREENPLAY.md](system/SCREENPLAY.md); the screen components, light colours, sounds and voices are in [system/VOCABULARY.md](system/VOCABULARY.md) and in VoiceIt's About tab.
 
-Read your script while it plays. Does it follow your plan? Did the agent add anything you did not ask for? Its report names the decisions it made itself.
+Read your script while it plays. Does it follow your plan? If an agent helped, did it add anything you did not ask for? Its report should name the decisions it made itself.
 
 ## 8. Revise the script
 
@@ -152,7 +150,7 @@ Read your script while it plays. Does it follow your plan? Did the agent add any
 
 The agent changes the script, checks it, and says what it changed. If your remark is about the character as a whole, it asks before changing the character's other scripts. The list shows the new version within a few seconds; play it again.
 
-**Or edit the script yourself.** Open the file in `design/behaviours/` in any text editor, change a line and save. VoiceIt plays the new version within a few seconds. Then ask:
+**Or edit the script yourself.** Open the file in `design/behaviours/` in any text editor, change a line and save. The local preview shows the new version within a few seconds. With Node, run `node system/bin/check` and fix errors before replaying. Without Node, read the problems marked in VoiceIt's script column; online, reopen your folder if your browser does not follow changes. If you use an agent, you can instead ask:
 
 > Check our scripts.
 
@@ -162,16 +160,16 @@ The agent runs the check and explains what it finds, with line numbers, in plain
 
 ## 9. Optional: change VoiceIt itself
 
-If you want to go further, your agent can also change VoiceIt itself: add a feature, or change how something works. Changes like this run only in VoiceIt on your laptop (`node system/bin/preview`); VoiceIt online cannot run them.
+If you want to go further, you or your agent can change VoiceIt itself: add a feature, or change how something works. Changes like this run only in VoiceIt on your laptop (`node system/bin/preview`); VoiceIt online cannot run them. The [developer guide](DEVELOPING.md) explains the code and checks. The steps below describe working with an agent.
 
-1. **Save a version first:** *"Commit our work."* Then you can always go back.
+1. **Preserve a version first.** In a Git clone, review the files to include and ask *"Commit our work."* For a downloaded ZIP without Git, make a separate backup copy of the whole `voiceit` folder, including `design/`, before changing it. Keep the backup untouched so you can recover the tool and your own work.
 2. **Ask for the change explicitly, as a change to VoiceIt:**
 
    > Change VoiceIt itself: add a sound called knock that plays two soft knocks. Keep our scripts working, and run the tests afterwards.
 
    Other ideas: a new light colour, a slower way of speaking, the product's name on the screen. VoiceIt's instructions let the agent change its own files only when you ask like this.
 3. **Test it.** The agent runs VoiceIt's tests (`node --test system/test/voiceit.test.js`) and the check. Reload VoiceIt in the browser, try your change, and play your own scripts and an example: do they still play?
-4. **If something broke:** *"Go back to our last commit."*
+4. **If something broke:** ask the agent to identify and undo just its tool changes, preserving your scripts, images and any other work. Review the proposed recovery before it changes files.
 
 # Reference
 
@@ -188,7 +186,7 @@ Four phrases cover the whole cycle. For everything else, say what you want in yo
 | **Go** | When the read-back is right. | The agent writes the script, checks it and reports. |
 | **Check our scripts** | After you edited a script yourself, or when something does not play as expected. | The agent runs the check, explains what it finds with line numbers, and asks before fixing. |
 
-To revise a script, just say what should change (step 8). To change VoiceIt itself, say so explicitly (step 9). The agent can also copy an example for you to start from, or compare a character's scripts, if you ask. Saving versions and course updates are under Git, below.
+To revise a script, just say what should change (step 8). To change VoiceIt itself, say so explicitly (step 9). The agent can also copy an example for you to start from, or compare a character's scripts, if you ask. Saving versions and tool updates are under Git, below.
 
 ## Commands
 
@@ -201,7 +199,7 @@ Type these in a terminal in the `voiceit` folder. Your agent runs the same comma
 | `node system/bin/check` | Checks every behaviour script in `design/behaviours/` and the examples. |
 | `node system/bin/check "design/behaviours/juno - visiting hour.md"` | Checks one script. Keep the quotes: file names contain spaces. |
 | `node --test system/test/voiceit.test.js` | Runs VoiceIt's own tests, after a change to VoiceIt (step 9). |
-| `git pull --no-rebase` | Brings in a course update (see below). |
+| `git pull --no-rebase` | Brings updates into a Git clone (see below); not for a downloaded ZIP. |
 
 The check prints one line per problem: the file, the line number, *error* or *warning*, and what to do. For example, after a few hand edits:
 
@@ -221,16 +219,16 @@ Errors stop a line from playing as written; fix them. Warnings are worth reading
 
 ## Saving versions with Git (optional)
 
-**Git** is a version control system: it keeps the history of a folder. You used it once already, to *clone* VoiceIt: that made a copy of the course's repository on your laptop, history included. The copy on your laptop is yours; Git works on it without a GitHub account.
+**Git** is a version control system: it keeps the history of a folder. If you cloned VoiceIt, you have a copy of the repository and its history. Git works on that copy without a GitHub account. A downloaded ZIP has no Git history: keep backups of your `design/` folder, and do not run pull commands in it. To get a newer ZIP, extract it separately and copy your design files into the new copy; preserve your old folder, especially if you modified the tool.
 
-A **commit** is a saved snapshot of the whole folder at one moment, with a short message saying what changed ("first version of Juno"). Commits let you go back to an earlier version, see what changed between two versions, and try something without losing what worked. *Pull* brings new commits from the course's repository into your copy (course updates); *push* sends your commits to a repository on GitHub (only needed to share with others, and needs an account).
+A **commit** is a saved snapshot of tracked files at one moment, with a short message saying what changed ("first version of Juno"). Commits let you inspect earlier versions and try something without losing what worked. *Pull* brings new commits from the source repository into your clone; *push* sends your commits to a repository you can write to (only needed to share online, and needs an account). Local commits are not remote backups. Review what is included before committing or sharing; never publish private material merely to save a version.
 
 You do not need any of this to use VoiceIt. Your agent can do each step for you when you ask:
 
 - **Save a version:** *"Commit our work: first version of Juno."* The first time, Git asks for your name and e-mail.
 - **See what changed:** *"What changed since our last commit?"*
-- **Get course updates:** *"Pull the latest VoiceIt."* (In a terminal: `git pull --no-rebase`.) This brings in changes to `system/`, the examples and the documents. It usually goes smoothly as long as you have not changed `system/` or `examples/`.
-- **Working as a group:** work in one laptop's `voiceit` folder, with one agent session, and commit there. You demonstrate from that laptop. No GitHub account is needed.
+- **Get tool updates in a clone:** save and review your work first, then *"Pull the latest VoiceIt."* (In a terminal: `git pull --no-rebase`.) This brings in changes to the tool, examples and documents. If there is a conflict, stop and review it; do not discard your work to make the update succeed.
+- **Working as a group:** see the [classroom guide](CLASSROOM.md) for an optional single-laptop workflow.
 
 ## Troubleshooting
 

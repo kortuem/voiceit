@@ -1,6 +1,6 @@
 # Boundaries
 
-Groups sometimes contrast products through stereotypes: a very masculine and a very feminine product, for example. These limits apply to that, and to everything else you make with VoiceIt.
+These limits apply to scripts, images and forms made with VoiceIt, whether you work independently or in a class. You do not need to explore stereotypes to use the tool. The optional course exercise and its context are in [CLASSROOM.md](../CLASSROOM.md).
 
 - **Express stereotypes through manner and behaviour**: initiative, amount, register, whom the product addresses, what it takes on, how it handles doubt, its voice and its form. That is enough to make them recognisable.
 - **No insults, slurs or demeaning jokes** about any group, and no sexual content or innuendo, in lines, rules, images or form.

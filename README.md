@@ -2,9 +2,18 @@
 
 VoiceIt is a rapid prototyping tool for exploring how products such as smart speakers and voice assistants interact with people. It lets designers write and play scenarios that demonstrate a product’s proposed behaviour before building a working device. A scenario can include conversations involving several people, accompanied by screen messages, light signals and sound effects.
 
-Designers describe the interaction they want to explore in everyday language, and an AI coding assistant helps turn it into a script that VoiceIt can play in the browser. They can listen to the dialogue, inspect the sequence of events and revise the wording, voices or timing. An image represents the proposed physical design, allowing the same behaviour to be tried with different forms. All interactions are scripted, so designers can explore specific situations without implementing speech recognition or a live conversational system.
+Designers write scripts themselves or describe the interaction to an AI coding assistant, which helps turn it into a script that VoiceIt can play in the browser. They can listen to the dialogue, inspect the sequence of events and revise the wording, voices or timing. An image represents the proposed physical design, allowing the same behaviour to be tried with different forms. All interactions are scripted, so designers can explore specific situations without implementing speech recognition or a live conversational system.
 
 With VoiceIt, designers can make early design decisions that are difficult to assess through sketches alone. A smart speaker might offer useful advice but interrupt at the wrong moment, speak too formally or address the wrong person. By playing through these situations, designers can discuss how a product should respond and what role it should take. They can try several alternatives, evaluate the relationship between appearance and behaviour, and refine a concept before investing in hardware and software development.
+
+## Start here
+
+- **Understand the tool:** watch the tour below and look at the example script.
+- **Make a prototype:** follow the [tutorial](TUTORIAL.md), with a text editor or an optional AI coding assistant.
+- **Teach with it:** use the [classroom guide](CLASSROOM.md); its activities are optional, not requirements for using VoiceIt.
+- **Adapt the tool:** see the [developer guide](DEVELOPING.md) for the code map, checks and contribution process.
+
+VoiceIt playback needs no AI account or API key. The local version needs Node.js 18 or newer; there are no packages to install. An AI assistant or image generator, if you choose to use one while designing, is a separate service with its own terms and possible costs.
 
 ## Watch the tour
 
@@ -26,7 +35,7 @@ Select a behaviour script from the list and choose a product image for it from t
 
 Use **Pause**, **Step** and **Restart** to examine particular moments. The timeline shows when each person and the product speak, together with screen changes, light signals and sounds. Click the timeline or a line in the script to move to that moment; the script highlights the line being played.
 
-Try a different form with the same behaviour, or play another script to compare approaches. To change the dialogue or actions, ask your AI coding assistant or edit the script file. While VoiceIt is running, saved changes appear in the browser within a few seconds.
+Try a different form with the same behaviour, or play another script to compare approaches. To change the dialogue or actions, ask your AI coding assistant or edit the script file. With the local preview running, saved changes appear in the browser within a few seconds. Online folder-refresh behaviour depends on the browser; see the note below.
 
 ## Form, behaviour and character
 
@@ -89,14 +98,20 @@ VoiceIt lists them in this order, simplest first. Play 3 and 4 one after another
 
 ## Design your own
 
-To write your own behaviour scripts you also need an AI coding assistant: the **Claude desktop app** (its **Code** tab) or **Codex**. It writes and revises the scripts in the `voiceit` folder with you and checks them. For product images, an image-generation tool such as ChatGPT or Gemini helps turn sketches into renders.
+Write behaviour scripts in any text editor, starting from a copy of an example and the [notation guide](system/SCREENPLAY.md). An AI coding assistant, such as Claude Code or Codex, can write, revise and check scripts with you; it is optional. For product images, use a drawing or photograph of a model, or use an image-generation tool to turn sketches into renders.
 
-The [tutorial](TUTORIAL.md) takes you step by step: setting up, playing a short example, bringing in your product images, planning a scene on paper, letting your agent write and revise the scripts, judging them, and changing VoiceIt itself.
+The [tutorial](TUTORIAL.md) takes you step by step: setting up, playing a short example, bringing in your product images, planning a scene on paper, writing and revising scripts, and judging them. Changing VoiceIt itself is an optional final step. The hospital scenes are worked examples, not a required project brief.
 
 ## Voices and timing
 
-- Voices come from your browser and operating system, so they sound different on every laptop; durations (≈) are estimates. A script says only `voice low`, `voice high` or a catalogue voice for each person, so it plays on any laptop. VoiceIt guesses from the names of a laptop's voices which are low and which are high; where it guesses wrong, choose the laptop voice in the Setup tab. For much better voices, download Premium or Enhanced voices on a Mac, or use Edge on Windows: see step 7 of the [tutorial](TUTORIAL.md#1-set-up).
+- Voices come from your browser and operating system, so they sound different on every laptop; durations (≈) are estimates. A script names a catalogue voice or voice register, not a particular installed voice. Available voices vary. VoiceIt guesses from the names of a laptop's voices which are low and which are high; where it guesses wrong, choose the laptop voice in the Setup tab. See the sound check in the [tutorial](TUTORIAL.md#1-set-up).
 - Browsers: tested in Chrome on macOS. Not yet tested: Edge, Safari, Firefox, and anything on Windows.
+
+## Files, speech and privacy
+
+VoiceIt reads your scripts and images from your local project or a folder you select in the browser; it does not upload those files to a VoiceIt service. It does not save edits for you: edit and save the original files, and keep your own backups. Reloading the online version requires opening your folder again.
+
+Speech uses the browser's speech-synthesis service. Some voices are local and others use an online service provided by the browser or operating system. Do not assume that spoken text always stays on the device. The page also requests fonts from Google Fonts. If you use an AI assistant or image generator to author material, anything you share with that service is governed separately. Use fictional or cleared material for demonstrations.
 
 ## Documentation
 
@@ -104,7 +119,9 @@ The [tutorial](TUTORIAL.md) takes you step by step: setting up, playing a short 
 - [system/SCREENPLAY.md](system/SCREENPLAY.md): the script notation and the checks.
 - [system/VOCABULARY.md](system/VOCABULARY.md): screen components, lights, sounds, voices and manner.
 - [system/FORM.md](system/FORM.md): from sketch to rendered form.
-- [system/BOUNDARIES.md](system/BOUNDARIES.md): the limits for the stereotype exercise and beyond.
+- [system/BOUNDARIES.md](system/BOUNDARIES.md): respectful representation when making scripts and forms.
+- [CLASSROOM.md](CLASSROOM.md): optional group workflow and the original course exercise guidance.
+- [DEVELOPING.md](DEVELOPING.md): architecture, local checks and contributing changes.
 - [CHANGELOG.md](CHANGELOG.md): what changed from version to version.
 
 ## Folders
@@ -120,6 +137,6 @@ The [tutorial](TUTORIAL.md) takes you step by step: setting up, playing a short 
 
 Created by Gerd Kortuem · TU Delft. For IDEM307 — Generative AI and Design. Developed with OpenAI Codex and Anthropic Claude. Tour video produced with Claude; AI narration: ElevenLabs (elevenlabs.io).
 
-VoiceIt is in development, for the course IDEM307 at TU Delft. This is version 0.5.1, an early release; what changed from version to version is in [CHANGELOG.md](CHANGELOG.md). Report problems in [GitHub Issues](https://github.com/kortuem/voiceit/issues) (needs a GitHub account) or tell your teacher. For maintainers: `node --test system/test/voiceit.test.js` runs the tests.
+VoiceIt began in the course IDEM307 at TU Delft and can be used independently for design practice, teaching and experimentation. This is version 0.5.1, an early release; what changed from version to version is in [CHANGELOG.md](CHANGELOG.md). Report problems in [GitHub Issues](https://github.com/kortuem/voiceit/issues) with your browser, operating system, VoiceIt version and a small fictional example that reproduces the problem. Do not post private project files or personal information. For maintainers: `node --test system/test/voiceit.test.js` runs the tests.
 
 The code and the example files are under the [MIT licence](LICENSE). The smart speaker photo above is not part of the repository; it is shown from Wikimedia Commons under its own licence, CC BY-SA 4.0. Visual style after Vlak (vlak.dev) by Renn, Noord.
